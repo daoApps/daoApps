@@ -34,3 +34,6 @@
 [submodule "apps/config-center"]
 	path = apps/config-center
 	url = git@github.com:daoApps/config-center.git
+[submodule "apps/DaoMind"]
+	path = apps/DaoMind
+	url = git@github.com:xinetzone/DaoMind.git
