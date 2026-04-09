@@ -1,0 +1,38 @@
+# Checklist
+
+- [ ] mockSocial.ts 包含完整的 TypeScript 类型定义（User, Post, Meeting, Notification, MatchRecord）
+- [ ] mockSocial.ts 包含 15-20 个模拟用户数据，字段完整且多样化
+- [ ] mockSocial.ts 包含至少 10 条社交动态数据
+- [ ] mockSocial.ts 包含 5 个会议数据（覆盖不同状态）
+- [ ] mockSocial.ts 包含 8 条通知数据（覆盖多种类型）
+- [ ] mockSocial.ts 包含匹配历史记录数据
+- [ ] UserProfileCard 组件正确渲染用户资料所有 UI 元素
+- [ ] UserProfileCard 关注按钮支持已关注/未关注状态切换
+- [ ] UserRecommendationList 组件实现响应式网格布局（2/3/4 列自适应）
+- [ ] UserRecommendationList 卡片显示匹配度百分比和共同兴趣标签
+- [ ] UserRecommendationList 实现卡片 hover 上浮效果
+- [ ] UserRecommendationList 实现筛选排序功能
+- [ ] DatingMatch 组件实现中央大卡片展示
+- [ ] DatingMatch 组件实现左滑/右滑/上滑交互和飞出动画
+- [ ] DatingMatch 组件实现匹配成功动画弹窗
+- [ ] DatingMatch 组件实现匹配历史记录查看
+- [ ] MeetingRoom 组件实现会议列表（分组展示）
+- [ ] MeetingRoom 组件实现创建会议表单
+- [ ] MeetingRoom 组件实现会议详情页
+- [ ] MeetingRoom 组件实现日历集成视图
+- [ ] SocialFeed 组件实现发布编辑器
+- [ ] SocialFeed 组件实现动态时间线列表
+- [ ] SocialFeed 组件实现点赞/评论/分享/收藏交互
+- [ ] SocialFeed 组件实现话题标签功能
+- [ ] FriendsSystem 组件实现好友/关注/粉丝/请求 Tab 切换
+- [ ] FriendsSystem 组件实现好友请求接受/拒绝操作
+- [ ] FriendsSystem 组件实现搜索功能
+- [ ] FriendsSystem 组件实现分组管理
+- [ ] NotificationPanel 组件实现通知列表渲染和未读标识
+- [ ] NotificationPanel 组件实现分类筛选
+- [ ] NotificationPanel 组件实现全部已读功能
+- [ ] SocialPage 主页面实现 Tab 导航切换（6 个 Tab）
+- [ ] SocialPage 主页面正确整合所有子组件
+- [ ] SocialPage 主页面实现响应式布局适配
+- [ ] SocialPage 主页面实现浮动通知铃铛按钮
+- [ ] 所有组件遵循项目现有代码风格（TypeScript + Tailwind CSS + 函数组件）
