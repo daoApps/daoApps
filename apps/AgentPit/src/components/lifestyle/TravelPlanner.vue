@@ -44,7 +44,7 @@ function openDestinationDetail(dest: TravelDestination) {
   showDestinationDetail.value = true
 }
 
-function openAddActivity(_dayIndex?: number) {
+function openAddActivity() {
   newActivity.value = { time: '09:00', title: '', location: '', notes: '', cost: 0 }
   showActivityModal.value = true
 }

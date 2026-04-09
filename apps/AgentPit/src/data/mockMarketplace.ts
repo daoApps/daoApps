@@ -57,6 +57,12 @@ export interface Review {
   isVerifiedPurchase: boolean
 }
 
+export interface LogisticsStep {
+  time: string
+  description: string
+  status: 'in_transit' | 'delivered' | 'picked_up' | 'out_for_delivery'
+}
+
 export interface Order {
   id: string
   orderNumber: string
@@ -67,6 +73,7 @@ export interface Order {
   paymentMethod: string
   shippingAddress: ShippingAddress
   trackingNumber?: string
+  logisticsInfo?: LogisticsStep[]
 }
 
 export interface OrderItem {

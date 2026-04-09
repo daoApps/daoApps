@@ -34,13 +34,13 @@ const tabs = [
               <button
                 v-for="tab in tabs"
                 :key="tab.id"
-                @click="activeTab = tab.id"
                 class="relative px-4 py-3 text-sm font-medium whitespace-nowrap transition-all duration-200 rounded-t-lg group"
                 :class="
                   activeTab === tab.id
                     ? 'text-blue-600 dark:text-blue-400'
                     : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-white/50 dark:hover:bg-gray-700/50'
                 "
+                @click="activeTab = tab.id"
               >
                 <span class="mr-1.5">{{ tab.icon }}</span>
                 {{ tab.label }}

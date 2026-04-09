@@ -26,8 +26,8 @@ const handleCheckout = () => {
     <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">购物车是空的</h3>
     <p class="text-gray-500 dark:text-gray-400 mb-6">快去挑选心仪的商品吧！</p>
     <button
-      @click="router.push('/marketplace')"
       class="px-6 py-3 bg-primary-500 text-white font-medium rounded-xl hover:bg-primary-600 transition-colors"
+      @click="router.push('/marketplace')"
     >
       去逛逛
     </button>
@@ -37,8 +37,8 @@ const handleCheckout = () => {
     <div class="flex items-center justify-between">
       <h1 class="text-2xl font-bold text-gray-900 dark:text-white">购物车 ({{ cartStore.items.length }})</h1>
       <button
-        @click="handleClearCart"
         class="text-sm text-red-500 hover:text-red-600 font-medium"
+        @click="handleClearCart"
       >
         清空购物车
       </button>
@@ -52,8 +52,8 @@ const handleCheckout = () => {
               <input
                 type="checkbox"
                 :checked="cartStore.items.length > 0 && cartStore.items.every(item => item.selected)"
-                @change="cartStore.toggleSelectAll()"
                 class="w-4 h-4 rounded border-gray-300 dark:border-gray-600 text-primary-500 focus:ring-primary-500"
+                @change="cartStore.toggleSelectAll()"
               />
               <span class="text-sm font-medium text-gray-700 dark:text-gray-300">全选</span>
             </label>
@@ -74,14 +74,14 @@ const handleCheckout = () => {
                 <input
                   type="checkbox"
                   :checked="item.selected"
-                  @change="cartStore.toggleSelect(item.product.id)"
                   class="w-4 h-4 rounded border-gray-300 dark:border-gray-600 text-primary-500 focus:ring-primary-500"
+                  @change="cartStore.toggleSelect(item.product.id)"
                 />
               </label>
 
               <div
-                @click="router.push(`/marketplace/product/${item.product.id}`)"
                 class="flex items-center gap-3 flex-1 cursor-pointer"
+                @click="router.push(`/marketplace/product/${item.product.id}`)"
               >
                 <img
                   :src="item.product.images[0]"
@@ -106,9 +106,9 @@ const handleCheckout = () => {
               <div class="w-28 flex justify-center">
                 <div class="inline-flex items-center border border-gray-200 dark:border-gray-600 rounded-lg overflow-hidden">
                   <button
-                    @click="cartStore.updateQuantity(item.product.id, item.quantity - 1)"
                     :disabled="item.quantity <= 1"
                     class="w-8 h-8 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-30 transition-colors"
+                    @click="cartStore.updateQuantity(item.product.id, item.quantity - 1)"
                   >
                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
@@ -117,13 +117,13 @@ const handleCheckout = () => {
                   <input
                     type="number"
                     :value="item.quantity"
-                    @input="(e) => cartStore.updateQuantity(item.product.id, parseInt((e.target as HTMLInputElement).value) || 1)"
                     class="w-12 h-8 text-center text-sm border-x border-gray-200 dark:border-gray-600 focus:outline-none bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                    @input="(e) => cartStore.updateQuantity(item.product.id, parseInt((e.target as HTMLInputElement).value) || 1)"
                   />
                   <button
-                    @click="cartStore.updateQuantity(item.product.id, item.quantity + 1)"
                     :disabled="item.quantity >= item.product.stock"
                     class="w-8 h-8 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-30 transition-colors"
+                    @click="cartStore.updateQuantity(item.product.id, item.quantity + 1)"
                   >
                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -140,9 +140,9 @@ const handleCheckout = () => {
 
               <div class="w-16 text-center">
                 <button
-                  @click="cartStore.removeItem(item.product.id)"
                   class="text-gray-400 hover:text-red-500 transition-colors"
                   title="删除"
+                  @click="cartStore.removeItem(item.product.id)"
                 >
                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -190,13 +190,13 @@ const handleCheckout = () => {
 
           <button
             :disabled="cartStore.selectedItems.length === 0"
-            @click="handleCheckout"
             :class="[
               'w-full mt-6 py-3.5 rounded-xl font-semibold text-base transition-all',
               cartStore.selectedItems.length > 0
                 ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg hover:shadow-xl active:scale-[0.98]'
                 : 'bg-gray-200 dark:bg-gray-700 text-gray-400 cursor-not-allowed'
             ]"
+            @click="handleCheckout"
           >
             结算 ({{ cartStore.selectedItems.length }})
           </button>

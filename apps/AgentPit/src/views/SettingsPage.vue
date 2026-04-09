@@ -50,13 +50,14 @@ const versionInfo = {
           <nav class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm lg:sticky lg:top-4">
             <ul class="py-2">
               <li v-for="item in settingsMenu" :key="item.id">
-                <button @click="activeSection = item.id"
-                  :class="[
+                <button
+:class="[
                     'w-full flex items-center gap-3 px-4 py-3 text-left transition-all duration-200',
                     activeSection === item.id
                       ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 font-medium border-l-3 border-indigo-500'
                       : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50'
-                  ]">
+                  ]"
+                  @click="activeSection = item.id">
                   <span class="text-xl">{{ item.icon }}</span>
                   <div class="flex-1 min-w-0">
                     <p class="text-sm">{{ item.label }}</p>

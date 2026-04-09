@@ -261,22 +261,22 @@ const getStatusText = (status: Friend['status']) => {
 
       <div v-if="activeTab === 'groups'" class="p-6 space-y-4">
         <div
-          v-for="(label, group) in Object.entries(groupLabels).filter(([k]) => k !== 'all')"
-          :key="(group as unknown as [string, string])[0]"
+          v-for="[groupKey, groupLabel] in Object.entries(groupLabels).filter(([k]) => k !== 'all')"
+          :key="groupKey"
           class="p-4 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-lg"
         >
           <div class="flex items-center justify-between mb-3">
             <h4 class="font-semibold text-gray-900 dark:text-white flex items-center space-x-2">
-              <span>{{ (label as unknown as [string, string])[1] }}</span>
+              <span>{{ groupLabel }}</span>
               <span class="px-2 py-0.5 text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded-full">
-                {{ friends.filter(f => f.group === (group as unknown as [string, string])[0]).length }} 人
+                {{ friends.filter(f => f.group === groupKey).length }} 人
               </span>
             </h4>
           </div>
 
           <div class="flex flex-wrap gap-2">
             <div
-              v-for="friend in friends.filter(f => f.group === (group as unknown as [string, string])[0])"
+              v-for="friend in friends.filter(f => f.group === groupKey)"
               :key="friend.id"
               class="flex items-center space-x-2 px-3 py-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm"
             >
@@ -288,7 +288,7 @@ const getStatusText = (status: Friend['status']) => {
               <span class="text-sm text-gray-700 dark:text-gray-300">{{ friend.name }}</span>
             </div>
             <div
-              v-if="friends.filter(f => f.group === group[0]).length === 0"
+              v-if="friends.filter(f => f.group === groupKey).length === 0"
               class="text-sm text-gray-400 italic"
             >
               暂无成员

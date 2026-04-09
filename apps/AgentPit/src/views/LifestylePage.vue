@@ -26,13 +26,14 @@ const tabs = [
 
         <!-- Tab 导航 -->
         <nav class="flex gap-1 mt-5 overflow-x-auto pb-1">
-          <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id"
-            :class="[
+          <button
+v-for="tab in tabs" :key="tab.id" :class="[
               'relative px-4 py-2.5 rounded-lg font-medium text-sm whitespace-nowrap transition-all duration-200 flex items-center gap-1.5',
               activeTab === tab.id
                 ? 'bg-white/20 backdrop-blur-sm shadow-md text-white'
                 : 'bg-white/10 hover:bg-white/20 text-white/80'
-            ]">
+            ]"
+            @click="activeTab = tab.id">
             <span>{{ tab.icon }}</span>{{ tab.label }}
           </button>
         </nav>

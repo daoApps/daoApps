@@ -79,17 +79,17 @@ const paginatedAgents = computed(() => {
 
 const totalPages = computed(() => Math.ceil(filteredAgents.value.length / pageSize))
 
-const allSelected = computed(() =>
-  paginatedAgents.value.length > 0 && paginatedAgents.value.every(a => selectedIds.value.has(a.id))
-)
+// const allSelected = computed(() =>
+//   paginatedAgents.value.length > 0 && paginatedAgents.value.every(a => selectedIds.value.has(a.id))
+// )
 
-const handleBatchDelete = () => {
-  if (allSelected.value) {
-    paginatedAgents.value.forEach(a => selectedIds.value.delete(a.id))
-  } else {
-    paginatedAgents.value.forEach(a => selectedIds.value.add(a.id))
-  }
-}
+// const toggleSelectAll = () => {
+//   if (allSelected.value) {
+//     paginatedAgents.value.forEach(a => selectedIds.value.delete(a.id))
+//   } else {
+//     paginatedAgents.value.forEach(a => selectedIds.value.add(a.id))
+//   }
+// }
 
 const toggleSelect = (id: string) => {
   if (selectedIds.value.has(id)) {
