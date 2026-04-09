@@ -7,3 +7,30 @@
 [submodule "skills/daoSkilLs"]
 	path = skills/daoSkilLs
 	url = git@github.com:daoSkilLs/daoSkiLs.git
+[submodule "apps/daoNexus"]
+	path = apps/daoNexus
+	url = git@github.com:daoApps/daoNexus.git
+[submodule "apps/xinyu"]
+	path = apps/xinyu
+	url = git@github.com:daoApps/xinyu.git
+[submodule "apps/time-capsule"]
+	path = apps/time-capsule
+	url = git@github.com:daoApps/time-capsule.git
+[submodule "apps/oauth-admin"]
+	path = apps/oauth-admin
+	url = git@github.com:daoApps/oauth-admin.git
+[submodule "apps/moodflow"]
+	path = apps/moodflow
+	url = git@github.com:daoApps/moodflow.git
+[submodule "apps/habit-tracker"]
+	path = apps/habit-tracker
+	url = git@github.com:daoApps/habit-tracker.git
+[submodule "apps/growth-tracker"]
+	path = apps/growth-tracker
+	url = git@github.com:daoApps/growth-tracker.git
+[submodule "apps/forum"]
+	path = apps/forum
+	url = git@github.com:daoApps/forum.git
+[submodule "apps/config-center"]
+	path = apps/config-center
+	url = git@github.com:daoApps/config-center.git
