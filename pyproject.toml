@@ -1,0 +1,160 @@
+[build-system]
+build-backend = "pdm.backend"
+requires = ["pdm-backend"]
+
+[project]
+authors = [{ name = "xinetzone", email = "735613050@qq.com" }]
+dependencies = []
+description = "A collection of applications and tools for the daoApps ecosystem, including React/Vite frontend apps and Python utilities."
+dynamic = ["version"]
+license = { file = "LICENSE" }
+maintainers = [{ name = "xinetzone", email = "735613050@qq.com" }]
+name = "daoapps"
+readme = "README.md"
+requires-python = ">=3.14"
+keywords = [
+    "daoapps",
+    "applications",
+    "tools",
+    "frontend",
+    "react",
+    "vite",
+    "python",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+[project.urls]
+Documentation = "https://github.com/xinetzone/daoApps#readme"
+Repository = "https://github.com/xinetzone/daoApps.git"
+Homepage = "https://github.com/xinetzone/daoApps"
+Issues = "https://github.com/xinetzone/daoApps/issues"
+
+[project.optional-dependencies]
+doc = [
+    "invoke",
+    "sphinx>=8.2.3",
+    "sphinx-rtd-theme>=3.0",
+    "myst-parser>=4.0",
+    "sphinx-copybutton>=0.5",
+    "sphinx-design>=0.6",
+    "sphinx-autoapi>=3.4",
+]
+[tool.pdm.dev-dependencies]
+dev = [
+    "invoke", 
+    "ruff>=0.6", 
+    "mypy>=1.11",
+    "-e DeepResearch @ file:///${PROJECT_ROOT}/tools/DeepResearch",
+    "-e taolib @ file:///${PROJECT_ROOT}/tools/flexloop"
+]
+
+test = ["pytest>=8.3", "pytest-cov", "coverage", "pytest-asyncio>=0.23"]
+
+[tool.pdm]
+distribution = false
+
+[tool.pdm.version]
+fallback_version = "0.0.0"
+source = "scm"
+
+[tool.pdm.build]
+includes = ["src"]
+package-dir = "src"
+
+[tool.pdm.scripts]
+test = "pytest"
+test-cov = "pytest --cov=src --cov-report=term-missing"
+lint = "ruff check ."
+lint-fix = "ruff check . --fix"
+format = "ruff format ."
+format-check = "ruff format . --check"
+clean = {shell = "rm -rf build dist .pytest_cache .ruff_cache .mypy_cache .coverage htmlcov"}
+type-check = "mypy src"
+
+[tool.ruff]
+exclude = [".git", ".venv", "doc/_build", ".pytest_cache", "__pycache__", "node_modules"]
+line-length = 88
+target-version = "py314"
+
+[tool.ruff.lint]
+ignore = [
+    "E501",   # line length handled by formatter
+    "ANN401", # allow Any type in **kwargs
+    "RUF001", # allow ambiguous unicode characters in strings (Chinese punctuation)
+    "RUF002", # allow ambiguous unicode characters in docstrings (Chinese punctuation)
+    "RUF003", # allow ambiguous unicode characters in comments (Chinese punctuation)
+    "B008",   # allow function call in argument defaults (FastAPI Depends pattern)
+    "ANN001", # missing type annotation for function argument
+    "ANN003", # missing type annotation for **kwargs
+    "ANN201", # missing return type annotation for public function
+    "ANN202", # missing return type annotation for private function
+    "ANN204", # missing return type annotation for special method
+    "B904",   # raise without from inside except
+    "SIM105", # suppressible-exception
+    "RUF022", # unsorted __all__
+    "SIM102", # collapsible-if
+    "C401",   # unnecessary-generator-set
+    "C416",   # unnecessary-comprehension
+    "RUF006", # asyncio-dangling-task
+    "UP046",  # non-pep695-generic-class
+]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "UP",  # pyupgrade
+    "ANN", # flake8-annotations
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "SIM", # flake8-simplify
+    "RUF", # ruff-specific rules
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["ANN", "S101"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.pytest.ini_options]
+addopts = "-v --tb=short"
+asyncio_mode = "auto"
+python_classes = ["Test*"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+testpaths = ["tests"]
+
+[tool.coverage.run]
+branch = true
+omit = ["*/tests/*", "*/test_*"]
+source = ["src"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "if __name__ == .__main__.:",
+    "raise NotImplementedError",
+]
+fail_under = 80
+show_missing = true
+
+[tool.mypy]
+python_version = "3.14"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+check_untyped_defs = true
+ignore_missing_imports = true
+show_error_codes = true
