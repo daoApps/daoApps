@@ -93,15 +93,6 @@ export const transactionHistory: TransactionRecord[] = [
     category: '建站分成'
   },
   {
-    id: 'TXN20240408001',
-    type: 'expense',
-    amount: 2000.00,
-    status: 'success',
-    timestamp: '2024-04-08 16:45:22',
-    description: '提现至银行卡',
-    category: '提现'
-  },
-  {
     id: 'TXN20240803002',
     type: 'income',
     amount: 3456.78,
@@ -120,49 +111,13 @@ export const transactionHistory: TransactionRecord[] = [
     category: '服务费'
   },
   {
-    id: 'TXN20240706004',
+    id: 'TXN20240606004',
     type: 'income',
     amount: 6789.12,
     status: 'success',
     timestamp: '2024-04-06 13:28:41',
     description: '自动化任务执行报酬',
     category: '任务执行'
-  },
-  {
-    id: 'TXN20240505005',
-    type: 'income',
-    amount: 15678.90,
-    status: 'success',
-    timestamp: '2024-04-05 10:55:19',
-    description: '企业级智能体定制服务',
-    category: '智能体服务'
-  },
-  {
-    id: 'TXN20240404006',
-    type: 'expense',
-    amount: 3500.00,
-    status: 'success',
-    timestamp: '2024-04-04 15:42:37',
-    description: '提现至支付宝账户',
-    category: '提现'
-  },
-  {
-    id: 'TXN20240303007',
-    type: 'income',
-    amount: 4321.56,
-    status: 'success',
-    timestamp: '2024-04-03 08:30:12',
-    description: '内容创作自动分发收益',
-    category: '内容创作'
-  },
-  {
-    id: 'TXN20240202008',
-    type: 'income',
-    amount: 9876.54,
-    status: 'success',
-    timestamp: '2024-04-02 17:05:28',
-    description: '数据分析服务订阅收入',
-    category: '智能体服务'
   }
 ]
 

@@ -1,15 +1,13 @@
 export interface Meeting {
   id: string
   title: string
-  startTime: Date
-  endTime: Date
+  date: string
+  startTime: string
+  endTime: string
   participants: Participant[]
   location: string
-  type: 'video' | 'offline' | 'phone'
-  reminder: number
-  repeatRule: 'once' | 'daily' | 'weekly' | 'monthly' | 'custom'
-  description: string
-  attachments?: string[]
+  type: 'work' | 'personal' | 'important' | 'recurring'
+  notes: string
 }
 
 export interface Participant {
@@ -26,87 +24,67 @@ export interface TravelDestination {
   country: string
   image: string
   rating: number
-  estimatedTime: string
-  ticketPrice: number
   description: string
+  tags: string[]
   category: 'nature' | 'culture' | 'entertainment' | 'food' | 'shopping'
-}
-
-export interface TravelItinerary {
-  id: string
-  title: string
-  destination: string
-  startDate: Date
-  endDate: Date
-  days: ItineraryDay[]
-  totalBudget: number
-  status: 'planning' | 'confirmed' | 'completed'
+  estimatedCost: number
 }
 
 export interface ItineraryDay {
-  date: Date
+  day: number
+  date: string
   activities: Activity[]
 }
 
 export interface Activity {
   id: string
-  name: string
-  timeSlot: 'morning' | 'afternoon' | 'evening'
+  time: string
+  title: string
   location: string
-  cost: number
-  duration: string
-  transport: TransportType
+  notes: string
+  cost?: number
 }
 
-export interface TransportType {
-  type: 'plane' | 'train' | 'car' | 'bus' | 'walk'
-  cost: number
-  duration: string
-}
-
-export interface Hotel {
+export interface TravelPlan {
   id: string
-  name: string
-  image: string
-  stars: number
-  pricePerNight: number
-  location: string
-  amenities: string[]
-  rating: number
-  reviews: number
+  destinationId: string
+  destinationName: string
+  startDate: string
+  endDate: string
+  days: ItineraryDay[]
+  totalCost: number
+  isFavorite: boolean
 }
 
-export interface Game {
+export interface TodoItem {
   id: string
   title: string
-  category: 'casual' | 'puzzle' | 'competitive' | 'social' | 'adventure'
-  coverImage: string
-  playerCount: { min: number; max: number }
-  rating: number
-  onlinePlayers: number
-  description: string
-  screenshots: string[]
-  tags: string[]
+  completed: boolean
+  priority: 'high' | 'medium' | 'low'
+  dueDate: string
+  category: string
 }
 
-export interface Achievement {
+export interface LifeTip {
   id: string
-  title: string
-  description: string
+  content: string
+  category: 'health' | 'productivity' | 'mindfulness' | 'social' | 'learning' | 'life'
   icon: string
-  progress: number
-  total: number
-  unlockedAt?: Date
-  rarity: 'common' | 'rare' | 'epic' | 'legendary'
 }
 
-export interface LeaderboardEntry {
-  rank: number
-  playerName: string
+export interface GameRecord {
+  gameType: 'snake' | 'tetris' | '2048'
   score: number
-  level: number
-  isFriend: boolean
-  isCurrentUser: boolean
+  date: string
+  duration: number
+}
+
+export interface WeeklyActivity {
+  day: string
+  meetings: number
+  travel: number
+  games: number
+  todos: number
 }
 
 export const participants: Participant[] = [
@@ -114,291 +92,162 @@ export const participants: Participant[] = [
   { id: '2', name: '李四', avatar: '👩', email: 'lisi@example.com' },
   { id: '3', name: '王五', avatar: '🧑', email: 'wangwu@example.com' },
   { id: '4', name: '赵六', avatar: '👨‍💼', email: 'zhaoliu@example.com' },
-  { id: '5', name: '钱七', avatar: '👩‍💼', email: 'qianqi@example.com' },
-  { id: '6', name: '孙八', avatar: '🧑‍💻', email: 'sunba@example.com' },
+  { id: '5', name: '孙七', avatar: '👩‍💻', email: 'sunqi@example.com' },
 ]
 
-const generateMeetings = (): Meeting[] => {
-  const now = new Date()
-  const meetings: Meeting[] = []
+const now = new Date()
+const currentYear = now.getFullYear()
+const currentMonth = now.getMonth()
 
-  for (let i = -3; i <= 14; i++) {
-    const date = new Date(now)
-    date.setDate(date.getDate() + i)
-
-    if (Math.random() > 0.4) {
-      const meetingCount = Math.floor(Math.random() * 3) + 1
-      for (let j = 0; j < meetingCount; j++) {
-        const startHour = 9 + Math.floor(Math.random() * 8)
-        const duration = [1, 1.5, 2, 2.5, 3][Math.floor(Math.random() * 5)]
-
-        meetings.push({
-          id: `meeting-${i}-${j}`,
-          title: ['产品需求评审会', '技术方案讨论', '周例会', '客户需求沟通', '项目进度汇报'][Math.floor(Math.random() * 5)],
-          startTime: new Date(date.getFullYear(), date.getMonth(), date.getDate(), startHour, Math.floor(Math.random() * 60)),
-          endTime: new Date(date.getFullYear(), date.getMonth(), date.getDate(), startHour + Math.floor(duration), (duration % 1) * 60),
-          participants: participants.slice(0, 2 + Math.floor(Math.random() * 4)),
-          location: ['会议室A', '会议室B', '线上会议', '咖啡厅', '客户办公室'][Math.floor(Math.random() * 5)],
-          type: ['video', 'offline', 'phone'][Math.floor(Math.random() * 3)] as Meeting['type'],
-          reminder: [15, 30, 60, 1440][Math.floor(Math.random() * 4)],
-          repeatRule: ['once', 'daily', 'weekly', 'monthly', 'custom'][Math.floor(Math.random() * 5)] as Meeting['repeatRule'],
-          description: '讨论项目进展和下一步计划',
-        })
-      }
-    }
-  }
-
-  return meetings.sort((a, b) => a.startTime.getTime() - b.startTime.getTime())
+function generateDate(day: number): string {
+  return `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
 }
 
-export const meetings: Meeting[] = generateMeetings()
+export const meetings: Meeting[] = [
+  { id: 'm1', title: '产品需求评审会议', date: generateDate(Math.max(1, now.getDate() - 2)), startTime: '09:00', endTime: '10:30', participants: [participants[0]!, participants[1]!, participants[3]!], location: '会议室A', type: 'work', notes: '讨论Q2产品路线图' },
+  { id: 'm2', title: '技术方案讨论', date: generateDate(Math.max(1, now.getDate() - 1)), startTime: '14:00', endTime: '15:30', participants: [participants[2]!, participants[4]!], location: '线上会议', type: 'work', notes: '架构设计评审' },
+  { id: 'm3', title: '团队周会', date: generateDate(now.getDate()), startTime: '10:00', endTime: '11:00', participants: [participants[0]!, participants[1]!, participants[2]!, participants[3]!, participants[4]!], location: '会议室B', type: 'recurring', notes: '每周例行周会' },
+  { id: 'm4', title: '客户演示准备', date: generateDate(now.getDate()), startTime: '15:00', endTime: '16:30', participants: [participants[0]!, participants[3]!], location: '演示厅', type: 'important', notes: '重要客户来访，需要充分准备' },
+  { id: 'm5', title: '一对一沟通', date: generateDate(now.getDate() + 1), startTime: '11:00', endTime: '11:30', participants: [participants[1]!], location: '咖啡厅', type: 'personal', notes: '职业发展规划交流' },
+  { id: 'm6', title: '项目进度汇报', date: generateDate(now.getDate() + 2), startTime: '09:30', endTime: '10:30', participants: [participants[0]!, participants[2]!, participants[4]!], location: '会议室A', type: 'work', notes: 'Sprint回顾与规划' },
+  { id: 'm7', title: '设计评审', date: generateDate(now.getDate() + 3), startTime: '14:00', endTime: '15:00', participants: [participants[1]!, participants[4]!], location: '设计室', type: 'work', notes: '新版UI设计稿评审' },
+  { id: 'm8', title: '季度OKR对齐', date: generateDate(now.getDate() + 4), startTime: '10:00', endTime: '12:00', participants: [participants[0]!, participants[1]!, participants[2]!, participants[3]!], location: '大会议室', type: 'important', notes: 'Q2目标对齐会议' },
+  { id: 'm9', title: '代码审查会议', date: generateDate(now.getDate() + 5), startTime: '16:00', endTime: '17:00', participants: [participants[2]!, participants[4]!], location: '线上会议', type: 'work', notes: '核心模块代码审查' },
+  { id: 'm10', title: '健身预约', date: generateDate(now.getDate() + 6), startTime: '18:30', endTime: '20:00', participants: [], location: '健身房', type: 'personal', notes: '每周固定健身时间' },
+  { id: 'm11', title: '新员工培训', date: generateDate(now.getDate() + 7), startTime: '09:00', endTime: '12:00', participants: [participants[0]!, participants[1]!, participants[3]!], location: '培训室', type: 'recurring', notes: '新入职员工入职培训' },
+  { id: 'm12', title: '午餐聚会', date: generateDate(now.getDate() + 8), startTime: '12:00', endTime: '13:30', participants: [participants[0]!, participants[1]!, participants[2]!, participants[4]!], location: '餐厅', type: 'personal', notes: '团队建设活动' },
+  { id: 'm13', title: '安全审计会议', date: generateDate(now.getDate() + 9), startTime: '15:00', endTime: '16:30', participants: [participants[3]!, participants[4]!], location: '安全室', type: 'important', notes: '季度安全合规审查' },
+  { id: 'm14', title: '用户调研反馈', date: generateDate(now.getDate() + 10), startTime: '10:00', endTime: '11:30', participants: [participants[1]!, participants[2]!], location: '会议室C', type: 'work', notes: '分析用户反馈数据' },
+  { id: 'm15', title: '年度总结筹备', date: generateDate(now.getDate() + 12), startTime: '14:00', endTime: '17:00', participants: [participants[0]!, participants[1]!, participants[2]!, participants[3]!, participants[4]!], location: '大会议室', type: 'important', notes: '年度工作总结材料准备' },
+  { id: 'm16', title: '技术分享会', date: generateDate(now.getDate() + 14), startTime: '16:00', endTime: '17:30', participants: [participants[2]!, participants[4]!], location: '技术部', type: 'work', notes: 'Vue3最佳实践分享' },
+  { id: 'm17', title: '预算审批', date: generateDate(now.getDate() + 15), startTime: '09:00', endTime: '10:00', participants: [participants[0]!, participants[3]!], location: '财务室', type: 'work', notes: 'Q2预算申请审批' },
+  { id: 'm18', title: '家庭视频通话', date: generateDate(now.getDate() + 16), startTime: '19:00', endTime: '20:00', participants: [], location: '家中', type: 'personal', notes: '与家人定期联系' },
+]
 
 export const destinations: TravelDestination[] = [
-  {
-    id: 'dest-1',
-    name: '故宫博物院',
-    city: '北京',
-    country: '中国',
-    image: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=400',
-    rating: 4.9,
-    estimatedTime: '4-6小时',
-    ticketPrice: 60,
-    description: '明清两代皇家宫殿，世界文化遗产',
-    category: 'culture',
-  },
-  {
-    id: 'dest-2',
-    name: '西湖风景区',
-    city: '杭州',
-    country: '中国',
-    image: 'https://images.unsplash.com/photo-1528164344705-47542687000d?w=400',
-    rating: 4.8,
-    estimatedTime: '3-5小时',
-    ticketPrice: 0,
-    description: '人间天堂，十大风景名胜之一',
-    category: 'nature',
-  },
-  {
-    id: 'dest-3',
-    name: '外滩',
-    city: '上海',
-    country: '中国',
-    image: 'https://images.unsplash.com/photo-1537531383496-f4749c5bfdf3?w=400',
-    rating: 4.7,
-    estimatedTime: '2-3小时',
-    ticketPrice: 0,
-    description: '上海标志性景点，万国建筑博览群',
-    category: 'culture',
-  },
-  {
-    id: 'dest-4',
-    name: '迪士尼乐园',
-    city: '上海',
-    country: '中国',
-    image: 'https://images.unsplash.com/photo-1563040743-2de7c6b7e4f4?w=400',
-    rating: 4.6,
-    estimatedTime: '全天',
-    ticketPrice: 475,
-    description: '亚洲最大的迪士尼主题乐园',
-    category: 'entertainment',
-  },
-  {
-    id: 'dest-5',
-    name: '张家界国家森林公园',
-    city: '张家界',
-    country: '中国',
-    image: 'https://images.unsplash.com/photo-1548013146-72479768bada?w=400',
-    rating: 4.9,
-    estimatedTime: '1-2天',
-    ticketPrice: 225,
-    description: '阿凡达取景地，奇峰异石',
-    category: 'nature',
-  },
-  {
-    id: 'dest-6',
-    name: '宽窄巷子',
-    city: '成都',
-    country: '中国',
-    image: 'https://images.unsplash.com/photo-1590077428593-a55bb07c4665?w=400',
-    rating: 4.5,
-    estimatedTime: '2-3小时',
-    ticketPrice: 0,
-    description: '成都历史文化街区，美食天堂',
-    category: 'food',
-  },
+  { id: 'dest-1', name: '故宫博物院', city: '北京', country: '中国', image: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=400', rating: 4.9, description: '明清两代皇家宫殿，世界文化遗产', tags: ['历史', '文化', '世界遗产'], category: 'culture', estimatedCost: 200 },
+  { id: 'dest-2', name: '西湖风景区', city: '杭州', country: '中国', image: 'https://images.unsplash.com/photo-1528164344705-47542687000d?w=400', rating: 4.8, description: '人间天堂，十大风景名胜之一', tags: ['自然', '湖泊', '免费'], category: 'nature', estimatedCost: 100 },
+  { id: 'dest-3', name: '外滩', city: '上海', country: '中国', image: 'https://images.unsplash.com/photo-1537531383496-f4749b608527?w=400', rating: 4.7, description: '东方明珠，国际大都市地标', tags: ['城市', '夜景', '购物'], category: 'entertainment', estimatedCost: 300 },
+  { id: 'dest-4', name: '成都宽窄巷子', city: '成都', country: '中国', image: 'https://images.unsplash.com/photo-1590559899731-a382839e5549?w=400', rating: 4.6, description: '体验老成都的慢生活，品尝地道美食', tags: ['美食', '文化', '休闲'], category: 'food', estimatedCost: 250 },
+  { id: 'dest-5', name: '张家界国家森林公园', city: '张家界', country: '中国', image: 'https://images.unsplash.com/photo-1513415564515-767d39dfb583?w=400', rating: 4.9, description: '阿凡达取景地，奇峰异石仙境', tags: ['自然', '登山', '摄影'], category: 'nature', estimatedCost: 500 },
+  { id: 'dest-6', name: '西安兵马俑', city: '西安', country: '中国', image: 'https://images.unsplash.com/photo-1529921879218-f99546d03a32?w=400', rating: 4.8, description: '世界第八大奇迹，秦代军事文化瑰宝', tags: ['历史', '文化', '世界遗产'], category: 'culture', estimatedCost: 280 },
+  { id: 'dest-7', name: '三亚亚龙湾', city: '三亚', country: '中国', image: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400', rating: 4.7, description: '天下第一湾，热带海滨度假胜地', tags: ['海滩', '度假', '潜水'], category: 'nature', estimatedCost: 800 },
+  { id: 'dest-8', name: '重庆洪崖洞', city: '重庆', country: '中国', image: 'https://images.unsplash.com/photo-1574169208507-84376144848b?w=400', rating: 4.5, description: '现实版千与千寻，山城夜景绝美', tags: ['夜景', '美食', '网红'], category: 'entertainment', estimatedCost: 200 },
+  { id: 'dest-9', name: '丽江古城', city: '丽江', country: '中国', image: 'https://images.unsplash.com/photo-1528795953040-56a828a59bbc?w=400', rating: 4.6, description: '纳西族古城，浪漫邂逅之地', tags: ['古镇', '浪漫', '文艺'], category: 'culture', estimatedCost: 350 },
+  { id: 'dest-10', name: '广州长隆欢乐世界', city: '广州', country: '中国', image: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=400', rating: 4.4, description: '大型主题乐园，适合全家游玩', tags: ['乐园', '亲子', '刺激'], category: 'entertainment', estimatedCost: 450 },
 ]
 
-export const hotels: Hotel[] = [
+export const sampleItineraries: TravelPlan[] = [
   {
-    id: 'hotel-1',
-    name: '北京王府井希尔顿酒店',
-    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400',
-    stars: 5,
-    pricePerNight: 1288,
-    location: '北京市东城区王府井大街',
-    amenities: ['免费WiFi', '游泳池', '健身房', '餐厅', '停车场'],
-    rating: 4.8,
-    reviews: 2341,
-  },
-  {
-    id: 'hotel-2',
-    name: '杭州西湖国宾馆',
-    image: 'https://images.unsplash.com/photo-1582719507464-920d4a86256f?w=400',
-    stars: 5,
-    pricePerNight: 1688,
-    location: '杭州市西湖区杨公堤',
-    amenities: ['湖景房', '免费WiFi', '餐厅', 'SPA', '花园'],
-    rating: 4.9,
-    reviews: 1856,
-  },
-  {
-    id: 'hotel-3',
-    name: '上海外滩华尔道夫酒店',
-    image: 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=400',
-    stars: 5,
-    pricePerNight: 2188,
-    location: '上海市黄浦区中山东一路',
-    amenities: ['江景房', '免费WiFi', '酒吧', '健身房', '礼宾服务'],
-    rating: 4.9,
-    reviews: 3421,
-  },
-  {
-    id: 'hotel-4',
-    name: '成都春熙路亚朵酒店',
-    image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400',
-    stars: 4,
-    pricePerNight: 488,
-    location: '成都市锦江区春熙路',
-    amenities: ['免费WiFi', '洗衣房', '阅读区', '餐厅'],
-    rating: 4.6,
-    reviews: 1234,
-  },
-]
-
-export const sampleItineraries: TravelItinerary[] = [
-  {
-    id: 'trip-1',
-    title: '北京文化之旅',
-    destination: '北京',
-    startDate: new Date(2026, 4, 20),
-    endDate: new Date(2026, 4, 23),
+    id: 'plan-1',
+    destinationId: 'dest-1',
+    destinationName: '北京三日游',
+    startDate: generateDate(now.getDate() + 20),
+    endDate: generateDate(now.getDate() + 22),
     days: [
       {
-        date: new Date(2026, 4, 20),
+        day: 1,
+        date: generateDate(now.getDate() + 20),
         activities: [
-          { id: 'act-1', name: '抵达北京', timeSlot: 'afternoon', location: '首都机场', cost: 500, duration: '2小时', transport: { type: 'plane', cost: 1200, duration: '2小时' } },
-          { id: 'act-2', name: '入住酒店', timeSlot: 'evening', location: '王府井希尔顿', cost: 1288, duration: '30分钟', transport: { type: 'car', cost: 100, duration: '45分钟' } },
+          { id: 'a1', time: '08:00', title: '抵达北京', location: '北京南站', notes: '乘坐高铁G102', cost: 553 },
+          { id: 'a2', time: '10:00', title: '办理入住', location: '王府井酒店', notes: '放下行李稍作休息', cost: 600 },
+          { id: 'a3', time: '13:00', title: '午餐', location: '全聚德烤鸭店', notes: '品尝正宗北京烤鸭', cost: 200 },
+          { id: 'a4', time: '15:00', title: '游览天安门广场', location: '天安门', notes: '参观人民英雄纪念碑', cost: 0 },
+          { id: 'a5', time: '18:00', title: '晚餐', location: '簋街', notes: '品尝北京小吃', cost: 100 },
         ],
       },
       {
-        date: new Date(2026, 4, 21),
+        day: 2,
+        date: generateDate(now.getDate() + 21),
         activities: [
-          { id: 'act-3', name: '游览故宫', timeSlot: 'morning', location: '故宫博物院', cost: 60, duration: '4小时', transport: { type: 'subway' as any, cost: 10, duration: '40分钟' } },
-          { id: 'act-4', name: '景山公园', timeSlot: 'afternoon', location: '景山公园', cost: 10, duration: '2小时', transport: { type: 'walk', cost: 0, duration: '20分钟' } },
-          { id: 'act-5', name: '王府井步行街', timeSlot: 'evening', location: '王府井', cost: 200, duration: '3小时', transport: { type: 'walk', cost: 0, duration: '15分钟' } },
+          { id: 'a6', time: '08:30', title: '游览故宫博物院', location: '故宫', notes: '提前网上购票，建议请导游', cost: 60 },
+          { id: 'a7', time: '12:00', title: '午餐', location: '故宫角楼咖啡', notes: '网红打卡点', cost: 80 },
+          { id: 'a8', time: '14:00', title: '景山公园', location: '景山公园', notes: '俯瞰故宫全景', cost: 10 },
+          { id: 'a9', time: '16:00', title: '南锣鼓巷', location: '南锣鼓巷', notes: '逛胡同、买纪念品', cost: 150 },
+          { id: 'a10', time: '19:00', title: '观看京剧表演', location: '长安大戏院', notes: '提前预订座位', cost: 280 },
+        ],
+      },
+      {
+        day: 3,
+        date: generateDate(now.getDate() + 22),
+        activities: [
+          { id: 'a11', time: '08:00', title: '长城一日游', location: '八达岭长城', notes: '建议早出发避开人流', cost: 120 },
+          { id: 'a12', time: '13:00', title: '午餐', location: '长城脚下农家乐', notes: '品尝虹鳟鱼', cost: 120 },
+          { id: 'a13', time: '15:30', title: '返回市区', location: '鸟巢/水立方', notes: '外观拍照留念', cost: 0 },
+          { id: 'a14', time: '18:00', title: '返程', location: '北京南站', notes: '乘坐高铁返回', cost: 553 },
         ],
       },
     ],
-    totalBudget: 8500,
-    status: 'planning',
+    totalCost: 2838,
+    isFavorite: true,
   },
 ]
 
-export const games: Game[] = [
-  {
-    id: 'game-1',
-    title: '数字猜谜',
-    category: 'puzzle',
-    coverImage: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=300',
-    playerCount: { min: 1, max: 1 },
-    rating: 4.5,
-    onlinePlayers: 1234,
-    description: '经典的猜数字游戏，考验你的逻辑思维',
-    screenshots: [],
-    tags: ['益智', '单人', '休闲'],
-  },
-  {
-    id: 'game-2',
-    title: '记忆翻牌大师',
-    category: 'puzzle',
-    coverImage: 'https://images.unsplash.com/photo-1606167668584-78701c57f13d?w=300',
-    playerCount: { min: 1, max: 4 },
-    rating: 4.7,
-    onlinePlayers: 2345,
-    description: '翻牌配对游戏，训练你的记忆力',
-    screenshots: [],
-    tags: ['记忆', '多人', '竞技'],
-  },
-  {
-    id: 'game-3',
-    title: '知识问答挑战',
-    category: 'competitive',
-    coverImage: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=300',
-    playerCount: { min: 1, max: 10 },
-    rating: 4.6,
-    onlinePlayers: 3456,
-    description: '涵盖多个领域的知识问答，挑战你的知识储备',
-    screenshots: [],
-    tags: ['问答', '知识', '竞技'],
-  },
-  {
-    id: 'game-4',
-    title: '消消乐传奇',
-    category: 'casual',
-    coverImage: 'https://images.unsplash.com/photo-1611996575749-79a3a250f948?w=300',
-    playerCount: { min: 1, max: 1 },
-    rating: 4.4,
-    onlinePlayers: 5678,
-    description: '经典的三消游戏，轻松有趣',
-    screenshots: [],
-    tags: ['消除', '休闲', '单人'],
-  },
-  {
-    id: 'game-5',
-    title: '冒险岛探险',
-    category: 'adventure',
-    coverImage: 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=300',
-    playerCount: { min: 1, max: 4 },
-    rating: 4.8,
-    onlinePlayers: 4567,
-    description: '探索神秘岛屿，完成各种冒险任务',
-    screenshots: [],
-    tags: ['冒险', '探索', 'RPG'],
-  },
-  {
-    id: 'game-6',
-    title: '社交棋牌室',
-    category: 'social',
-    coverImage: 'https://images.unsplash.com/photo-1606167668584-78701c57f13d?w=300',
-    playerCount: { min: 2, max: 6 },
-    rating: 4.5,
-    onlinePlayers: 6789,
-    description: '与好友一起玩各种棋类和纸牌游戏',
-    screenshots: [],
-    tags: ['社交', '棋牌', '多人'],
-  },
+export const todoItems: TodoItem[] = [
+  { id: 't1', title: '完成Q2产品文档', completed: false, priority: 'high', dueDate: generateDate(now.getDate() + 1), category: '工作' },
+  { id: 't2', title: '回复客户邮件', completed: true, priority: 'high', dueDate: generateDate(now.getDate()), category: '工作' },
+  { id: 't3', title: '健身锻炼', completed: false, priority: 'medium', dueDate: generateDate(now.getDate()), category: '健康' },
+  { id: 't4', title: '阅读《深入理解Vue3》', completed: false, priority: 'low', dueDate: generateDate(now.getDate() + 3), category: '学习' },
+  { id: 't5', title: '缴纳水电费', completed: false, priority: 'medium', dueDate: generateDate(now.getDate() + 2), category: '生活' },
+  { id: 't6', title: '整理旅行照片', completed: false, priority: 'low', dueDate: generateDate(now.getDate() + 5), category: '生活' },
+  { id: 't7', title: '准备周会PPT', completed: false, priority: 'high', dueDate: generateDate(now.getDate() + 1), category: '工作' },
+  { id: 't8', title: '购买生日礼物', completed: false, priority: 'medium', dueDate: generateDate(now.getDate() + 4), category: '生活' },
+  { id: 't9', title: '学习TypeScript高级类型', completed: false, priority: 'medium', dueDate: generateDate(now.getDate() + 7), category: '学习' },
+  { id: 't10', title: '预约牙医检查', completed: false, priority: 'low', dueDate: generateDate(now.getDate() + 10), category: '健康' },
 ]
 
-export const achievements: Achievement[] = [
-  { id: 'ach-1', title: '初次见面', description: '完成第一次登录', icon: '🎉', progress: 1, total: 1, unlockedAt: new Date(), rarity: 'common' },
-  { id: 'ach-2', title: '游戏达人', description: '累计游玩100局游戏', icon: '🎮', progress: 67, total: 100, rarity: 'rare' },
-  { id: 'ach-3', title: '完美记忆', description: '在记忆游戏中连续答对20次', icon: '🧠', progress: 15, total: 20, rarity: 'epic' },
-  { id: 'ach-4', title: '知识渊博', description: '在问答中获得满分', icon: '📚', progress: 0, total: 1, rarity: 'legendary' },
-  { id: 'ach-5', title: '旅行家', description: '规划并完成5次旅行', icon: '✈️', progress: 2, total: 5, rarity: 'epic' },
-  { id: 'ach-6', title: '会议达人', description: '参加50次会议', icon: '📅', progress: 32, total: 50, rarity: 'rare' },
-  { id: 'ach-7', title: '社交达人', description: '添加100个好友', icon: '👥', progress: 45, total: 100, rarity: 'rare' },
-  { id: 'ach-8', title: '全能选手', description: '在所有游戏类型中都获得高分', icon: '⭐', progress: 3, total: 5, rarity: 'legendary' },
+export const lifeTips: LifeTip[] = [
+  { id: 'tip-1', content: '每天保持7-8小时睡眠，有助于提高工作效率和免疫力', category: 'health', icon: '😴' },
+  { id: 'tip-2', content: '使用番茄工作法：25分钟专注工作+5分钟休息', category: 'productivity', icon: '⏰' },
+  { id: 'tip-3', content: '每天花10分钟冥想，可以有效减轻压力和焦虑', category: 'mindfulness', icon: '🧘' },
+  { id: 'tip-4', content: '主动与朋友保持联系，社交是幸福感的重要来源', category: 'social', icon: '💬' },
+  { id: 'tip-5', content: '每天学习一个新知识或技能，保持大脑活跃', category: 'learning', icon: '📚' },
+  { id: 'tip-6', content: '多喝水！建议每天至少饮用8杯水（约2升）', category: 'health', icon: '💧' },
+  { id: 'tip-7', content: '将大任务分解为小步骤，更容易开始和完成', category: 'productivity', icon: '✅' },
+  { id: 'tip-8', content: '练习感恩日记，每天记录3件值得感恩的事', category: 'mindfulness', icon: '🙏' },
+  { id: 'tip-9', content: '定期断舍离，清理不需要的物品和数字文件', category: 'productivity', icon: '🗑️' },
+  { id: 'tip-10', content: '尝试新的运动方式，如瑜伽、游泳或骑行', category: 'health', icon: '🏃' },
+  { id: 'tip-11', content: '设定SMART目标：具体、可衡量、可实现、相关、有时限', category: 'productivity', icon: '🎯' },
+  { id: 'tip-12', content: '减少社交媒体使用时间，专注于真实的人际交往', category: 'social', icon: '📱' },
+  { id: 'tip-13', content: '阅读纸质书籍比电子屏幕更有助于深度思考', category: 'learning', icon: '📖' },
+  { id: 'tip-14', content: '保持良好的坐姿，每小时起身活动5分钟', category: 'health', icon: '🪑' },
+  { id: 'tip-15', content: '学会说"不"，保护自己的时间和精力边界', category: 'mindfulness', icon: '🛑' },
+  { id: 'tip-16', content: '尝试做一道新菜，烹饪是很好的放松方式', category: 'life', icon: '🍳' },
+  { id: 'tip-17', content: '建立晨间仪式感，让一天有个美好的开始', category: 'mindfulness', icon: '🌅' },
+  { id: 'tip-18', content: '定期备份重要数据，避免意外丢失', category: 'productivity', icon: '💾' },
+  { id: 'tip-19', content: '培养一项兴趣爱好，让生活更加丰富多彩', category: 'life', icon: '🎨' },
+  { id: 'tip-20', content: '户外散步可以提升创造力和解决问题的能力', category: 'health', icon: '🌳' },
+  { id: 'tip-21', content: '使用艾森豪威尔矩阵区分任务的紧急和重要性', category: 'productivity', icon: '📊' },
+  { id: 'tip-22', content: '给植物浇水并观察它的成长，这是一种治愈的体验', category: 'mindfulness', icon: '🌱' },
+  { id: 'tip-23', content: '参加社区活动或志愿者服务，增加社会归属感', category: 'social', icon: '🤝' },
+  { id: 'tip-24', content: '学习一门外语，即使每天只学15分钟', category: 'learning', icon: '🌍' },
+  { id: 'tip-25', content: '保持规律的作息时间，周末也不要过度熬夜', category: 'health', icon: '🕐' },
+  { id: 'tip-26', content: '用思维导图整理复杂信息，更直观地理解问题', category: 'learning', icon: '🧠' },
+  { id: 'tip-27', content: '定期整理邮箱和聊天记录，删除无用信息', category: 'productivity', icon: '📧' },
+  { id: 'tip-28', content: '尝试正念呼吸练习：吸气4秒-屏息4秒-呼气4秒', category: 'mindfulness', icon: '🌬️' },
+  { id: 'tip-29', content: '与不同领域的人交流，拓展视野和人脉', category: 'social', icon: '👥' },
+  { id: 'tip-30', content: '记录生活中的小确幸，它们是幸福的基石', category: 'mindfulness', icon: '✨' },
 ]
 
-export const leaderboardData: LeaderboardEntry[] = [
-  { rank: 1, playerName: '游戏大神', score: 98500, level: 45, isFriend: false, isCurrentUser: false },
-  { rank: 2, playerName: '快乐玩家', score: 87200, level: 42, isFriend: true, isCurrentUser: false },
-  { rank: 3, playerName: '休闲达人', score: 76300, level: 38, isFriend: true, isCurrentUser: false },
-  { rank: 4, playerName: '我（当前用户）', score: 65400, level: 35, isFriend: false, isCurrentUser: true },
-  { rank: 5, playerName: '新手小白', score: 54300, level: 30, isFriend: true, isCurrentUser: false },
-  { rank: 6, playerName: '策略高手', score: 43200, level: 28, isFriend: false, isCurrentUser: false },
-  { rank: 7, playerName: '速度之星', score: 32100, level: 25, isFriend: false, isCurrentUser: false },
-  { rank: 8, playerName: '智力担当', score: 21000, level: 22, isFriend: true, isCurrentUser: false },
-  { rank: 9, playerName: '幸运儿', score: 15000, level: 18, isFriend: false, isCurrentUser: false },
-  { rank: 10, playerName: '萌新玩家', score: 8000, level: 12, isFriend: false, isCurrentUser: false },
+export const weeklyActivities: WeeklyActivity[] = [
+  { day: '周一', meetings: 3, travel: 0, games: 1, todos: 5 },
+  { day: '周二', meetings: 2, travel: 0, games: 0, todos: 3 },
+  { day: '周三', meetings: 4, travel: 0, games: 2, todos: 4 },
+  { day: '周四', meetings: 2, travel: 1, games: 0, todos: 6 },
+  { day: '周五', meetings: 3, travel: 0, games: 1, todos: 4 },
+  { day: '周六', meetings: 0, travel: 1, games: 3, todos: 2 },
+  { day: '周日', meetings: 1, travel: 0, games: 2, todos: 3 },
 ]
+
+export const meetingTypeColors: Record<string, string> = {
+  work: '#3b82f6',
+  personal: '#10b981',
+  important: '#ef4444',
+  recurring: '#8b5cf6',
+}
+
+export function getTodayTip(): LifeTip {
+  const today = new Date()
+  const dayOfYear = Math.floor((today.getTime() - new Date(today.getFullYear(), 0, 0).getTime()) / 86400000)
+  return lifeTips[dayOfYear % lifeTips.length]!
+}
