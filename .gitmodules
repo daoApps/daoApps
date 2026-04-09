@@ -1,0 +1,9 @@
+[submodule "tools/DeepResearch"]
+	path = tools/DeepResearch
+	url = git@github.com:DaoField/DeepResearch.git
+[submodule "tools/flexloop"]
+	path = tools/flexloop
+	url = git@gitcode.com:flexloop/flexloop.git
+[submodule "skills/daoSkilLs"]
+	path = skills/daoSkilLs
+	url = git@github.com:daoSkilLs/daoSkiLs.git
