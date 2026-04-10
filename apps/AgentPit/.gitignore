@@ -44,3 +44,30 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+*~
+
+# ============================================
+# 敏感信息保护（Skills 安全增强）
+# ============================================
+
+# 环境变量文件（含真实凭证 - 绝不提交）
+.env.staging
+!.env.example
+!.env.development
+!.env.skills.template
+
+# 密钥和证书
+*.key
+*.pem
+credentials.json
+secrets.yaml
+secrets.yml
+
+# 操作系统文件
+Thumbs.db
+desktop.ini
+
+# 临时文件
+*.tmp
+*.temp
+.cache/

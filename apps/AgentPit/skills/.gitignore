@@ -1,0 +1,14 @@
+# Skills 目录特殊规则
+
+# 允许提交的文件（安全模板和文档）
+!.env.skills.template
+!SKILL.md
+!README.md
+
+# 忽略所有其他可能含敏感信息的文件
+.env.local
+.env.*
+*.key
+*.secret
+security-scan-report-*.md
+validate-security-*.log
