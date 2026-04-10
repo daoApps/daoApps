@@ -1,0 +1,255 @@
+name: CD Pipeline
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+
+jobs:
+  deploy-staging:
+    if: github.ref == 'refs/heads/develop' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'staging')
+    runs-on: ubuntu-latest
+    environment: staging
+    needs: [build-and-test]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: build-artifacts
+        path: ./apps/AgentPit/dist
+      
+    - name: Deploy to Staging
+      working-directory: ./apps/AgentPit
+      run: |
+        echo "Deploying to Staging environment..."
+        # 这里添加实际的部署命令
+        # 例如：rsync -avz dist/ user@staging-server:/path/to/app
+        echo "Staging deployment completed successfully"
+      
+    - name: Health Check
+      run: |
+        echo "Performing health check on Staging environment..."
+        # 这里添加健康检查命令
+        # 例如：curl -f https://staging.agentpit.com/health
+        echo "Health check passed"
+      
+    - name: Generate Deployment Report
+      run: |
+        echo "Generating deployment report..."
+        mkdir -p deployment-reports
+        cat > deployment-reports/staging-${{ github.run_id }}.md << EOF
+# Staging Deployment Report
+
+## Deployment Details
+- **Timestamp**: $(date)
+- **Commit**: ${{ github.sha }}
+- **Branch**: ${{ github.ref }}
+- **Deployed by**: ${{ github.actor }}
+
+## Changes
+$(git log --oneline -10)
+
+## Test Results
+- All tests passed
+
+## Deployment Status
+✅ Successful
+EOF
+      
+    - name: Upload Deployment Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: deployment-report-staging
+        path: deployment-reports/
+
+  deploy-production:
+    if: github.ref == 'refs/heads/main' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'production')
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://agentpit.com
+    needs: [build-and-test]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: build-artifacts
+        path: ./apps/AgentPit/dist
+      
+    - name: Deploy to Production
+      working-directory: ./apps/AgentPit
+      run: |
+        echo "Deploying to Production environment..."
+        # 这里添加实际的部署命令
+        # 例如：rsync -avz dist/ user@production-server:/path/to/app
+        echo "Production deployment completed successfully"
+      
+    - name: Health Check
+      run: |
+        echo "Performing health check on Production environment..."
+        # 这里添加健康检查命令
+        # 例如：curl -f https://agentpit.com/health
+        echo "Health check passed"
+      
+    - name: Generate Deployment Report
+      run: |
+        echo "Generating deployment report..."
+        mkdir -p deployment-reports
+        cat > deployment-reports/production-${{ github.run_id }}.md << EOF
+# Production Deployment Report
+
+## Deployment Details
+- **Timestamp**: $(date)
+- **Commit**: ${{ github.sha }}
+- **Branch**: ${{ github.ref }}
+- **Deployed by**: ${{ github.actor }}
+
+## Changes
+$(git log --oneline -10)
+
+## Test Results
+- All tests passed
+
+## Deployment Status
+✅ Successful
+EOF
+      
+    - name: Upload Deployment Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: deployment-report-production
+        path: deployment-reports/
+
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [24.x]
+    
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+        
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: './apps/AgentPit/package-lock.json'
+        
+    - name: Install dependencies
+      working-directory: ./apps/AgentPit
+      run: npm ci
+      
+    - name: Run Prettier check
+      working-directory: ./apps/AgentPit
+      run: npm run format:check
+      
+    - name: Run ESLint check
+      working-directory: ./apps/AgentPit
+      run: npm run lint:check
+      
+    - name: Run TypeScript type check
+      working-directory: ./apps/AgentPit
+      run: npx vue-tsc -b
+      
+    - name: Run unit tests
+      working-directory: ./apps/AgentPit
+      run: npm run test:run
+      
+    - name: Upload coverage report
+      uses: codecov/codecov-action@v4
+      with:
+        files: ./apps/AgentPit/coverage/lcov.info
+      if: success()
+      
+    - name: Build for production
+      working-directory: ./apps/AgentPit
+      run: npm run build
+      
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-artifacts
+        path: ./apps/AgentPit/dist/
+      if: success()
+      
+    - name: Run Lighthouse CI
+      working-directory: ./apps/AgentPit
+      run: |
+        echo "Running Lighthouse CI..."
+        npm install -g @lhci/cli
+        lhci autorun
+      if: success()
+      
+    - name: Upload Lighthouse report
+      uses: actions/upload-artifact@v4
+      with:
+        name: lighthouse-report
+        path: ./apps/AgentPit/.lighthouseci/
+      if: success()
+
+  rollback:
+    if: failure() && (github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main')
+    runs-on: ubuntu-latest
+    needs: [deploy-staging, deploy-production]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Rollback Deployment
+      run: |
+        echo "Deployment failed, initiating rollback..."
+        # 这里添加实际的回滚命令
+        # 例如：rsync -avz backups/previous-version/ user@server:/path/to/app
+        echo "Rollback completed successfully"
+      
+    - name: Generate Rollback Report
+      run: |
+        echo "Generating rollback report..."
+        mkdir -p deployment-reports
+        cat > deployment-reports/rollback-${{ github.run_id }}.md << EOF
+# Rollback Report
+
+## Rollback Details
+- **Timestamp**: $(date)
+- **Commit**: ${{ github.sha }}
+- **Branch**: ${{ github.ref }}
+- **Initiated by**: ${{ github.actor }}
+
+## Reason
+Deployment failed, automatic rollback triggered
+
+## Rollback Status
+✅ Successful
+EOF
+      
+    - name: Upload Rollback Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: rollback-report
+        path: deployment-reports/

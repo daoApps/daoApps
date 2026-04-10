@@ -6,6 +6,7 @@ import type {
   Currency,
   TransactionCategory
 } from '@/types/monetization';
+import { monetizationApi } from '@/services';
 
 interface MonetizationState {
   wallet: WalletData;
@@ -63,21 +64,71 @@ export const useMonetizationStore = defineStore('monetization', {
     async fetchWalletData() {
       this.isLoading = true;
       try {
-        const { walletData, transactionHistory, monthlyRevenueData } =
-          await import('@/data/mockMonetization');
+        // 从 API 获取钱包数据
+        const walletData = await monetizationApi.getWallet();
+        this.wallet = {
+          totalBalance: walletData.balance,
+          availableBalance: walletData.balance,
+          frozenBalance: 0,
+          currency: walletData.currency as Currency
+        };
 
-        this.wallet = { ...walletData, currency: walletData.currency as Currency };
-        this.transactions = transactionHistory.map((t) => ({
-          ...t,
-          category: t.category as TransactionCategory
+        // 从 API 获取交易历史
+        const transactions = await monetizationApi.getTransactions();
+        this.transactions = transactions.map((t) => ({
+          id: t.id,
+          amount: t.amount,
+          currency: t.currency as Currency,
+          type: t.type,
+          category: 'other' as TransactionCategory,
+          description: t.description,
+          timestamp: new Date(t.timestamp).getTime(),
+          status: t.status
         }));
-        this.revenueData = monthlyRevenueData;
+
+        // 从 API 获取收益数据
+        const revenueData = await monetizationApi.getRevenue();
+        this.revenueData = revenueData.monthly.map((amount, index) => ({
+          date: new Date(new Date().getFullYear(), index, 1).getTime(),
+          amount
+        }));
       } catch (error) {
         console.error('Failed to fetch wallet data:', error);
       } finally {
         this.isLoading = false;
       }
     },
+
+    async withdraw(amount: number, method: string, account: string) {
+      try {
+        const transaction = await monetizationApi.withdraw({
+          amount,
+          currency: this.wallet.currency,
+          method,
+          account
+        });
+        
+        // 更新钱包余额
+        this.wallet.availableBalance -= amount;
+        
+        // 添加交易记录
+        this.addTransaction({
+          id: transaction.id,
+          amount: transaction.amount,
+          currency: transaction.currency as Currency,
+          type: 'expense',
+          category: 'withdrawal' as TransactionCategory,
+          description: transaction.description,
+          timestamp: new Date(transaction.timestamp).getTime(),
+          status: transaction.status
+        });
+        
+        return transaction;
+      } catch (error) {
+        console.error('Failed to withdraw:', error);
+        throw error;
+      }
+    }
 
     updateRealtimeBalance(newBalance: number) {
       this.wallet.availableBalance = newBalance;

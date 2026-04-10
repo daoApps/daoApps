@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import type { Message, Conversation, AgentInfo } from '@/types/chat';
+import { chatApi } from '@/services';
 
 interface ChatState {
   conversations: Conversation[];
@@ -165,6 +166,47 @@ export const useChatStore = defineStore('chat', {
         } catch (e) {
           console.error('Failed to load conversations:', e);
         }
+      }
+    },
+
+    async fetchConversations() {
+      try {
+        const conversations = await chatApi.getConversations();
+        this.conversations = conversations;
+        this.persistConversations();
+      } catch (error) {
+        console.error('Failed to fetch conversations:', error);
+      }
+    },
+
+    async fetchMessages(conversationId: string) {
+      try {
+        const messages = await chatApi.getMessages(conversationId);
+        const conv = this.conversations.find((c) => c.id === conversationId);
+        if (conv) {
+          conv.messages = messages;
+          this.persistConversations();
+        }
+      } catch (error) {
+        console.error('Failed to fetch messages:', error);
+      }
+    },
+
+    async sendMessage(content: string) {
+      if (!this.activeConversationId) return;
+
+      const messageId = this.addMessage({
+        role: 'user',
+        content,
+        status: 'sending'
+      });
+
+      try {
+        await chatApi.sendMessage(this.activeConversationId, content);
+        this.updateMessage(messageId, content);
+      } catch (error) {
+        console.error('Failed to send message:', error);
+        // 可以在这里添加错误处理逻辑
       }
     }
   }
