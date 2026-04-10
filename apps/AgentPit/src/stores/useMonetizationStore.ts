@@ -8,7 +8,7 @@ import type {
   TransactionType,
   TransactionStatus
 } from '@/types/monetization';
-import { monetizationApi } from '@/services';
+import { monetizationApi } from '@/services/api/monetization';
 
 interface MonetizationState {
   wallet: WalletData;

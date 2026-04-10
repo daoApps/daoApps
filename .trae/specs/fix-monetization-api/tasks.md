@@ -1,6 +1,6 @@
 # 修复 monetizationApi 错误 - 实现计划（分解和优先排序任务列表）
 
-## [/] 任务 1：分析 monetizationApi 错误
+## [x] 任务 1：分析 monetizationApi 错误
 - **优先级**：P0
 - **依赖**：None
 - **描述**：
@@ -12,7 +12,7 @@
   - `programmatic` TR-1.1: 确认错误的具体原因
 - **注意**：错误可能是由于 `monetizationApi` 对象的定义或导入问题导致的
 
-## [ ] 任务 2：修复 monetizationApi.getWallet 错误
+## [x] 任务 2：修复 monetizationApi.getWallet 错误
 - **优先级**：P0
 - **依赖**：任务 1
 - **描述**：
@@ -24,7 +24,7 @@
   - `programmatic` TR-2.1: 确认 `monetizationApi.getWallet` 方法存在且可调用
 - **注意**：确保方法签名与 `useMonetizationStore.ts` 中的调用一致
 
-## [ ] 任务 3：分析并修复 #problems_and_diagnostics 中的问题
+## [x] 任务 3：分析并修复 #problems_and_diagnostics 中的问题
 - **优先级**：P0
 - **依赖**：任务 2
 - **描述**：
@@ -35,7 +35,7 @@
   - `programmatic` TR-3.1: 确认所有问题都已修复
 - **注意**：需要先了解 `#problems_and_diagnostics` 中具体指出的问题
 
-## [ ] 任务 4：验证 monetization 模块功能
+## [x] 任务 4：验证 monetization 模块功能
 - **优先级**：P1
 - **依赖**：任务 3
 - **描述**：
@@ -48,7 +48,7 @@
   - `human-judgment` TR-4.1: 确认 monetization 模块功能正常
 - **注意**：确保页面加载时无错误信息
 
-## [ ] 任务 5：运行代码检查工具
+## [/] 任务 5：运行代码检查工具
 - **优先级**：P1
 - **依赖**：任务 4
 - **描述**：

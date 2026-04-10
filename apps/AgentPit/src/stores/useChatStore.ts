@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import type { Message, Conversation, AgentInfo } from '@/types/chat';
-import { chatApi } from '@/services';
+import { chatApi } from '@/services/api/chat';
 
 interface ChatState {
   conversations: Conversation[];
