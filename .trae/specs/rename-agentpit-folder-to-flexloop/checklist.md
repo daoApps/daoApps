@@ -1,0 +1,12 @@
+- [ ] 文件夹 `apps/AgentPit` 已成功重命名为 `apps/Flexloop`
+- [ ] 所有文件和子文件夹结构保持完整，没有文件丢失
+- [ ] `.github/workflows/cd.yml` 中所有路径引用已更新为 `apps/Flexloop`
+- [ ] `.github/workflows/ci.yml` 中所有路径引用已更新为 `apps/Flexloop`
+- [ ] `scripts/deployment/build-app.sh` 中构建输出路径检测已更新
+- [ ] 项目中所有其他硬编码路径引用都已更新
+- [ ] `npm install` 在新文件夹下成功执行
+- [ ] TypeScript 类型检查通过，无编译错误
+- [ ] 生产构建 `npm run build` 成功完成
+- [ ] 开发服务器 `npm run dev` 能正常启动
+- [ ] 所有单元测试通过
+- [ ] 项目功能不受文件夹重命名影响

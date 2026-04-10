@@ -113,10 +113,10 @@ cd "$PROJECT_ROOT"
 # Verify build output
 info "Verifying build output..."
 if [[ ! -d "$BUILD_DIR" ]]; then
-    # Look for build output in apps/AgentPit/dist
-    if [[ -d "$PROJECT_ROOT/apps/AgentPit/$BUILD_DIR" ]]; then
-        info "Build output found in apps/AgentPit/$BUILD_DIR"
-        cp -r "$PROJECT_ROOT/apps/AgentPit/$BUILD_DIR" .
+    # Look for build output in apps/Flexloop/dist
+    if [[ -d "$PROJECT_ROOT/apps/Flexloop/$BUILD_DIR" ]]; then
+        info "Build output found in apps/Flexloop/$BUILD_DIR"
+        cp -r "$PROJECT_ROOT/apps/Flexloop/$BUILD_DIR" .
     else
         error "Build directory $BUILD_DIR not found after build"
     fi

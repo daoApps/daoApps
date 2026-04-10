@@ -26,41 +26,41 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-        cache-dependency-path: './apps/AgentPit/package-lock.json'
+        cache-dependency-path: './apps/Flexloop/package-lock.json'
         
     - name: Install dependencies
-      working-directory: ./apps/AgentPit
+      working-directory: ./apps/Flexloop
       run: npm ci
       
     - name: Run Prettier check
-      working-directory: ./apps/AgentPit
+      working-directory: ./apps/Flexloop
       run: npm run format:check
       
     - name: Run ESLint check
-      working-directory: ./apps/AgentPit
+      working-directory: ./apps/Flexloop
       run: npm run lint:check
       
     - name: Run TypeScript type check
-      working-directory: ./apps/AgentPit
+      working-directory: ./apps/Flexloop
       run: npx vue-tsc -b
       
     - name: Run unit tests
-      working-directory: ./apps/AgentPit
+      working-directory: ./apps/Flexloop
       run: npm run test:run
       
     - name: Upload coverage report
       uses: codecov/codecov-action@v4
       with:
-        files: ./apps/AgentPit/coverage/lcov.info
+        files: ./apps/Flexloop/coverage/lcov.info
       if: success()
       
     - name: Build for production
-      working-directory: ./apps/AgentPit
+      working-directory: ./apps/Flexloop
       run: npm run build
       
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
         name: build-artifacts
-        path: ./apps/AgentPit/dist/
+        path: ./apps/Flexloop/dist/
       if: success()
