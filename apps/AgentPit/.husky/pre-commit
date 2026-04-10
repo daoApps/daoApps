@@ -1,1 +1,16 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# 运行安全验证
+echo "🔒 运行安全验证..."
+bash skills/security/validate-security.sh
+if [ $? -eq 2 ]; then
+    echo "❌ 安全验证失败，请修复问题后再提交"
+    exit 1
+fi
+
+echo "✅ 安全验证通过"
+
+# 运行 lint-staged
+echo "🔍 运行代码检查..."
 npx lint-staged

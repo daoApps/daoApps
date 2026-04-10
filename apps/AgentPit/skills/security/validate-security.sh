@@ -117,14 +117,28 @@ check_no_hardcoded_api_keys() {
 
     # OpenAI Key 格式: sk- 后跟 48 个字符
     if grep -rqE "sk-[a-zA-Z0-9]{48}" "$TARGET_DIR" 2>/dev/null; then
-        log_fail "发现可能的 OpenAI API Key 格式字符串"
+        # 排除示例代码中的模式（如 maskSensitive 函数调用）
+        local issues=$(grep -rnE "sk-[a-zA-Z0-9]{48}" "$TARGET_DIR" 2>/dev/null | grep -v "maskSensitive\|示例\|example" || true)
+        
+        if [ -n "$issues" ]; then
+            log_fail "发现可能的 OpenAI API Key 格式字符串"
+        else
+            log_pass "未发现硬编码的 API Key（示例代码中的模式已排除）"
+        fi
     else
         log_pass "未发现硬编码的 API Key"
     fi
 
     # Anthropic Key 格式
     if grep -rqE "sk-ant-api03-[a-zA-Z0-9\-_]{90,}" "$TARGET_DIR" 2>/dev/null; then
-        log_fail "发现可能的 Anthropic API Key 格式字符串"
+        # 排除示例代码中的模式
+        local issues=$(grep -rnE "sk-ant-api03-[a-zA-Z0-9\-_]{90,}" "$TARGET_DIR" 2>/dev/null | grep -v "maskSensitive\|示例\|example" || true)
+        
+        if [ -n "$issues" ]; then
+            log_fail "发现可能的 Anthropic API Key 格式字符串"
+        else
+            log_pass "未发现 Anthropic API Key（示例代码中的模式已排除）"
+        fi
     else
         log_pass "未发现 Anthropic API Key"
     fi
