@@ -29,3 +29,18 @@ Object.defineProperty(global, 'ResizeObserver', {
   writable: true,
   value: ResizeObserver,
 })
+
+vi.mock('echarts', () => ({
+  init: vi.fn(() => ({
+    setOption: vi.fn(),
+    resize: vi.fn(),
+    dispose: vi.fn(),
+  })),
+}))
+
+vi.mock('vue-echarts', () => ({
+  default: {
+    render: () => null,
+    props: ['option', 'autoresize'],
+  },
+}))
