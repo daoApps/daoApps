@@ -12,12 +12,12 @@ describe('Shopping Cart Integration - Complete Purchase Flow', () => {
     cartStore.clearCart();
   });
 
-  const productA = { 
-    id: 'pa', 
-    name: '商品A', 
-    price: 199, 
+  const productA = {
+    id: 'pa',
+    name: '商品A',
+    price: 199,
     stock: 100,
-    description: '', 
+    description: '',
     category: '',
     subCategory: '',
     images: [],
@@ -25,17 +25,27 @@ describe('Shopping Cart Integration - Complete Purchase Flow', () => {
     reviewCount: 0,
     salesCount: 0,
     tags: [],
-    seller: { id: 's1', name: '卖家', avatar: '', storeName: '店铺', rating: 0, followerCount: 0, productCount: 0, description: '', isVerified: false },
+    seller: {
+      id: 's1',
+      name: '卖家',
+      avatar: '',
+      storeName: '店铺',
+      rating: 0,
+      followerCount: 0,
+      productCount: 0,
+      description: '',
+      isVerified: false
+    },
     specs: [],
     type: 'digital' as const,
     createdAt: ''
   };
-  const productB = { 
-    id: 'pb', 
-    name: '商品B', 
-    price: 50, 
+  const productB = {
+    id: 'pb',
+    name: '商品B',
+    price: 50,
     stock: 100,
-    description: '', 
+    description: '',
     category: '',
     subCategory: '',
     images: [],
@@ -43,17 +53,27 @@ describe('Shopping Cart Integration - Complete Purchase Flow', () => {
     reviewCount: 0,
     salesCount: 0,
     tags: [],
-    seller: { id: 's1', name: '卖家', avatar: '', storeName: '店铺', rating: 0, followerCount: 0, productCount: 0, description: '', isVerified: false },
+    seller: {
+      id: 's1',
+      name: '卖家',
+      avatar: '',
+      storeName: '店铺',
+      rating: 0,
+      followerCount: 0,
+      productCount: 0,
+      description: '',
+      isVerified: false
+    },
     specs: [],
     type: 'digital' as const,
     createdAt: ''
   };
-  const productC = { 
-    id: 'pc', 
-    name: '商品C', 
-    price: 300, 
+  const productC = {
+    id: 'pc',
+    name: '商品C',
+    price: 300,
     stock: 100,
-    description: '', 
+    description: '',
     category: '',
     subCategory: '',
     images: [],
@@ -61,7 +81,17 @@ describe('Shopping Cart Integration - Complete Purchase Flow', () => {
     reviewCount: 0,
     salesCount: 0,
     tags: [],
-    seller: { id: 's1', name: '卖家', avatar: '', storeName: '店铺', rating: 0, followerCount: 0, productCount: 0, description: '', isVerified: false },
+    seller: {
+      id: 's1',
+      name: '卖家',
+      avatar: '',
+      storeName: '店铺',
+      rating: 0,
+      followerCount: 0,
+      productCount: 0,
+      description: '',
+      isVerified: false
+    },
     specs: [],
     type: 'digital' as const,
     createdAt: ''

@@ -97,17 +97,17 @@ describe('Chat Flow Integration - Complete Conversation Lifecycle', () => {
   describe('Conversation management', () => {
     it('creates and switches between conversations', () => {
       vi.useFakeTimers();
-      
+
       chatStore.createConversation();
       chatStore.addMessage({ role: 'user', content: 'conv1 msg' });
       const id1 = chatStore.activeConversationId;
-      
+
       vi.advanceTimersByTime(100);
-      
+
       chatStore.createConversation();
       chatStore.addMessage({ role: 'user', content: 'conv2 msg' });
       const id2 = chatStore.activeConversationId;
-      
+
       vi.useRealTimers();
 
       expect(id1).not.toBe(id2);
@@ -155,12 +155,12 @@ describe('Chat Flow Integration - Complete Conversation Lifecycle', () => {
 
     it('auto-generates unique IDs for each message', () => {
       vi.useFakeTimers();
-      
+
       chatStore.createConversation();
       chatStore.addMessage({ role: 'user', content: 'a' });
       vi.advanceTimersByTime(10);
       chatStore.addMessage({ role: 'user', content: 'b' });
-      
+
       vi.useRealTimers();
 
       const ids = chatStore.allMessages.map((m) => m.id);

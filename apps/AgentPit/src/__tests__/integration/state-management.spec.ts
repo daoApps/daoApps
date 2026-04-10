@@ -97,7 +97,7 @@ describe('State Management Integration - Cross Component Sync', () => {
       chatStore.createConversation();
       const id2 = chatStore.activeConversationId;
       vi.useRealTimers();
-      
+
       expect(id1).not.toBe(id2);
 
       chatStore.setActiveConversation(id1!);
@@ -187,7 +187,17 @@ describe('State Management Integration - Cross Component Sync', () => {
       reviewCount: 0,
       salesCount: 0,
       tags: [],
-      seller: { id: 's1', name: '卖家', avatar: '', storeName: '店铺', rating: 0, followerCount: 0, productCount: 0, description: '', isVerified: false },
+      seller: {
+        id: 's1',
+        name: '卖家',
+        avatar: '',
+        storeName: '店铺',
+        rating: 0,
+        followerCount: 0,
+        productCount: 0,
+        description: '',
+        isVerified: false
+      },
       specs: [],
       type: 'digital' as const,
       createdAt: ''
