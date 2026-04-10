@@ -1,28 +1,3 @@
-/**
- * ProductGrid 组件 - 商品网格展示
- * 
- * @description 以网格形式展示商品列表，支持商品查看、收藏和添加到购物车功能
- * 
- * @component
- * 
- * @example
- * <ProductGrid 
- *   :products="productList"
- *   @add-to-cart="handleAddToCart"
- *   @toggle-favorite="handleToggleFavorite"
- * />
- * 
- * @param {Product[]} products - 商品数组
- * 
- * @emits addToCart - 当用户点击添加到购物车按钮时触发，返回商品对象
- * @emits toggleFavorite - 当用户点击收藏按钮时触发，返回商品 ID
- * 
- * @slot default - 默认插槽，未使用
- * 
- * @dependencies 
- * - vue-router - 路由跳转功能
- */
-
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'

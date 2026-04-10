@@ -1,29 +1,3 @@
-/**
- * Header 组件 - 应用顶部导航栏
- * 
- * @description 提供应用的主要导航功能，包括 Logo、导航菜单、搜索框、通知、主题切换和用户菜单
- * 
- * @component
- * 
- * @example
- * <Header 
- *   logo-text="AgentPit" 
- *   :show-search="true" 
- *   :show-notifications="true"
- *   @toggle-sidebar="handleToggleSidebar"
- *   @search="handleSearch"
- * />
- * 
- * @emits toggle-sidebar - 当用户点击汉堡菜单时触发，用于切换侧边栏显示状态
- * @emits search - 当用户在搜索框输入并回车时触发，返回搜索查询字符串
- * 
- * @slot default - 默认插槽，未使用
- * 
- * @dependencies 
- * - useAppStore - 应用全局状态管理
- * - vue-router - 路由相关功能
- */
-
 <script setup lang="ts">
 import { ref } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'

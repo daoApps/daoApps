@@ -1,26 +1,3 @@
-/**
- * MemorySearch 组件 - 记忆搜索功能
- * 
- * @description 提供记忆内容的全文搜索功能，支持关键词搜索、历史记录、高级筛选和结果排序
- * 
- * @component
- * 
- * @example
- * <MemorySearch 
- *   :data="searchData"
- *   @result-select="handleResultSelect"
- * />
- * 
- * @param {SearchResult[]} [data=[]] - 搜索数据源数组
- * 
- * @emits resultSelect - 当用户点击搜索结果时触发，返回选中的搜索结果对象
- * 
- * @slot default - 默认插槽，未使用
- * 
- * @dependencies 
- * - useDebounce - 防抖组合式函数
- */
-
 <script setup lang="ts">
 import { ref, reactive, computed, watch } from 'vue'
 import { useDebounce } from '@/composables/useDebounce'

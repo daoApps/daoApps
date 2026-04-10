@@ -1,20 +1,3 @@
-/**
- * Sidebar 组件 - 应用侧边栏导航
- * 
- * @description 提供应用的导航菜单，支持展开/收起状态，包含桌面端和移动端两种显示模式
- * 
- * @component
- * 
- * @example
- * <Sidebar />
- * 
- * @slot default - 默认插槽，未使用
- * 
- * @dependencies 
- * - useAppStore - 应用全局状态管理
- * - vue-router - 路由相关功能
- */
-
 <script setup lang="ts">
 import { computed } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'

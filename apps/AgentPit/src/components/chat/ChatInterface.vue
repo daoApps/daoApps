@@ -1,25 +1,3 @@
-/**
- * ChatInterface 组件 - 智能对话主界面
- * 
- * @description 提供完整的聊天体验，包含对话历史侧边栏、消息列表、快捷指令和消息输入功能
- * 
- * @component
- * 
- * @example
- * <ChatInterface />
- * 
- * @slot default - 默认插槽，未使用
- * 
- * @dependencies 
- * - useChatStore - 聊天状态管理
- * - getMockResponse - 模拟响应数据
- * - useLanguageDetection - 语言检测组合式函数
- * - ChatSidebar - 聊天侧边栏组件
- * - MessageList - 消息列表组件
- * - MessageInput - 消息输入组件
- * - QuickCommands - 快捷指令组件
- */
-
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue'
 import { useChatStore } from '@/stores/useChatStore'

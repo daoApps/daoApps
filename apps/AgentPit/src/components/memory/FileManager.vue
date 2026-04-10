@@ -1,34 +1,3 @@
-/**
- * FileManager 组件 - 文件管理器
- * 
- * @description 提供文件和文件夹的浏览、管理功能，支持上传、下载、重命名、删除等操作
- * 
- * @component
- * 
- * @example
- * <FileManager 
- *   :files="fileList"
- *   @file-select="handleFileSelect"
- *   @file-upload="handleFileUpload"
- *   @file-delete="handleFileDelete"
- *   @file-rename="handleFileRename"
- *   @folder-create="handleFolderCreate"
- * />
- * 
- * @param {FileNode[]} [files=[]] - 文件节点数组
- * 
- * @emits fileSelect - 当用户选中文件时触发，返回文件节点对象
- * @emits fileUpload - 当用户上传文件时触发，返回 FileList 对象
- * @emits fileDelete - 当用户删除文件时触发，返回文件节点对象
- * @emits fileRename - 当用户重命名文件时触发，返回文件节点对象和新名称
- * @emits folderCreate - 当用户创建文件夹时触发，返回父路径和文件夹名称
- * 
- * @slot default - 默认插槽，未使用
- * 
- * @dependencies 
- * - 无外部组合式函数依赖
- */
-
 <script setup lang="ts">
 import { ref, reactive, computed } from 'vue'
 import type { FileNode, ContextMenuAction } from '@/types/memory'

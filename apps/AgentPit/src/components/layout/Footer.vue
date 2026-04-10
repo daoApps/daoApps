@@ -1,19 +1,3 @@
-/**
- * Footer 组件 - 应用底部信息栏
- * 
- * @description 显示应用的品牌信息、快速链接、法律信息和社交媒体链接
- * 
- * @component
- * 
- * @example
- * <Footer />
- * 
- * @slot default - 默认插槽，未使用
- * 
- * @dependencies 
- * - 无外部状态依赖
- */
-
 <script setup lang="ts">
 import { computed } from 'vue'
 

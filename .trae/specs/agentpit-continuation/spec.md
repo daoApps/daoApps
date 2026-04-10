@@ -81,4 +81,29 @@
 - **Verification**: `programmatic`
 
 ### AC-5: 测试覆盖率报告
-- **Given**: 测试
+- **Given**: 测试已添加
+- **When**: 运行 `npm run test:coverage`
+- **Then**:
+  - 测试覆盖率报告可以正常生成
+  - 整体测试覆盖率 ≥ 70%
+- **Verification**: `programmatic`
+
+### AC-6: 继续完善组件文档
+- **Given**: 还有更多组件需要文档
+- **When**: 为 ProductDetail 等组件添加 JSDoc
+- **Then**:
+  - ProductDetail 组件有完整 JSDoc
+  - 其他核心组件也有文档
+- **Verification**: `human-judgment`
+
+### AC-7: 实施组件库
+- **Given**: 组件库架构已设计完成
+- **When**: 逐步实施组件库
+- **Then**:
+  - 提取通用组件到组件库
+  - 建立统一的样式系统
+  - 配置构建和发布流程
+- **Verification**: `human-judgment`
+
+## Open Questions
+- 暂无
