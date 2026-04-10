@@ -49,10 +49,7 @@ jobs:
         echo "Health check passed"
       
     - name: Generate Deployment Report
-      run: |
-        echo "Generating deployment report..."
-        mkdir -p deployment-reports
-        cat > deployment-reports/staging-${{ github.run_id }}.md << EOF
+      run: "echo 'Generating deployment report...' && mkdir -p deployment-reports && cat > deployment-reports/staging-${{ github.run_id }}.md << 'EOF'
 # Staging Deployment Report
 
 ## Deployment Details
@@ -69,7 +66,7 @@ $(git log --oneline -10)
 
 ## Deployment Status
 ✅ Successful
-EOF
+EOF"
       
     - name: Upload Deployment Report
       uses: actions/upload-artifact@v4
@@ -111,10 +108,7 @@ EOF
         echo "Health check passed"
       
     - name: Generate Deployment Report
-      run: |
-        echo "Generating deployment report..."
-        mkdir -p deployment-reports
-        cat > deployment-reports/production-${{ github.run_id }}.md << EOF
+      run: "echo 'Generating deployment report...' && mkdir -p deployment-reports && cat > deployment-reports/production-${{ github.run_id }}.md << 'EOF'
 # Production Deployment Report
 
 ## Deployment Details
@@ -131,7 +125,7 @@ $(git log --oneline -10)
 
 ## Deployment Status
 ✅ Successful
-EOF
+EOF"
       
     - name: Upload Deployment Report
       uses: actions/upload-artifact@v4
@@ -229,10 +223,7 @@ EOF
         echo "Rollback completed successfully"
       
     - name: Generate Rollback Report
-      run: |
-        echo "Generating rollback report..."
-        mkdir -p deployment-reports
-        cat > deployment-reports/rollback-${{ github.run_id }}.md << EOF
+      run: "echo 'Generating rollback report...' && mkdir -p deployment-reports && cat > deployment-reports/rollback-${{ github.run_id }}.md << 'EOF'
 # Rollback Report
 
 ## Rollback Details
@@ -246,7 +237,7 @@ Deployment failed, automatic rollback triggered
 
 ## Rollback Status
 ✅ Successful
-EOF
+EOF"
       
     - name: Upload Rollback Report
       uses: actions/upload-artifact@v4
