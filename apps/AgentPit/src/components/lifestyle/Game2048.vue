@@ -206,7 +206,7 @@ function handleKeydown(e: KeyboardEvent): void {
   const dir = keyMap[e.key];
   if (dir) {
     e.preventDefault();
-    move(dir);
+    move(dir as 'up' | 'down' | 'left' | 'right');
   }
 }
 

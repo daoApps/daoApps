@@ -1,6 +1,6 @@
 # @agentpit/ui
 
-AgentPit UI Component Library
+Flexloop UI Component Library
 
 ## Installation
 
@@ -23,7 +23,7 @@ import '@agentpit/ui/styles'
 
 ## Documentation
 
-Visit [AgentPit UI Documentation](https://ui.agentpit.com) for more details.
+Visit [Flexloop UI Documentation](https://ui.flexloop.tech) for more details.
 
 ## License
 

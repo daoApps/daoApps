@@ -6,10 +6,10 @@ import { coreModules, extraModules } from '@/data/mockHome';
 
 const isLoaded = ref(false);
 
-const mainTitle = 'AgentPit 智能体平台';
+const mainTitle = 'Flexloop 玄环';
 const titleChars = computed(() => mainTitle.split(''));
 
-const subtitle = '打造您的自动赚钱平台 ✨';
+const subtitle = '道法自然，柔性循环，智能共生 ✨';
 const secondaryTitle = '更多精彩功能 🌟';
 
 onMounted(() => {

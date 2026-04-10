@@ -45,6 +45,7 @@ const nameLength = computed(() => name.value?.length ?? 0);
 const descLength = computed(() => description.value?.length ?? 0);
 const selectedAvatar = computed(() => {
   if (uploadedAvatar.value) return uploadedAvatar.value;
+  if (!avatarId.value) return '';
   const avatar = avatarLibrary.find((a) => a.id === avatarId.value);
   return avatar?.emoji || '';
 });

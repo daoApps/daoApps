@@ -10,7 +10,7 @@ import { useAppStore } from '../../stores/useAppStore';
 interface Props {
   /**
    * Logo 显示的文字
-   * @default 'AgentPit'
+   * @default 'Flexloop'
    */
   logoText?: string;
   /**
@@ -26,7 +26,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  logoText: 'AgentPit',
+  logoText: 'Flexloop',
   showSearch: true,
   showNotifications: true
 });
@@ -92,13 +92,13 @@ const toggleSidebar = () => {
           <div
             class="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white font-bold text-sm shadow-md group-hover:shadow-lg transition-shadow"
           >
-            AP
+            FL
           </div>
           <div class="hidden sm:block">
             <h1 class="text-xl font-bold text-gray-900 dark:text-white leading-tight">
               {{ logoText }}
             </h1>
-            <p class="text-xs text-gray-500 dark:text-gray-400 -mt-0.5">智能体协作平台</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400 -mt-0.5">柔性循环智能平台</p>
           </div>
         </RouterLink>
       </div>

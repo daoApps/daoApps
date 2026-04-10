@@ -272,10 +272,10 @@ const getStatusText = (status: Friend['status']) => {
       </div>
 
       <div
-        v-if="activeTab === 'requests'"
-        class="p-6 space-y-4 max-h-[600px] overflow-y-auto custom-scrollbar"
-      >
-        <div v-if="pendingRequestsCount === 0" class="text-center py-12">
+          v-if="activeTab === 'requests'"
+          class="p-6 space-y-4 max-h-[600px] overflow-y-auto custom-scrollbar"
+        >
+          <div v-if="pendingRequestsCount === 0" class="text-center py-12">
           <svg
             class="w-16 h-16 mx-auto text-gray-300 dark:text-gray-600 mb-4"
             fill="none"
@@ -298,32 +298,26 @@ const getStatusText = (status: Friend['status']) => {
             :key="request.id"
             class="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg space-y-3"
           >
-            <div class="flex items-start space-x-3">
+            <div class="flex items-center gap-4">
               <img
                 :src="request.fromUserAvatar"
                 :alt="request.fromUserName"
-                class="w-14 h-14 rounded-full object-cover bg-white"
+                class="w-12 h-12 rounded-full"
               />
-              <div class="flex-1 min-w-0">
-                <h4 class="font-semibold text-gray-900 dark:text-white">
-                  {{ request.fromUserName }}
-                </h4>
-                <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">{{ request.message }}</p>
-                <p class="text-xs text-gray-400 mt-2">
-                  {{ new Date(request.timestamp).toLocaleDateString('zh-CN') }}
-                </p>
+              <div class="flex-1">
+                <h4 class="font-semibold text-gray-900 dark:text-white">{{ request.fromUserName }}</h4>
+                <p class="text-sm text-gray-500 dark:text-gray-400">请求添加你为好友</p>
               </div>
             </div>
-
-            <div class="flex gap-3 pt-2">
+            <div class="flex gap-2 justify-end">
               <button
-                class="flex-1 py-2 px-4 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors"
+                class="px-4 py-2 text-sm bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors"
                 @click="handleAcceptRequest(request.id)"
               >
-                接受
+                同意
               </button>
               <button
-                class="flex-1 py-2 px-4 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors"
+                class="px-4 py-2 text-sm bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
                 @click="handleRejectRequest(request.id)"
               >
                 拒绝
@@ -331,112 +325,53 @@ const getStatusText = (status: Friend['status']) => {
             </div>
           </div>
         </TransitionGroup>
+        </div>
+
+      <div v-if="activeTab === 'groups'" class="p-6">
+        <p class="text-center text-gray-500 dark:text-gray-400 py-12">分组管理功能开发中...</p>
       </div>
+    </div>
 
-      <div v-if="activeTab === 'groups'" class="p-6 space-y-4">
-        <div
-          v-for="[groupKey, groupLabel] in Object.entries(groupLabels).filter(([k]) => k !== 'all')"
-          :key="groupKey"
-          class="p-4 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-lg"
-        >
-          <div class="flex items-center justify-between mb-3">
-            <h4 class="font-semibold text-gray-900 dark:text-white flex items-center space-x-2">
-              <span>{{ groupLabel }}</span>
-              <span
-                class="px-2 py-0.5 text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded-full"
-              >
-                {{ friends.filter((f) => f.group === groupKey).length }} 人
-              </span>
-            </h4>
+    <div
+      v-if="showAddFriendModal"
+      class="fixed inset-0 z-50 flex items-center justify-center p-4"
+      @click.self="showAddFriendModal = false"
+    >
+      <div class="bg-white dark:bg-gray-800 rounded-xl p-6 max-w-md w-full shadow-2xl">
+        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">添加好友</h3>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              用户ID
+            </label>
+            <input
+              type="text"
+              placeholder="输入用户ID搜索"
+              class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-transparent text-gray-900 dark:text-white"
+            />
           </div>
-
-          <div class="flex flex-wrap gap-2">
-            <div
-              v-for="friend in friends.filter((f) => f.group === groupKey)"
-              :key="friend.id"
-              class="flex items-center space-x-2 px-3 py-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm"
+          <div class="flex gap-2 justify-end">
+            <button
+              class="px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+              @click="showAddFriendModal = false"
             >
-              <img
-                :src="friend.avatar"
-                :alt="friend.name"
-                class="w-8 h-8 rounded-full object-cover"
-              />
-              <span class="text-sm text-gray-700 dark:text-gray-300">{{ friend.name }}</span>
-            </div>
-            <div
-              v-if="friends.filter((f) => f.group === groupKey).length === 0"
-              class="text-sm text-gray-400 italic"
+              取消
+            </button>
+            <button
+              class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
             >
-              暂无成员
-            </div>
+              发送请求
+            </button>
           </div>
         </div>
       </div>
     </div>
-
-    <Teleport to="body">
-      <Transition name="modal">
-        <div
-          v-if="showAddFriendModal"
-          class="fixed inset-0 z-50 flex items-center justify-center p-4"
-          @click.self="showAddFriendModal = false"
-        >
-          <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
-
-          <div
-            class="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-md p-6"
-            @click.stop
-          >
-            <div class="flex items-center justify-between mb-6">
-              <h3 class="text-xl font-bold text-gray-900 dark:text-white">添加好友</h3>
-              <button
-                class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
-                @click="showAddFriendModal = false"
-              >
-                <svg
-                  class="w-5 h-5 text-gray-500"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-            </div>
-
-            <div class="space-y-4">
-              <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                  >搜索用户名或邮箱</label
-                >
-                <input
-                  type="text"
-                  placeholder="输入用户名、ID 或邮箱地址"
-                  class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-transparent text-gray-900 dark:text-white"
-                />
-              </div>
-
-              <button
-                class="w-full py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
-              >
-                搜索
-              </button>
-            </div>
-          </div>
-        </div>
-      </Transition>
-    </Teleport>
   </div>
 </template>
 
 <style scoped>
 .custom-scrollbar::-webkit-scrollbar {
-  width: 4px;
+  width: 6px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
@@ -445,7 +380,7 @@ const getStatusText = (status: Friend['status']) => {
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
   background-color: rgba(156, 163, 175, 0.5);
-  border-radius: 2px;
+  border-radius: 3px;
 }
 
 .list-enter-active,
@@ -455,21 +390,11 @@ const getStatusText = (status: Friend['status']) => {
 
 .list-enter-from {
   opacity: 0;
-  transform: translateX(-20px);
+  transform: translateY(-10px);
 }
 
 .list-leave-to {
   opacity: 0;
-  transform: translateX(20px);
-}
-
-.modal-enter-active,
-.modal-leave-active {
-  transition: opacity 0.3s ease;
-}
-
-.modal-enter-from,
-.modal-leave-to {
-  opacity: 0;
+  transform: scale(0.9);
 }
 </style>

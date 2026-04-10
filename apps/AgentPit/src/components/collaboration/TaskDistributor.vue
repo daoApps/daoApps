@@ -28,7 +28,7 @@ const columns = [
   { id: 'completed', title: '已完成', color: 'green', icon: '✅' }
 ];
 
-const tasksByStatus = computed(() => {
+const tasksByStatus = computed((): Record<string, Task[]> => {
   return {
     pending: filteredTasks.value.filter((t) => t.status === 'pending'),
     in_progress: filteredTasks.value.filter((t) => t.status === 'in_progress'),
@@ -67,7 +67,7 @@ const getAgentAvatar = (agentId?: string) => {
   return agent ? agent.avatar : '❓';
 };
 
-const priorityConfig = computed(() => ({
+const priorityConfig = computed((): Record<string, { color: string; label: string }> => ({
   urgent: {
     color: 'text-red-600 bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800',
     label: '紧急'
@@ -350,7 +350,7 @@ const stats = computed(() => ({
               <span
                 class="px-2 py-0.5 text-xs font-medium rounded-full bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300"
               >
-                {{ (tasksByStatus as any)[column.id]?.length || 0 }}
+                {{ tasksByStatus[column.id]?.length || 0 }}
               </span>
             </div>
           </div>
@@ -358,19 +358,19 @@ const stats = computed(() => ({
           <!-- Tasks List -->
           <div class="flex-1 overflow-y-auto space-y-2 min-h-[200px]">
             <div
-              v-for="task in (tasksByStatus as any)[column.id]"
-              :key="task.id"
-              :draggable="true"
-              class="group relative p-3 bg-white dark:bg-gray-700 rounded-lg border shadow-sm cursor-move hover:shadow-md transition-all"
-              :class="[
-                selectedTasks.has(task.id)
-                  ? 'border-blue-500 ring-2 ring-blue-200 dark:ring-blue-800'
-                  : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500',
-                (priorityConfig as any)[task.priority]?.color || ''
-              ]"
-              @dragstart="(e: DragEvent) => onDragStart(e, task)"
-              @dragend="onDragEnd"
-            >
+            v-for="task in tasksByStatus[column.id]"
+            :key="task.id"
+            :draggable="true"
+            class="group relative p-3 bg-white dark:bg-gray-700 rounded-lg border shadow-sm cursor-move hover:shadow-md transition-all"
+            :class="[
+              selectedTasks.has(task.id)
+                ? 'border-blue-500 ring-2 ring-blue-200 dark:ring-blue-800'
+                : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500',
+              priorityConfig[task.priority]?.color || ''
+            ]"
+            @dragstart="(e: DragEvent) => onDragStart(e, task)"
+            @dragend="onDragEnd"
+          >
               <!-- Selection Checkbox -->
               <input
                 type="checkbox"
@@ -381,7 +381,7 @@ const stats = computed(() => ({
 
               <!-- Priority Badge -->
               <span class="inline-block px-2 py-0.5 text-xs font-medium rounded mb-2 ml-6">
-                {{ (priorityConfig as any)[task.priority]?.label || '' }}
+                {{ priorityConfig[task.priority]?.label || '' }}
               </span>
 
               <!-- Title -->
@@ -451,7 +451,7 @@ const stats = computed(() => ({
 
             <!-- Empty State -->
             <div
-              v-if="((tasksByStatus as any)[column.id]?.length || 0) === 0"
+              v-if="(tasksByStatus[column.id]?.length || 0) === 0"
               class="flex flex-col items-center justify-center h-32 text-gray-400 dark:text-gray-500"
             >
               <span class="text-3xl mb-2">{{ column.icon }}</span>

@@ -42,14 +42,13 @@ const socialLinks = [
         <div>
           <div class="flex items-center gap-2 mb-3">
             <div
-              class="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white font-bold text-sm"
-            >
-              AP
-            </div>
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">AgentPit</h3>
+            class="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white font-bold text-sm"
+          >
+            FL
           </div>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Flexloop</h3>
           <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-            智能体协作平台，为您提供全方位的AI解决方案
+            柔性循环智能平台，循道而行，自然而然
           </p>
         </div>
 
@@ -115,7 +114,7 @@ const socialLinks = [
       <!-- 底部版权信息 -->
       <div class="pt-6 border-t border-gray-200 dark:border-gray-700">
         <p class="text-sm text-center text-gray-500 dark:text-gray-400">
-          © {{ currentYear }} AgentPit. All rights reserved.
+          © {{ currentYear }} Flexloop. All rights reserved.
         </p>
       </div>
     </div>

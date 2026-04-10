@@ -1,5 +1,5 @@
 # ============================================
-# AgentPit Vue3 应用 Makefile
+# Flexloop Vue3 应用 Makefile
 # 提供统一的命令入口，简化开发和部署流程
 #
 # 使用方式：
@@ -227,7 +227,7 @@ check:
 help:
 	@echo ""
 	@echo "$(GREEN)============================================$(NC)"
-	@echo "$(GREEN)  AgentPit 部署工具 - 帮助信息$(NC)"
+	@echo "$(GREEN)  Flexloop 部署工具 - 帮助信息$(NC)"
 	@echo "$(GREEN)============================================$(NC)"
 	@echo ""
 	@echo "$(BLUE)用法: make [目标] [变量=值]$(NC)"

@@ -36,10 +36,8 @@ const modeConfig = computed(() => {
     collaborator: { icon: '🤝', label: '协作者' },
     reviewer: { icon: '🔍', label: '审核者' }
   };
-  return configs[agent.value.collaborationMode] || configs.collaborator;
+  return configs[props.agent.collaborationMode] || configs.collaborator;
 });
-
-const agent = computed(() => props.agent);
 
 const formatTime = (timestamp: number) => {
   const now = Date.now();
@@ -63,35 +61,35 @@ const lastActiveTime = computed(() => {
         ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/20 shadow-md'
         : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-gray-300 dark:hover:border-gray-600'
     ]"
-    @click="$emit('select', agent)"
+    @click="$emit('select', props.agent)"
   >
     <!-- Header -->
     <div class="p-3 border-b border-gray-100 dark:border-gray-700">
       <div class="flex items-start justify-between mb-2">
         <div class="flex items-center gap-2">
-          <span class="text-2xl">{{ agent.avatar }}</span>
+          <span class="text-2xl">{{ props.agent.avatar }}</span>
           <div>
-            <h3 class="font-semibold text-sm text-gray-900 dark:text-white">{{ agent.name }}</h3>
-            <span class="text-xs text-gray-500 dark:text-gray-400">{{ agent.role }}</span>
+            <h3 class="font-semibold text-sm text-gray-900 dark:text-white">{{ props.agent.name }}</h3>
+            <span class="text-xs text-gray-500 dark:text-gray-400">{{ props.agent.role }}</span>
           </div>
         </div>
         <div class="flex items-center gap-1.5">
           <span
             :class="[
-              statusConfig.color,
-              statusConfig.bg,
+              statusConfig?.color,
+              statusConfig?.bg,
               'px-2 py-0.5 rounded-full text-xs font-medium'
             ]"
           >
-            {{ statusConfig.label }}
+            {{ statusConfig?.label }}
           </span>
         </div>
       </div>
 
       <!-- Mode Badge -->
       <div class="flex items-center gap-1 text-xs text-gray-600 dark:text-gray-400">
-        <span>{{ modeConfig.icon }}</span>
-        <span>{{ modeConfig.label }}</span>
+        <span>{{ modeConfig?.icon }}</span>
+        <span>{{ modeConfig?.label }}</span>
       </div>
     </div>
 
@@ -101,12 +99,12 @@ const lastActiveTime = computed(() => {
       <div class="grid grid-cols-2 gap-2">
         <div class="text-center p-2 rounded bg-gray-50 dark:bg-gray-700/50">
           <div class="text-xs text-gray-500 dark:text-gray-400">能力等级</div>
-          <div class="text-lg font-bold text-blue-600 dark:text-blue-400">{{ agent.level }}</div>
+          <div class="text-lg font-bold text-blue-600 dark:text-blue-400">{{ props.agent.level }}</div>
         </div>
         <div class="text-center p-2 rounded bg-gray-50 dark:bg-gray-700/50">
           <div class="text-xs text-gray-500 dark:text-gray-400">准确率</div>
           <div class="text-lg font-bold text-green-600 dark:text-green-400">
-            {{ agent.accuracy }}%
+            {{ props.agent.accuracy }}%
           </div>
         </div>
       </div>
@@ -144,7 +142,7 @@ const lastActiveTime = computed(() => {
       </div>
 
       <!-- Current Task Progress -->
-      <div v-if="agent.status === 'working' || agent.status === 'busy'">
+      <div v-if="props.agent.status === 'working' || props.agent.status === 'busy'">
         <div class="flex items-center justify-between text-xs mb-1">
           <span class="text-gray-600 dark:text-gray-400">当前任务</span>
           <span class="font-medium text-blue-600 dark:text-blue-400"
@@ -164,12 +162,12 @@ const lastActiveTime = computed(() => {
         <div class="flex items-center justify-between text-xs">
           <span class="text-gray-500 dark:text-gray-400">已完成任务</span>
           <span class="font-medium text-gray-900 dark:text-white"
-            >{{ agent.completedTasks }} 个</span
+            >{{ props.agent.completedTasks }} 个</span
           >
         </div>
         <div class="flex items-center justify-between text-xs">
           <span class="text-gray-500 dark:text-gray-400">平均耗时</span>
-          <span class="font-medium text-gray-900 dark:text-white">{{ agent.avgTime }} 分钟</span>
+          <span class="font-medium text-gray-900 dark:text-white">{{ props.agent.avgTime }} 分钟</span>
         </div>
         <div class="flex items-center justify-between text-xs">
           <span class="text-gray-500 dark:text-gray-400">最后活跃</span>
@@ -182,7 +180,7 @@ const lastActiveTime = computed(() => {
     <div v-if="showDetails" class="px-3 pb-3">
       <button
         class="w-full px-3 py-1.5 text-xs font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/30 rounded transition-colors"
-        @click.stop="$emit('configure', agent)"
+        @click.stop="$emit('configure', props.agent)"
       >
         ⚙️ 配置参数
       </button>

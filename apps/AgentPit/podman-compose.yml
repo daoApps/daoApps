@@ -1,36 +1,36 @@
 version: "3.8"
 
 # ============================================================
-# AgentPit Podman Compose 配置文件
+# Flexloop Podman Compose 配置文件
 # 支持多环境：development / production
 # 
 # 使用方式：
-#   开发环境: podman-compose --profile development up agentpit-dev
+#   开发环境: podman-compose --profile development up flexloop-dev
 #   生产环境: podman-compose --profile production up -d
 #   全部服务: podman-compose --profile development --profile production up
 # ============================================================
 
 # 定义网络 - 实现服务间网络隔离
 networks:
-  agentpit-network:
+  flexloop-network:
     driver: bridge
-    name: agentpit-network
+    name: flexloop-network
 
 # 定义卷 - 持久化日志数据
 volumes:
-  agentpit-logs:
-    name: agentpit-logs
+  flexloop-logs:
+    name: flexloop-logs
 
 services:
 
   # ============================================================
   # 开发环境服务 (Development Profile)
   # 使用 Vite 热重载开发服务器，支持源码实时同步
-  # 启动命令: podman-compose --profile development up agentpit-dev
+  # 启动命令: podman-compose --profile development up flexloop-dev
   # ============================================================
-  agentpit-dev:
+  flexloop-dev:
     profiles: ["development"]
-    container_name: agentpit-dev
+    container_name: flexloop-dev
 
     # 使用 Node.js 20 Alpine 镜像（轻量级，适合开发）
     image: node:20-alpine
@@ -74,7 +74,7 @@ services:
 
     # 网络配置
     networks:
-      - agentpit-network
+      - flexloop-network
 
     # 重启策略 - 开发环境手动管理为主
     restart: "no"
@@ -83,12 +83,12 @@ services:
   # ============================================================
   # 生产环境服务 (Production Profile)
   # 使用构建后的 Nginx 镜像，优化性能和安全性
-  # 启动命令: podman-compose --profile production up -d agentpit-frontend
+  # 启动命令: podman-compose --profile production up -d flexloop-frontend
   # ============================================================
-  agentpit-frontend:
+  flexloop-frontend:
     profiles: ["production"]
-    container_name: agentpit-frontend
-    image: agentpit-vue3:latest
+    container_name: flexloop-frontend
+    image: flexloop-vue3:latest
     build:
       context: .
       dockerfile: Podmanfile
@@ -100,7 +100,7 @@ services:
 
     # 卷挂载 - 日志目录持久化存储
     volumes:
-      - agentpit-logs:/var/log/nginx
+      - flexloop-logs:/var/log/nginx
 
     # 环境变量配置
     environment:
@@ -133,7 +133,7 @@ services:
 
     # 网络配置 - 加入自定义网络实现隔离
     networks:
-      - agentpit-network
+      - flexloop-network
 
     # 健康检查配置
     healthcheck:
@@ -162,9 +162,9 @@ services:
   # 适用于会话缓存、消息队列等场景
   # 取消注释后添加 profiles: ["production"] 或 ["development"] 即可启用
   #
-  # agentpit-redis:
+  # flexloop-redis:
   #   profiles: ["production"]
-  #   container_name: agentpit-redis
+  #   container_name: flexloop-redis
   #   image: redis:7-alpine
   #   restart: unless-stopped
   #
@@ -183,7 +183,7 @@ services:
   #         cpus: "0.5"
   #
   #   networks:
-  #     - agentpit-network
+  #     - flexloop-network
   #
   #   healthcheck:
   #     test: ["CMD", "redis-cli", "ping"]
@@ -195,9 +195,9 @@ services:
   # 适用于需要关系型数据库的场景
   # 取消注释后添加对应 profile 和密码配置即可启用
   #
-  # agentpit-db:
+  # flexloop-db:
   #   profiles: ["production"]
-  #   container_name: agentpit-db
+  #   container_name: flexloop-db
   #   image: postgres:16-alpine
   #   restart: unless-stopped
   #
@@ -205,9 +205,9 @@ services:
   #     - "5432:5432"
   #
   #   environment:
-  #     POSTGRES_USER: agentpit
+  #     POSTGRES_USER: flexloop
   #     POSTGRES_PASSWORD: ${DB_PASSWORD:-changeme}   # 建议通过 .env 文件或 secrets 管理
-  #     POSTGRES_DB: agentpit_db
+  #     POSTGRES_DB: flexloop_db
   #     TZ: Asia/Shanghai
   #
   #   volumes:
@@ -220,7 +220,7 @@ services:
   #         cpus: "1.0"
   #
   #   networks:
-  #     - agentpit-network
+  #     - flexloop-network
   #
   #   healthcheck:
   #     test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
@@ -232,6 +232,6 @@ services:
   # 如需使用上述辅助服务的持久化卷，取消以下定义：
   # volumes:
   #   redis-data:
-  #     name: agentpit-redis-data
+  #     name: flexloop-redis-data
   #   postgres-data:
-  #     name: agentpit-postgres-data
+  #     name: flexloop-postgres-data

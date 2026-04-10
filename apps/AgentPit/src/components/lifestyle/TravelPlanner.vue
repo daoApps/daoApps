@@ -10,7 +10,7 @@ import {
 } from '../../data/mockLifestyle';
 
 const searchQuery = ref('');
-const debouncedSearch = useDebounce(() => searchQuery.value, 300);
+const debouncedSearch = useDebounce(searchQuery, 300);
 const favoriteIds = ref<string[]>([]);
 const currentPlan = ref<TravelPlan | null>(sampleItineraries[0] || null);
 const showActivityModal = ref(false);
@@ -138,9 +138,9 @@ function exportItinerary() {
           >{{ totalActivities }} 个活动</span
         >
         <span
-          class="px-3 py-1.5 bg-orange-50 dark:bg-orange-900/30 rounded-lg font-medium text-orange-600 dark:text-orange-400"
-          >¥{{ currentPlan?.totalCost || 0 }}</span
-        >
+            class="px-3 py-1.5 bg-orange-50 dark:bg-orange-900/30 rounded-lg font-medium text-orange-600 dark:text-orange-400"
+            >¥{{ currentPlan?.totalCost || 0 }}</span
+          >
       </div>
     </div>
 

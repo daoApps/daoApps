@@ -1,4 +1,4 @@
-# AgentPit Skills 安全检查清单
+# Flexloop Skills 安全检查清单
 
 > 🔒 **版本**: v1.0.0
 > **最后更新**: 2026-04-10
@@ -180,7 +180,7 @@ grep -rn "sk-[a-zA-Z0-9]{48}" skills/
 - [OWASP Top 10](https://owasp.org/www-project-top-ten/)
 - [GitHub Secrets Scanning](https://docs.github.com/code-security/secret-scanning)
 - [A2APersonalAgent 项目参考实现](../../A2A/A2APersonalAgent/.agents/skills/)
-- [AgentPit Security Scanner](./security/SKILL.md)
+- [Flexloop Security Scanner](./security/SKILL.md)
 
 ---
 

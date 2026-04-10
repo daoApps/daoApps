@@ -1,6 +1,6 @@
-# AgentPit Podman 容器化部署指南
+# Flexloop Podman 容器化部署指南
 
-> 🚀 使用 Podman 快速部署和管理 AgentPit Vue3 应用
+> 🚀 使用 Podman 快速部署和管理 Flexloop Vue3 应用
 
 ---
 
@@ -179,7 +179,7 @@ sudo apt update && sudo apt install -y podman podman-compose
 
 #### 1. Podmanfile（多阶段构建）
 
-AgentPit 采用**多阶段构建策略**，优化镜像大小和安全性：
+Flexloop 采用**多阶段构建策略**，优化镜像大小和安全性：
 
 **阶段 1: 构建阶段 (build)**
 - **基础镜像**: `node:20-alpine`（轻量级 Node.js 环境）
@@ -986,7 +986,7 @@ make shell
 创建 `.github/workflows/deploy.yml`：
 
 ```yaml
-name: Deploy AgentPit
+name: Deploy Flexloop
 
 on:
   push:
@@ -1104,7 +1104,7 @@ jobs:
         with:
           payload: |
             {
-              "text": "AgentPit deployment ${{ job.status }}: ${{ github.sha }}"
+              "text": "Flexloop deployment ${{ job.status }}: ${{ github.sha }}"
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
@@ -1306,7 +1306,7 @@ pipeline {
                 slackSend(
                     channel: '#deployments',
                     color: currentBuild.result == 'SUCCESS' ? 'good' : 'danger',
-                    message: "AgentPit deployment *${currentBuild.result}* - Build #${env.BUILD_NUMBER} (${env.GIT_COMMIT[0..7]})"
+                    message: "Flexloop deployment *${currentBuild.result}* - Build #${env.BUILD_NUMBER} (${env.GIT_COMMIT[0..7]})"
                 )
             }
         }
@@ -1649,4 +1649,4 @@ make PROFILE=production logs
 
 **最后更新**: 2026-04-10  
 **文档版本**: v1.0.0  
-**适用版本**: AgentPit v1.0.0+
+**适用版本**: Flexloop v1.0.0+

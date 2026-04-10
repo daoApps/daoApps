@@ -234,7 +234,7 @@ const formatHistoryTime = (timestamp: number) => {
   });
 };
 
-const historyStatusConfig = {
+const historyStatusConfig: Record<string, { color: string; icon: string }> = {
   success: { color: 'text-green-600 bg-green-50 dark:bg-green-900/20', icon: '✅' },
   running: { color: 'text-blue-600 bg-blue-50 dark:bg-blue-900/20', icon: '🔄' },
   error: { color: 'text-red-600 bg-red-50 dark:bg-red-900/20', icon: '❌' },
@@ -478,10 +478,10 @@ const historyStatusConfig = {
             <div
               :class="[
                 'w-8 h-8 rounded-full flex items-center justify-center text-sm',
-                (historyStatusConfig as any)[entry.status]?.color || ''
+                historyStatusConfig[entry.status]?.color || ''
               ]"
             >
-              {{ (historyStatusConfig as any)[entry.status]?.icon || '' }}
+              {{ historyStatusConfig[entry.status]?.icon || '' }}
             </div>
             <div
               v-if="index < executionHistory.length - 1"

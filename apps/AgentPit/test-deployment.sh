@@ -1,5 +1,5 @@
 #!/bin/bash
-# AgentPit 自动化部署测试脚本
+# Flexloop 自动化部署测试脚本
 #
 # 用途：自动执行部署流程并验证各项指标
 #
@@ -15,7 +15,7 @@
 #   ./test-deployment.sh --report           # 完整测试并生成报告
 #
 # 依赖工具：podman, curl, jq (可选)
-# 作者：AgentPit Team
+# 作者：Flexloop Team
 # 版本：1.0.0
 # 日期：2026-04-10
 
@@ -65,7 +65,7 @@ show_help() {
     cat << EOF
 用法: $0 [选项]
 
-AgentPit 自动化部署测试脚本
+Flexloop 自动化部署测试脚本
 
 选项:
   -q, --quick      快速模式，跳过性能测试和耗时操作
@@ -874,7 +874,7 @@ generate_report() {
         local report_file="${SCRIPT_DIR}/deployment-test-report-$(date +%Y%m%d-%H%M%S).md"
 
         cat > "$report_file" << EOF
-# AgentPit Deployment Test Report
+# Flexloop Deployment Test Report
 
 **Test Date**: $(date '+%Y-%m-%d %H:%M:%S')
 **Environment**: Production
@@ -956,7 +956,7 @@ main() {
 
     echo ""
     echo -e "${BOLD}=====================================${NC}"
-    echo -e "${BOLD}  AgentPit Deployment Test Suite${NC}"
+    echo -e "${BOLD}  Flexloop Deployment Test Suite${NC}"
     echo -e "${BOLD}=====================================${NC}"
     echo -e "  Date: $(date '+%Y-%m-%d %H:%M:%S')"
     echo -e "  Mode: $([ "$QUICK_MODE" = true ] && echo 'Quick' || echo 'Full')"
@@ -1007,7 +1007,7 @@ main() {
     # 输出最终报告
     echo ""
     echo -e "${BOLD}=====================================${NC}"
-    echo -e "${BOLD}  AgentPit Deployment Test Report${NC}"
+    echo -e "${BOLD}  Flexloop Deployment Test Report${NC}"
     echo -e "${BOLD}=====================================${NC}"
     echo ""
     echo -e "Test Date: $(date '+%Y-%m-%d %H:%M:%S')"

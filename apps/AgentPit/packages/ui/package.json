@@ -1,7 +1,7 @@
 {
   "name": "@agentpit/ui",
   "version": "0.1.0",
-  "description": "AgentPit UI Component Library",
+  "description": "Flexloop UI Component Library",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -45,13 +45,7 @@
     "vitepress": "^1.4.0",
     "vue-tsc": "^3.2.6"
   },
-  "keywords": [
-    "vue",
-    "vue3",
-    "component-library",
-    "ui",
-    "tailwindcss"
-  ],
-  "author": "AgentPit Team",
+  "keywords": ["ui", "components", "vue3", "tailwindcss", "flexloop"],
+  "author": "Flexloop Team",
   "license": "MIT"
 }

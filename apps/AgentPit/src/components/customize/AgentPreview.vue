@@ -380,7 +380,7 @@ const sharePreview = () => {
               class="pt-3 border-t text-center"
               :style="{ borderColor: config.appearance.darkMode ? '#374151' : primaryColor + '15' }"
             >
-              <p class="text-[10px] opacity-40">由 AgentPit 智能体平台驱动 · 预览模式</p>
+              <p class="text-[10px] opacity-40">由 Flexloop 智能体平台驱动 · 预览模式</p>
             </footer>
           </div>
         </div>

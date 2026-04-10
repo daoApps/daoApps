@@ -1,5 +1,5 @@
 #!/bin/bash
-# AgentPit 容器初始化工具
+# Flexloop 容器初始化工具
 #
 # 用途：在首次部署或环境重置时，初始化必要的目录结构和配置
 #
@@ -9,7 +9,7 @@
 #   ./init-container.sh --clean          # 清理后重新初始化
 #   ./init-container.sh --check-only     # 仅检查不修改
 #
-# 作者：AgentPit 团队
+# 作者：Flexloop 团队
 # 版本：1.0.0
 # 日期：2026-04-10
 
@@ -64,7 +64,7 @@ print_header() {
 
 show_help() {
     cat << EOF
-AgentPit 容器初始化工具 v1.0.0
+Flexloop 容器初始化工具 v1.0.0
 
 用法: $0 [选项]
 
@@ -410,13 +410,13 @@ stop_containers() {
             fi
         else
             local containers
-            containers=$(podman ps -q --filter "name=agentpit" 2>/dev/null || true)
+            containers=$(podman ps -q --filter "name=flexloop" 2>/dev/null || true)
             if [ -n "$containers" ]; then
                 echo "$containers" | while read -r container_id; do
                     podman stop "$container_id" 2>/dev/null && print_success "已停止容器: ${container_id:0:12}"
                 done
             else
-                print_info "没有找到 AgentPit 相关的运行容器"
+                print_info "没有找到 Flexloop 相关的运行容器"
             fi
         fi
     else
@@ -527,7 +527,7 @@ main() {
 
     echo ""
     echo -e "${CYAN}╔════════════════════════════════════════╗${NC}"
-    echo -e "${CYAN}║     AgentPit 容器初始化工具 v1.0.0     ║${NC}"
+    echo -e "${CYAN}║     Flexloop 容器初始化工具 v1.0.0     ║${NC}"
     echo -e "${CYAN}╚════════════════════════════════════════╝${NC}"
     echo ""
 

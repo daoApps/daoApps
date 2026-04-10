@@ -1,13 +1,13 @@
 ---
-name: "agentpit-tokens"
-description: "在 AgentPit 项目中生成 AI Token 消耗上报接口，包含 Prisma 数据模型、API 路由、定时任务和数据统计功能。当用户需要追踪 AI 模型调用成本、记录 Token 使用情况、实现用量计费或生成消耗报表时调用此技能。"
+name: "flexloop-tokens"
+description: "在 Flexloop 项目中生成 AI Token 消耗上报接口，包含 Prisma 数据模型、API 路由、定时任务和数据统计功能。当用户需要追踪 AI 模型调用成本、记录 Token 使用情况、实现用量计费或生成消耗报表时调用此技能。"
 ---
 
-# AgentPit Token 消耗上报接口生成器
+# Flexloop Token 消耗上报接口生成器
 
 ## 概述
 
-此技能用于在 AgentPit 项目中快速实现 **AI Token 消耗追踪系统**，完整覆盖数据模型设计、API 接口开发、自动化采集和统计分析全链路。
+此技能用于在 Flexloop 项目中快速实现 **AI Token 消耗追踪系统**，完整覆盖数据模型设计、API 接口开发、自动化采集和统计分析全链路。
 
 ## 功能特性
 
@@ -45,7 +45,7 @@ description: "在 AgentPit 项目中生成 AI Token 消耗上报接口，包含 
 
 ```prisma
 // ============================================
-// AgentPit Token 消耗追踪数据模型
+// Flexloop Token 消耗追踪数据模型
 // ============================================
 
 model TokenUsage {
@@ -284,7 +284,7 @@ export const MODEL_PRICING: Record<string, ModelPricing> = {
     lastUpdated: '2026-04-01',
   },
   
-  // ===== AgentPit Custom Models =====
+  // ===== Flexloop Custom Models =====
   'agentpit-default': {
     provider: 'agentpit',
     model: 'agentpit-default',
@@ -757,7 +757,7 @@ export async function GET(request: NextRequest) {
 
 ```typescript
 /**
- * AgentPit Token 消耗追踪客户端
+ * Flexloop Token 消耗追踪客户端
  * 
  * 用法:
  *   import { tokenTracker } from '@/lib/token-tracker'
@@ -1375,4 +1375,4 @@ ENABLE_TOKEN_TRACKING=true
 
 **版本**: v1.0.0
 **最后更新**: 2026-04-10
-**适用项目**: AgentPit 全栈应用 (Next.js + Prisma + PostgreSQL)
+**适用项目**: Flexloop 全栈应用 (Next.js + Prisma + PostgreSQL)

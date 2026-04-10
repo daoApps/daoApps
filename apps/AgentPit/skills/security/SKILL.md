@@ -1,6 +1,6 @@
 ---
 name: "security"
-description: "AgentPit 项目安全管理工具集，提供敏感信息自动检测、安全扫描脚本、环境变量规范管理和日志脱敏函数。当需要检查代码中的凭证泄露、生成安全报告、管理环境变量或保护日志输出时调用此技能。"
+description: "Flexloop 项目安全管理工具集，提供敏感信息自动检测、安全扫描脚本、环境变量规范管理和日志脱敏函数。当需要检查代码中的凭证泄露、生成安全报告、管理环境变量或保护日志输出时调用此技能。"
 ---
 
 # Security - 安全管理工具集
@@ -143,7 +143,7 @@ function scanCodeForSecrets(code: string): Array<{
 ```bash
 #!/bin/bash
 # ============================================================
-# AgentPit Skills 安全扫描工具
+# Flexloop Skills 安全扫描工具
 # ============================================================
 #
 # 用途：检测项目中的敏感信息泄露风险
@@ -166,7 +166,7 @@ function scanCodeForSecrets(code: string): Array<{
 #   1 - 发现警告（--strict 时也视为失败）
 #   2 - 发现严重问题
 #
-# 作者: AgentPit Security Team
+# 作者: Flexloop Security Team
 # 版本: v1.0.0
 # 最后更新: 2026-04-10
 # ============================================================
@@ -234,7 +234,7 @@ log_error() {
 
 show_help() {
     cat << 'EOF'
-AgentPit Security Scanner v1.0.0
+Flexloop Security Scanner v1.0.0
 
 用法:
   security-scan.sh [选项] [目录]
@@ -371,11 +371,11 @@ generate_report() {
     local report_file="${TARGET_DIR%/}/security-scan-report-$(date +%Y%m%d-%H%M%S).md"
     
     cat > "$report_file" << EOF
-# AgentPit Security Scan Report
+# Flexloop Security Scan Report
 
 **扫描时间**: $(date '+%Y-%m-%d %H:%M:%S')  
 **扫描目录**: $(cd "$TARGET_DIR" && pwd)  
-**扫描工具**: AgentPit Security Scanner v1.0.0  
+**扫描工具**: Flexloop Security Scanner v1.0.0  
 
 ---
 
@@ -502,7 +502,7 @@ main() {
     
     echo ""
     echo "========================================="
-    echo "  AgentPit Security Scanner v1.0.0"
+    echo "  Flexloop Security Scanner v1.0.0"
     echo "========================================="
     echo ""
     log_info "扫描目标: $TARGET_DIR"
@@ -801,7 +801,7 @@ secureLogger.log('User login:', { token: 'abc123', userId: 123 })
 #### 命名约定
 - 使用大写字母和下划线：`MY_VARIABLE_NAME`
 - 按功能分组前缀：
-  - `AGENTPIT_*` - AgentPit 平台相关
+  - `FLEXLOOP_*` - Flexloop 平台相关
   - `DATABASE_*` - 数据库连接
   - `OAUTH_*` - OAuth 认证
   - `FEATURE_*` - 功能开关
@@ -995,8 +995,8 @@ export function safeLog(...args: any[]) {
 
 - **版本**: v1.0.0
 - **最后更新**: 2026-04-10
-- **维护者**: AgentPit Security Team
-- **许可证**: 与 AgentPit 项目保持一致
+- **维护者**: Flexloop Security Team
+- **许可证**: 与 Flexloop 项目保持一致
 
 ---
 

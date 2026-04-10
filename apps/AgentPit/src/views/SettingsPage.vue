@@ -21,7 +21,7 @@ const settingsMenu = [
 const versionInfo = {
   version: 'v3.0.0-vue3-rewrite',
   releaseDate: '2026-04-10',
-  team: 'AgentPit 开发团队',
+  team: 'Flexloop 开发团队',
   license: 'MIT License'
 };
 </script>
@@ -98,7 +98,7 @@ const versionInfo = {
 
             <!-- 关于 -->
             <div v-if="activeSection === 'about'" class="space-y-8">
-              <h3 class="text-lg font-bold text-gray-900 dark:text-white">ℹ️ 关于 AgentPit</h3>
+              <h3 class="text-lg font-bold text-gray-900 dark:text-white">ℹ️ 关于 Flexloop</h3>
 
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div

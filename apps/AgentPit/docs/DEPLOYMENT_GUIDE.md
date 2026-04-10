@@ -1,11 +1,11 @@
-# AgentPit 部署指南
+# Flexloop 部署指南
 
 ## 1. 环境配置
 
 ### 服务器环境
 - **操作系统**：Debian 12 (bookworm)
 - **IP地址**：34.126.124.215
-- **域名**：pagent.agentpit.io
+- **域名**：pagent.flexloop.tech
 - **已安装软件**：
   - Node.js 20.20.2
   - npm 10.8.2
@@ -34,18 +34,18 @@ npm run build
 ### 2.3 上传项目文件
 ```bash
 # 上传构建好的dist目录
-scp -i "C:\Users\xinzo\.ssh\id_rsa_google_longterm" -r dist a1@34.126.124.215:~/agentpit/
+scp -i "C:\Users\xinzo\.ssh\id_rsa_google_longterm" -r dist a1@34.126.124.215:~/flexloop/
 ```
 
 ### 2.4 配置Nginx
 ```bash
 # 创建Nginx配置文件
-sudo bash -c "cat > /etc/nginx/sites-available/pagent.agentpit.io <<EOF
+sudo bash -c "cat > /etc/nginx/sites-available/pagent.flexloop.tech <<EOF
 server {
     listen 80;
-    server_name pagent.agentpit.io;
+    server_name pagent.flexloop.tech;
     
-    root /home/a1/agentpit/dist;
+    root /home/a1/flexloop/dist;
     index index.html;
     
     location / {
@@ -55,7 +55,7 @@ server {
 EOF"
 
 # 启用配置文件
-sudo ln -sf /etc/nginx/sites-available/pagent.agentpit.io /etc/nginx/sites-enabled/
+sudo ln -sf /etc/nginx/sites-available/pagent.flexloop.tech /etc/nginx/sites-enabled/
 
 # 测试Nginx配置
 sudo nginx -t
@@ -65,13 +65,13 @@ sudo systemctl restart nginx
 ```
 
 ### 2.5 配置域名解析
-- **A记录**：pagent.agentpit.io → 34.126.124.215
+- **A记录**：pagent.flexloop.tech → 34.126.124.215
 - **TTL**：3600秒
 
 ### 2.6 实现SSL证书
 ```bash
 # 申请Let's Encrypt证书
-sudo certbot --nginx -d pagent.agentpit.io --non-interactive --agree-tos --email admin@agentpit.io
+sudo certbot --nginx -d pagent.flexloop.tech --non-interactive --agree-tos --email admin@flexloop.tech
 
 # 设置自动续期
 sudo crontab -l | grep -q 'certbot renew' || echo '0 12 * * * /usr/bin/certbot renew --quiet' | sudo crontab -
@@ -81,9 +81,9 @@ sudo crontab -l | grep -q 'certbot renew' || echo '0 12 * * * /usr/bin/certbot r
 
 ### 3.1 域名解析测试
 ```bash
-nslookup pagent.agentpit.io
+nslookup pagent.flexloop.tech
 # 输出：
-# Name:    pagent.agentpit.io
+# Name:    pagent.flexloop.tech
 # Address:  34.126.124.215
 ```
 
@@ -102,7 +102,7 @@ sudo netstat -tulpn | grep :80
 curl -s -L http://localhost
 
 # 外部访问
-curl -s -L http://pagent.agentpit.io
+curl -s -L http://pagent.flexloop.tech
 ```
 
 ## 4. 遇到的问题及解决方案
@@ -147,7 +147,7 @@ bash deploy.sh
 
 ## 7. 技术支持
 
-- **邮箱**：admin@agentpit.io
+- **邮箱**：admin@flexloop.tech
 - **GitHub**：https://github.com/daoApps/daoApps
 
 ---

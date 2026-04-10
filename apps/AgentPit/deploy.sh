@@ -1,10 +1,10 @@
 #!/bin/bash
 
-# AgentPit Deployment Script
+# Flexloop Deployment Script
 
 set -e
 
-echo "=== AgentPit Deployment Started ==="
+echo "=== Flexloop Deployment Started ==="
 echo ""
 
 # Server information
@@ -97,12 +97,12 @@ echo "✓ Auto-renewal configured"
 echo ""
 
 echo "11. Testing deployment..."
-if curl -s -L "http://$DOMAIN" | grep -q "AgentPit"; then
+if curl -s -L "http://$DOMAIN" | grep -q "Flexloop"; then
     echo "✓ Website is accessible"
 else
     echo "✗ Website is not accessible"
 fi
 echo ""
 
-echo "=== AgentPit Deployment Completed ==="
+echo "=== Flexloop Deployment Completed ==="
 echo "Website: https://$DOMAIN"

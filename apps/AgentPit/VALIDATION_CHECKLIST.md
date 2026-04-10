@@ -1,4 +1,4 @@
-# AgentPit Podman 部署验证清单
+# Flexloop Podman 部署验证清单
 
 ## 使用说明
 - 本清单用于验证部署是否成功
@@ -157,7 +157,7 @@
 - [ ] **页面标题正确**
   - 检查浏览器标签页标题
   - 预期值：与 `index.html` 中 `<title>` 一致
-  - 例如："AgentPit - AI Agent Platform"
+  - 例如："Flexloop - 柔性循环智能平台"
 
 - [ ] **所有导航链接可点击**
   - 测试每个导航菜单项

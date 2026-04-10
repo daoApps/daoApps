@@ -110,7 +110,7 @@ const removeMembershipFeature = (levelIndex: number, featureIndex: number) => {
 
 const emitUpdate = () => {
   emit('update:modelValue', {
-    mode: mode.value as any,
+    mode: mode.value as 'free' | 'subscription' | 'payPerUse' | 'membership',
     pricing: { ...pricing.value, trialDays: trialDays.value },
     membershipLevels: mode.value === 'membership' ? [...membershipLevels.value] : undefined,
     serviceLimits: { ...serviceLimits.value },
@@ -149,7 +149,7 @@ watch(
               ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 shadow-sm'
               : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
           "
-          @click="mode = opt.value as any"
+          @click="mode = opt.value as 'free' | 'subscription' | 'payPerUse' | 'membership'"
         >
           <span class="text-2xl block mb-1.5">{{ opt.icon }}</span>
           <span class="text-sm font-semibold text-gray-800 dark:text-gray-200 block">{{

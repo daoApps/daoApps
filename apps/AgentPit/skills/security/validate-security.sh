@@ -1,6 +1,6 @@
 #!/bin/bash
 # ============================================================
-# AgentPit Skills 安全验证工具 (Quick Validation)
+# Flexloop Skills 安全验证工具 (Quick Validation)
 # ============================================================
 #
 # 用途：快速验证 Skills 文件中是否包含明文敏感凭证
@@ -46,7 +46,7 @@ log_info() { echo -e "${BLUE}[ℹ️  INFO]${NC} $1"; }
 
 show_help() {
     cat << 'EOF'
-AgentPit Security Validator v1.0.0
+Flexloop Security Validator v1.0.0
 
 用法:
   validate-security.sh [选项] [目录]
@@ -257,7 +257,7 @@ main() {
 
     echo ""
     echo "========================================="
-    echo "  AgentPit Security Validator v1.0.0"
+    echo "  Flexloop Security Validator v1.0.0"
     echo "========================================="
     echo ""
     log_info "目标目录: $(cd "$TARGET_DIR" 2>/dev/null && pwd || echo "$TARGET_DIR")"

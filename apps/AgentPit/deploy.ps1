@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    AgentPit Vue3 应用部署脚本（PowerShell 版本）
+    Flexloop Vue3 应用部署脚本（PowerShell 版本）
     用于 Podman 容器化部署
 
 .DESCRIPTION
@@ -40,7 +40,7 @@
 
 .NOTES
     文件名:     deploy.ps1
-    作者:       AgentPit Team
+    作者:       Flexloop Team
     兼容性:     PowerShell 5.1+ (Windows 10/11) 和 PowerShell 7+
 #>
 
@@ -149,7 +149,7 @@ function Write-Separator {
 # ============================================
 function Show-Help {
     Write-Host ""
-    Write-ColorOutput -Message "AgentPit 部署脚本帮助 (PowerShell)" -ForegroundColor Green
+    Write-ColorOutput -Message "Flexloop 部署脚本帮助 (PowerShell)" -ForegroundColor Green
     Write-Host ""
     Write-Host "用法: .\deploy.ps1 [-选项] [-Command 命令]"
     Write-Host ""
@@ -666,7 +666,7 @@ function Invoke-Deployment {
 
     Write-Host ""
     Write-ColorOutput -Message "============================================" -ForegroundColor Green
-    Write-ColorOutput -Message "     AgentPit Vue3 应用自动部署脚本       " -ForegroundColor Green
+    Write-ColorOutput -Message "     Flexloop Vue3 应用自动部署脚本       " -ForegroundColor Green
     Write-ColorOutput -Message "============================================" -ForegroundColor Green
     Write-Host ""
 

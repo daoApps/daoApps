@@ -1,5 +1,5 @@
 #!/bin/bash
-# AgentPit 应用健康检查工具
+# Flexloop 应用健康检查工具
 #
 # 用途：检查应用健康状态，用于监控和 CI/CD 验证
 #
@@ -11,7 +11,7 @@
 #   ./healthcheck.sh -v                  # 详细模式
 #   ./healthcheck.sh -h                  # 显示帮助
 #
-# 作者：AgentPit 团队
+# 作者：Flexloop 团队
 # 版本：1.0.0
 # 日期：2026-04-10
 
@@ -68,7 +68,7 @@ print_verbose() {
 
 show_help() {
     cat << EOF
-AgentPit 应用健康检查工具 v1.0.0
+Flexloop 应用健康检查工具 v1.0.0
 
 用法: $0 [选项]
 
@@ -340,7 +340,7 @@ main() {
     done
 
     print_info "========================================="
-    print_info "  AgentPit 健康检查工具 v1.0.0"
+    print_info "  Flexloop 健康检查工具 v1.0.0"
     print_info "========================================="
     print_info ""
 

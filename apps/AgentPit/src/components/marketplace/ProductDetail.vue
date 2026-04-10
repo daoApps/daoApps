@@ -231,7 +231,7 @@ const handleBuyNow = () => {
                   viewBox="0 0 20 20"
                 >
                   <path
-                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07-3.292c-.784.57-1.838-.197-1.539-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00-.951-.69l1.07-3.292z"
                   />
                 </svg>
               </template>
@@ -253,7 +253,7 @@ const handleBuyNow = () => {
               :key="tag"
               :class="[
                 'px-2.5 py-1 text-xs font-medium rounded-full',
-                tagConfig[tag]?.className || 'bg-gray-100 text-gray-600'
+                (tagConfig[tag]?.className || 'bg-gray-100 text-gray-600')
               ]"
             >
               {{ tagConfig[tag]?.text || tag }}
@@ -308,7 +308,7 @@ const handleBuyNow = () => {
               @input="(e) => updateQuantity(parseInt((e.target as HTMLInputElement).value) || 1)"
             />
             <button
-              :disabled="quantity >= product.stock"
+              :disabled="product && quantity >= product.stock"
               class="w-10 h-10 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
               @click="updateQuantity(quantity + 1)"
             >
@@ -325,7 +325,7 @@ const handleBuyNow = () => {
           <p class="text-xs text-gray-500 dark:text-gray-400">库存 {{ product.stock }} 件</p>
         </div>
 
-        <div class="flex gap-3">
+        <div class="flex gap-3 pt-4">
           <button
             class="flex-1 py-3.5 px-6 bg-primary-500 text-white font-semibold rounded-xl hover:bg-primary-600 active:scale-[0.98] transition-all shadow-lg shadow-primary-500/25 flex items-center justify-center gap-2"
             @click="handleAddToCart"
@@ -335,201 +335,157 @@ const handleBuyNow = () => {
                 stroke-linecap="round"
                 stroke-linejoin="round"
                 stroke-width="2"
-                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"
+                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L6.2 7H9M7 13l-1.6 8H20v1M16 6a3 3 0 01-3 3H5a3 3 0 00-6z"
               />
             </svg>
             加入购物车
           </button>
           <button
-            class="flex-1 py-3.5 px-6 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-xl hover:from-orange-600 hover:to-red-600 active:scale-[0.98] transition-all shadow-lg flex items-center justify-center gap-2"
+            class="flex-1 py-3.5 px-6 bg-gradient-to-r from-primary-500 to-purple-600 text-white font-semibold rounded-xl hover:from-primary-600 hover:to-purple-700 active:scale-[0.98] transition-all shadow-lg shadow-purple-500/25 flex items-center justify-center"
             @click="handleBuyNow"
           >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M13 10V3L4 14h7v7l9-11h-7z"
-              />
-            </svg>
             立即购买
           </button>
         </div>
 
-        <div class="border border-gray-200 dark:border-gray-700 rounded-xl p-4 space-y-4">
-          <div class="flex items-center gap-3">
+        <!-- Seller Info -->
+        <div class="border border-gray-200 dark:border-gray-700 rounded-xl p-4">
+          <div class="flex items-center gap-4">
             <img :src="product.seller.avatar" alt="" class="w-12 h-12 rounded-full" />
-            <div class="flex-1 min-w-0">
+            <div class="flex-1">
               <div class="flex items-center gap-2">
-                <span class="font-semibold text-gray-900 dark:text-white">{{
-                  product.seller.storeName
-                }}</span>
+                <h4 class="font-semibold text-gray-900 dark:text-white">{{ product.seller.storeName }}</h4>
                 <span
                   v-if="product.seller.isVerified"
-                  class="w-4 h-4 bg-primary-500 rounded-full flex items-center justify-center"
+                  class="px-2 py-0.5 text-xs bg-blue-500 text-white rounded-full">✓ 认证</span>
+              </div>
+              <p class="text-sm text-gray-500 dark:text-gray-400 mt-0.5">{{ product.seller.description }}</p>
+            </div>
+            <button
+              class="px-4 py-1.5 text-sm border border-blue-500 text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
+            >
+              关注店铺
+            </button>
+          </div>
+          <div class="flex items-center gap-6 mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
+            <div class="text-center">
+            <div class="text-base font-bold text-gray-900 dark:text-white">
+              {{ product.seller.rating }}
+            </div>
+            <div class="flex items-center justify-center">
+              <template v-for="star in 5" :key="star">
+                <svg
+                  class="w-3 h-3"
+                  :class="
+                    star <= Math.floor(product.seller.rating)
+                      ? 'text-yellow-400'
+                      : star <= product.seller.rating
+                        ? 'text-yellow-400'
+                        : 'text-gray-300'
+                  "
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
                 >
-                  <svg class="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                      fill-rule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clip-rule="evenodd"
-                    />
-                  </svg>
-                </span>
-              </div>
-              <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5 line-clamp-1">
-                {{ product.seller.description }}
-              </p>
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07-3.292c-.784.57-1.838-.197-1.539-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00-.951-.69l1.07-3.292z"
+                  />
+                </svg>
+              </template>
             </div>
-            <div class="text-right">
-              <div class="flex items-center gap-1 justify-end">
-                <div class="flex items-center gap-0.5">
-                  <template v-for="star in 5" :key="star">
-                    <svg
-                      class="w-3.5 h-3.5"
-                      :class="
-                        star <= Math.floor(product.seller.rating)
-                          ? 'text-yellow-400'
-                          : star <= product.seller.rating
-                            ? 'text-yellow-400'
-                            : 'text-gray-300'
-                      "
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-                      />
-                    </svg>
-                  </template>
-                </div>
-                <span class="text-sm font-medium text-gray-900 dark:text-white">{{
-                  product.seller.rating
-                }}</span>
-              </div>
-              <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                {{ product.seller.followerCount.toLocaleString }} 关注者
-              </p>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">评分</p>
+          </div>
+          <div class="text-center">
+            <div class="text-base font-bold text-gray-900 dark:text-white">
+              {{ product.seller.followerCount.toLocaleString }}
             </div>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">关注者</p>
           </div>
-          <div class="flex gap-2">
-            <button
-              class="flex-1 py-2 border border-primary-500 text-primary-500 rounded-lg text-sm font-medium hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors"
-            >
-              进店逛逛
-            </button>
-            <button
-              class="py-2 px-4 border border-pink-500 text-pink-500 rounded-lg text-sm font-medium hover:bg-pink-50 dark:hover:bg-pink-900/20 transition-colors"
-            >
-              + 关注
-            </button>
+          <div class="text-center">
+            <div class="text-base font-bold text-gray-900 dark:text-white">
+              {{ product.seller.productCount }}
+            </div>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">在售商品</p>
           </div>
+        </div>
         </div>
       </div>
     </div>
 
-    <div class="border-b border-gray-200 dark:border-gray-700">
-      <div class="flex gap-8">
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+      <div class="border-b border-gray-200 dark:border-gray-700 flex">
         <button
-          :class="[
-            'pb-4 text-sm font-medium relative transition-colors',
+          class="px-6 py-3 text-sm font-medium transition-colors"
+          :class="
             activeTab === 'detail'
-              ? 'text-primary-600 dark:text-primary-400'
-              : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
-          ]"
+              ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400'
+              : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-700/50'
+          "
           @click="activeTab = 'detail'"
         >
           商品详情
-          <span
-            v-if="activeTab === 'detail'"
-            class="absolute bottom-0 left-0 right-0 h-0.5 bg-primary-600 dark:bg-primary-400 rounded-full"
-          />
         </button>
         <button
-          :class="[
-            'pb-4 text-sm font-medium relative transition-colors',
+          class="px-6 py-3 text-sm font-medium transition-colors"
+          :class="
             activeTab === 'reviews'
-              ? 'text-primary-600 dark:text-primary-400'
-              : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
-          ]"
+              ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400'
+              : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-700/50'
+          "
           @click="activeTab = 'reviews'"
         >
-          用户评价 ({{ reviews.length }})
-          <span
-            v-if="activeTab === 'reviews'"
-            class="absolute bottom-0 left-0 right-0 h-0.5 bg-primary-600 dark:bg-primary-400 rounded-full"
-          />
+          用户评价({{ reviews.length }})
         </button>
       </div>
-    </div>
 
-    <div v-if="activeTab === 'detail'" class="space-y-6">
-      <div
-        class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6"
-      >
-        <h3 class="font-semibold text-gray-900 dark:text-white mb-4">规格参数</h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div v-if="activeTab === 'detail'" class="p-6">
+        <p>{{ product.description }}</p>
+        <div class="grid grid-cols-2 gap-x-6 gap-y-2 mt-6">
           <div
-            v-for="(spec, idx) in product.specs"
-            :key="idx"
-            class="flex py-2 border-b border-gray-100 dark:border-gray-700 last:border-0"
+            v-for="(value, key in product.specs"
+            :key="key"
+            class="flex py-1"
           >
-            <span class="text-sm text-gray-500 dark:text-gray-400 w-28 flex-shrink-0">{{
-              spec.label
-            }}</span>
-            <span class="text-sm text-gray-900 dark:text-white font-medium">{{ spec.value }}</span>
+            <span class="text-sm text-gray-500 dark:text-gray-400 w-1/3">{{ key }}：</span>
+            <span class="text-sm text-gray-900 dark:text-white">{{ value }}</span>
           </div>
+        </div>
+        <div class="mt-6 grid grid-cols-3 gap-4">
+          <img
+            v-for="img in product.images.slice(1)"
+            :key="img"
+            :src="img"
+            alt=""
+            class="w-full rounded-lg"
+          />
         </div>
       </div>
 
-      <div
-        class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6"
-      >
-        <h3 class="font-semibold text-gray-900 dark:text-white mb-4">商品介绍</h3>
-        <div class="prose prose-sm max-w-none text-gray-700 dark:text-gray-300 leading-relaxed">
-          <p>{{ product.description }}</p>
-          <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-            <img
-              v-for="(img, idx) in product.images.slice(1)"
-              :key="idx"
-              :src="img"
-              alt=""
-              class="rounded-lg w-full"
-            />
-          </div>
+      <div v-if="activeTab === 'reviews'" class="p-0">
+        <ReviewSystem v-else :product-id="product.id" :reviews="reviews" />
+        <div v-if="reviews.length === 0" class="py-12 text-center">
+          <p class="text-gray-500 dark:text-gray-400">暂无评价</p>
         </div>
       </div>
     </div>
 
-    <ReviewSystem v-else :product-id="product.id" :reviews="reviews" />
-
-    <section
-      v-if="relatedProducts.length > 0"
-      class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700"
-    >
-      <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">相关推荐</h2>
+    <div v-if="relatedProducts.length > 0">
+      <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">猜你喜欢</h3>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div
-          v-for="relProduct in relatedProducts"
-          :key="relProduct.id"
-          class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden cursor-pointer hover:shadow-md transition-shadow group"
-          @click="router.push(`/marketplace/product/${relProduct.id}`)"
+          v-for="p in relatedProducts"
+          :key="p.id"
+          class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow group cursor-pointer"
+          @click="router.push(`/marketplace/product/${p.id}"
         >
-          <div class="aspect-square overflow-hidden bg-gray-100 dark:bg-gray-700">
-            <img
-              :src="relProduct.images[0]"
-              :alt="relProduct.name"
-              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-            />
+          <div class="aspect-square bg-gray-100 dark:bg-gray-700">
+            <img :src="p.images[0]" alt="" class="w-full h-full object-cover" />
           </div>
-          <div class="p-3">
-            <h4 class="text-sm font-medium text-gray-900 dark:text-white line-clamp-2 mb-2">
-              {{ relProduct.name }}
-            </h4>
-            <span class="text-base font-bold text-red-500">¥{{ relProduct.price }}</span>
+          <div class="p-4">
+            <h4 class="font-semibold text-gray-900 dark:text-white line-clamp-1">{{ p.name }}</h4>
+            <p class="mt-1 text-red-500 font-bold">¥{{ p.price }}</p>
           </div>
         </div>
       </div>
-    </section>
+    </div>
   </div>
 </template>

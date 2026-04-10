@@ -29,7 +29,8 @@ const handleKeyDown = (event: KeyboardEvent) => {
   }
 
   // ?: Show shortcuts
-  if (event.key === '?' && !(event.target as HTMLElement)?.closest('input, textarea')) {
+  const target = event.target as HTMLElement;
+  if (event.key === '?' && !target?.closest('input, textarea')) {
     showShortcuts.value = !showShortcuts.value;
   }
 
@@ -123,7 +124,7 @@ const statusInfo = computed(() => ({
   label: isRunning.value ? '运行中' : '就绪',
   agentsCount: selectedAgents.value.length,
   sessionTime: currentSession.value
-    ? formatDuration(Date.now() - parseInt(currentSession.value.split('-')[1]))
+    ? formatDuration(Date.now() - parseInt(currentSession.value.split('-')[1]!))
     : '00:00:00'
 }));
 

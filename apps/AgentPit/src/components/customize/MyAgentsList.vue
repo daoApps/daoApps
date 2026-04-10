@@ -18,7 +18,7 @@ const deleteTargetId = ref<string | null>(null);
 const currentPage = ref(1);
 const pageSize = 9;
 
-const debouncedSearch = useDebounce(() => searchQuery.value, 300);
+const debouncedSearch = useDebounce(searchQuery, 300);
 
 const statusOptions = [
   { value: 'all', label: '全部' },

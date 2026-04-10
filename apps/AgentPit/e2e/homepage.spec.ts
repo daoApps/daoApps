@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test'
 test.describe('E2E-1: Homepage Browsing and Navigation', () => {
   test('renders hero section with platform title', async ({ page }) => {
     await page.goto('/')
-    await expect(page.locator('h1, h2')).toContainText(/AgentPit|智能体/i)
+    await expect(page.locator('h1, h2')).toContainText(/Flexloop|玄环|柔/i)
   })
 
   test('displays all module cards on homepage', async ({ page }) => {

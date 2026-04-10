@@ -78,7 +78,11 @@ const kpiCards = [
 ];
 
 const getTrendData = () => {
-  const ranges: Record<string, typeof data.value.callTrend> = {
+  interface TrendData {
+    date: string;
+    value: number;
+  }
+  const ranges: Record<string, TrendData[]> = {
     week: data.value.callTrend,
     month: [
       ...data.value.callTrend,

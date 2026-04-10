@@ -1,16 +1,16 @@
 # ============================================
-# AgentPit Vue3 前端应用 - 多阶段构建
+# Flexloop Vue3 前端应用 - 多阶段构建
 # ============================================
 #
 # 多平台构建示例（使用 buildx）:
 #   # Linux amd64 + arm64 双架构构建
-#   podman build --platform linux/amd64,linux/arm64 -t agentpit:latest .
+#   podman build --platform linux/amd64,linux/arm64 -t flexloop:latest .
 #
 #   # 使用 buildx 进行多平台构建并推送到仓库
-#   docker buildx build --platform linux/amd64,linux/arm64 -t your-registry/agentpit:latest --push .
+#   docker buildx build --platform linux/amd64,linux/arm64 -t your-registry/flexloop:latest --push .
 #
 #   # 单平台构建（默认）
-#   podman build -t agentpit:latest .
+#   podman build -t flexloop:latest .
 # ============================================
 
 # ============================================
@@ -20,9 +20,9 @@ FROM node:20-alpine AS build
 
 ARG NODE_VERSION=20
 
-LABEL org.opencontainers.image.title="AgentPit Build Stage"
-LABEL org.opencontainers.image.description="Build stage for AgentPit Vue3 frontend application"
-LABEL org.opencontainers.image.source="https://github.com/daoCollective/AgentPit"
+LABEL org.opencontainers.image.title="Flexloop Build Stage"
+LABEL org.opencontainers.image.description="Build stage for Flexloop Vue3 frontend application"
+LABEL org.opencontainers.image.source="https://github.com/daoCollective/Flexloop"
 LABEL org.opencontainers.image.version="1.0.0"
 LABEL org.opencontainers.image.licenses="MIT"
 
@@ -52,11 +52,11 @@ RUN npm run build \
 # ============================================
 FROM nginx:alpine AS production
 
-LABEL maintainer="AgentPit Team"
-LABEL description="AgentPit Vue3 前端应用"
+LABEL maintainer="Flexloop Team"
+LABEL description="Flexloop Vue3 前端应用"
 LABEL version="1.0.0"
-LABEL org.opencontainers.image.title="AgentPit Production"
-LABEL org.opencontainers.image.description="Production image for AgentPit Vue3 frontend with Nginx"
+LABEL org.opencontainers.image.title="Flexloop Production"
+LABEL org.opencontainers.image.description="Production image for Flexloop Vue3 frontend with Nginx"
 LABEL org.opencontainers.image.version="1.0.0"
 
 RUN apk add --no-cache curl

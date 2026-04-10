@@ -74,13 +74,13 @@ const selectedAbilityConfig = computed(() => {
 
 const isDependencyMet = (abilityId: string): boolean => {
   const ability = allAbilities.find((a) => a.id === abilityId);
-  if (!ability?.dependencies?.length) return true;
+  if (!ability || !ability.dependencies || !ability.dependencies.length) return true;
   return ability.dependencies.every((dep) => enabledAbilities.value[dep]?.enabled === true);
 };
 
 const getUnmetDependencies = (abilityId: string): string[] => {
   const ability = allAbilities.find((a) => a.id === abilityId);
-  if (!ability?.dependencies) return [];
+  if (!ability || !ability.dependencies) return [];
   return ability.dependencies.filter((dep) => !enabledAbilities.value[dep]?.enabled);
 };
 
@@ -305,7 +305,7 @@ watch(selectedAbilityId, () => {
                 <div v-if="enabledAbilities[ability.id]?.enabled" class="w-20 flex-shrink-0 pt-1">
                   <input
                     type="range"
-                    :value="enabledAbilities[ability.id].proficiency"
+                    :value="enabledAbilities[ability.id]!.proficiency"
                     min="0"
                     max="100"
                     step="5"
@@ -320,7 +320,7 @@ watch(selectedAbilityId, () => {
                     @click.stop
                   />
                   <p class="text-[10px] text-right text-gray-400 mt-0.5">
-                    {{ enabledAbilities[ability.id].proficiency }}%
+                    {{ enabledAbilities[ability.id]!.proficiency }}%
                   </p>
                 </div>
               </div>

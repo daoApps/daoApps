@@ -1,13 +1,13 @@
 #!/bin/bash
 set -euo pipefail
 
-# AgentPit 自动化部署脚本
+# Flexloop 自动化部署脚本
 
 # 配置参数
 SERVER_IP="34.126.124.215"
 SERVER_USER="a1"
 SSH_KEY="C:\Users\xinzo\.ssh\id_rsa_google_longterm"
-DOMAIN="pagent.agentpit.io"
+DOMAIN="pagent.flexloop.tech"
 PROJECT_PATH="$(pwd)"
 LOG_FILE="logs/deploy.log"
 
@@ -147,10 +147,10 @@ upload_files() {
     log "INFO" "上传项目文件..."
     
     # 创建远程目录
-    ssh -i "$SSH_KEY" "$SERVER_USER@$SERVER_IP" "mkdir -p agentpit"
+    ssh -i "$SSH_KEY" "$SERVER_USER@$SERVER_IP" "mkdir -p flexloop"
     
     # 上传dist目录
-    if scp -i "$SSH_KEY" -r "$PROJECT_PATH/dist" "$SERVER_USER@$SERVER_IP:~/agentpit/"; then
+    if scp -i "$SSH_KEY" -r "$PROJECT_PATH/dist" "$SERVER_USER@$SERVER_IP:~/flexloop/"; then
         log "INFO" "文件上传成功"
     else
         log "ERROR" "文件上传失败"
@@ -170,7 +170,7 @@ server {
     listen 80;
     server_name $DOMAIN;
     
-    root /home/$SERVER_USER/agentpit/dist;
+    root /home/$SERVER_USER/flexloop/dist;
     index index.html;
     
     location / {
@@ -206,7 +206,7 @@ request_ssl() {
     log "INFO" "申请SSL证书..."
     
     # 尝试申请证书
-    if ssh -i "$SSH_KEY" "$SERVER_USER@$SERVER_IP" "sudo certbot --nginx -d $DOMAIN --non-interactive --agree-tos --email admin@agentpit.io"; then
+    if ssh -i "$SSH_KEY" "$SERVER_USER@$SERVER_IP" "sudo certbot --nginx -d $DOMAIN --non-interactive --agree-tos --email admin@flexloop.tech"; then
         log "INFO" "SSL证书申请成功"
         
         # 设置自动续期
@@ -244,7 +244,7 @@ verify_deployment() {
 
 # 主函数
 main() {
-    log "INFO" "开始部署AgentPit..."
+    log "INFO" "开始部署Flexloop..."
     
     # 检查本地环境
     if ! check_local_env; then
@@ -284,7 +284,7 @@ main() {
         log "WARNING" "部署验证失败，可能需要进一步检查"
     fi
     
-    log "INFO" "AgentPit部署完成！"
+    log "INFO" "Flexloop部署完成！"
     log "INFO" "网站地址: http://$DOMAIN"
     
     return 0

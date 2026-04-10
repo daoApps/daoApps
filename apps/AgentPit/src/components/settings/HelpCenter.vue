@@ -279,7 +279,7 @@ function renderMarkdown(text: string): string {
     <!-- 版本信息 -->
     <div class="mt-6 text-center text-xs text-gray-400">
       <p>{{ versionInfo.version }} · 发布于 {{ versionInfo.releaseDate }}</p>
-      <p class="mt-1">© 2026 AgentPit Team. All rights reserved.</p>
+      <p class="mt-1">© 2026 Flexloop Team. All rights reserved.</p>
     </div>
   </div>
 </template>

@@ -1,6 +1,6 @@
-# AgentPit UI 组件库
+# Flexloop UI 组件库
 
-AgentPit UI 是一个基于 Vue 3 和 Tailwind CSS 的现代化组件库，专为 AgentPit 项目设计。
+Flexloop UI 是一个基于 Vue 3 和 Tailwind CSS 的现代化组件库，专为 Flexloop 项目设计。
 
 ## 特性
 

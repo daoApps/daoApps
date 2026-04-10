@@ -1,11 +1,11 @@
-# AgentPit 自动化部署技能
+# Flexloop 自动化部署技能
 
 ## 技能信息
-- **名称**：agentpit-deploy
+- **名称**：flexloop-deploy
 - **版本**：1.0.0
-- **描述**：自动化部署AgentPit项目到指定服务器
-- **作者**：AgentPit Team
-- **邮箱**：admin@agentpit.io
+- **描述**：自动化部署Flexloop项目到指定服务器
+- **作者**：Flexloop Team
+- **邮箱**：admin@flexloop.tech
 
 ## 功能特性
 - 一键部署项目到远程服务器

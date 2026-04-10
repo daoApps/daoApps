@@ -55,8 +55,8 @@ describe('Header', () => {
   describe('基础渲染', () => {
     it('应该正确渲染 Logo', () => {
       const wrapper = createWrapper();
-      expect(wrapper.text()).toContain('AgentPit');
-      expect(wrapper.text()).toContain('智能体协作平台');
+      expect(wrapper.text()).toContain('Flexloop');
+      expect(wrapper.text()).toContain('柔性循环智能平台');
     });
 
     it('应该正确渲染导航菜单', () => {

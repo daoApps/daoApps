@@ -11,9 +11,7 @@ const messages = ref<Message[]>([...mockMessages]);
 const newMessage = ref('');
 const selectedAgentId = ref<string>('');
 const wsStatus = ref<'connected' | 'disconnected' | 'connecting'>('connected');
-const messageFilter = ref<'all' | 'request' | 'response' | 'notification' | 'warning' | 'conflict'>(
-  'all'
-);
+const messageFilter = ref<'all' | 'request' | 'response' | 'notification' | 'warning' | 'conflict'>('all');
 const messagesContainer = ref<HTMLElement | null>(null);
 
 // Simulate WebSocket connection
@@ -42,8 +40,8 @@ const simulateIncomingMessage = () => {
   const fromAgent = agents[Math.floor(Math.random() * agents.length)];
   const toAgent = agents[Math.floor(Math.random() * agents.length)];
 
-  if (fromAgent.id !== toAgent.id) {
-    const types: Array<Message['type']> = ['request', 'response', 'notification', 'warning'];
+  if (fromAgent && toAgent && fromAgent.id !== toAgent.id) {
+    const types: Array<Message['type']> = ['request', 'response', 'notification', 'warning', 'conflict'];
     const type = types[Math.floor(Math.random() * types.length)];
 
     const sampleContents: Record<string, string[]> = {
@@ -123,7 +121,7 @@ const formatDate = (timestamp: number) => {
   return date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' });
 };
 
-const messageTypeConfig = computed(() => ({
+const messageTypeConfig = computed((): Record<string, { color: string; icon: string; label: string }> => ({
   request: {
     color:
       'bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800',
@@ -156,7 +154,7 @@ const messageTypeConfig = computed(() => ({
   }
 }));
 
-const wsStatusConfig = computed(() => ({
+const wsStatusConfig = computed((): Record<string, { color: string; label: string; dot: string }> => ({
   connected: {
     color: 'text-green-500 bg-green-50 dark:bg-green-900/20',
     label: '已连接',
@@ -188,7 +186,6 @@ const sendMessage = () => {
     timestamp: Date.now(),
     sessionId: 'session-1'
   };
-
   messages.value.push(msg);
   emit('sendMessage', msg);
   newMessage.value = '';

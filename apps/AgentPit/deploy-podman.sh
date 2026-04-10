@@ -16,16 +16,15 @@ echo "检查存储空间..."
 df -h
 
 # 部署应用
-echo "\n🚀 开始部署 AgentPit..."
+echo "\n🚀 开始部署 Flexloop..."
 
 # 创建部署目录
-mkdir -p /opt/agentpit
-cd /opt/agentpit
+mkdir -p /opt/flexloop
+cd /opt/flexloop
 
 # 克隆代码
 echo "📁 克隆项目代码..."
-git clone https://github.com/daoApps/daoApps.git . || echo "⚠️  代码克隆失败，可能需要手动处理"
-cd apps/AgentPit
+git clone https://github.com/daoApps/Flexloop.git . || echo "⚠️  代码克隆失败，可能需要手动处理"
 
 # 配置环境变量
 echo "⚙️  配置环境变量..."

@@ -3,7 +3,7 @@ import type { AgentInfo, Conversation, QuickCommand, Message } from '../types/ch
 export const availableAgents: AgentInfo[] = [
   {
     id: 'agent-1',
-    name: 'AgentPit 助手',
+    name: 'Flexloop 助手',
     avatar: '🤖',
     description: '通用智能助手，擅长多领域问答'
   },
