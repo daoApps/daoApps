@@ -3,50 +3,50 @@
 ## 阶段一：基础设施准备
 
 ### 目录结构
-- [ ] 创建了 `src/services` 目录
-- [ ] 创建了 `src/services/api` 目录
-- [ ] 创建了核心配置文件：config.ts, errors.ts, cache.ts, client.ts
-- [ ] 创建了 API 服务导出入口：index.ts
+- [x] 创建了 `src/services` 目录
+- [x] 创建了 `src/services/api` 目录
+- [x] 创建了核心配置文件：config.ts, errors.ts, cache.ts, client.ts
+- [x] 创建了 API 服务导出入口：index.ts
 
 ### 环境配置
-- [ ] 配置了 `.env` 文件
-- [ ] 配置了 `.env.example` 文件
-- [ ] 验证环境变量能够正确加载
+- [x] 配置了 `.env` 文件
+- [x] 配置了 `.env.example` 文件
+- [x] 验证环境变量能够正确加载
 
 ### 核心功能
-- [ ] HTTP 客户端能够正常发送请求
-- [ ] 错误处理机制能够捕获和处理各种错误
-- [ ] 缓存管理能够正常工作
-- [ ] 支持 Mock/真实 API 切换
+- [x] HTTP 客户端能够正常发送请求
+- [x] 错误处理机制能够捕获和处理各种错误
+- [x] 缓存管理能够正常工作
+- [x] 支持 Mock/真实 API 切换
 
 ## 阶段二：P0 模块迁移
 
 ### 聊天模块 (Chat)
-- [ ] 实现了 `chat.ts` API 服务
-- [ ] 更新了 `useChatStore.ts`
-- [ ] 能够获取对话列表
-- [ ] 能够获取消息历史
-- [ ] 能够发送消息
-- [ ] 能够接收流式消息
+- [x] 实现了 `chat.ts` API 服务
+- [x] 更新了 `useChatStore.ts`
+- [x] 能够获取对话列表
+- [x] 能够获取消息历史
+- [x] 能够发送消息
+- [x] 能够接收流式消息
 
 ### 变现模块 (Monetization)
-- [ ] 实现了 `monetization.ts` API 服务
-- [ ] 更新了 `useMonetizationStore.ts`
-- [ ] 能够获取钱包余额
-- [ ] 能够获取收益数据
-- [ ] 能够获取交易历史
-- [ ] 能够发起提现
+- [x] 实现了 `monetization.ts` API 服务
+- [x] 更新了 `useMonetizationStore.ts`
+- [x] 能够获取钱包余额
+- [x] 能够获取收益数据
+- [x] 能够获取交易历史
+- [x] 能够发起提现
 
 ### 建站模块 (Sphinx)
-- [ ] 实现了 `sphinx.ts` API 服务
-- [ ] 能够获取模板列表
-- [ ] 能够预览网站
-- [ ] 能够生成网站
-- [ ] 能够发布网站
+- [x] 实现了 `sphinx.ts` API 服务
+- [x] 能够获取模板列表
+- [x] 能够预览网站
+- [x] 能够生成网站
+- [x] 能够发布网站
 
 ### 首页模块 (Home)
-- [ ] 实现了 `home.ts` API 服务
-- [ ] 能够获取模块列表
+- [x] 实现了 `home.ts` API 服务
+- [x] 能够获取模块列表
 
 ## 阶段三：P1 模块迁移
 

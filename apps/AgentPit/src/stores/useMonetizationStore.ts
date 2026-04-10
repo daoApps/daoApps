@@ -4,7 +4,9 @@ import type {
   TransactionRecord,
   RevenueDataPoint,
   Currency,
-  TransactionCategory
+  TransactionCategory,
+  TransactionType,
+  TransactionStatus
 } from '@/types/monetization';
 import { monetizationApi } from '@/services';
 
@@ -75,22 +77,23 @@ export const useMonetizationStore = defineStore('monetization', {
 
         // 从 API 获取交易历史
         const transactions = await monetizationApi.getTransactions();
-        this.transactions = transactions.map((t) => ({
+        this.transactions = transactions.map((t: { id: string; amount: number; type: string; description: string; timestamp: string; status: string }) => ({
           id: t.id,
           amount: t.amount,
-          currency: t.currency as Currency,
-          type: t.type,
-          category: 'other' as TransactionCategory,
+          type: t.type as TransactionType,
+          category: '智能体服务' as TransactionCategory,
           description: t.description,
-          timestamp: new Date(t.timestamp).getTime(),
-          status: t.status
+          timestamp: t.timestamp,
+          status: t.status as TransactionStatus
         }));
 
         // 从 API 获取收益数据
         const revenueData = await monetizationApi.getRevenue();
-        this.revenueData = revenueData.monthly.map((amount, index) => ({
-          date: new Date(new Date().getFullYear(), index, 1).getTime(),
-          amount
+        this.revenueData = revenueData.monthly.map((amount: number, index: number) => ({
+          date: new Date(new Date().getFullYear(), index, 1).toISOString(),
+          revenue: amount,
+          expenses: 0,
+          profit: amount
         }));
       } catch (error) {
         console.error('Failed to fetch wallet data:', error);
@@ -115,12 +118,11 @@ export const useMonetizationStore = defineStore('monetization', {
         this.addTransaction({
           id: transaction.id,
           amount: transaction.amount,
-          currency: transaction.currency as Currency,
-          type: 'expense',
-          category: 'withdrawal' as TransactionCategory,
+          type: 'expense' as TransactionType,
+          category: '提现' as TransactionCategory,
           description: transaction.description,
-          timestamp: new Date(transaction.timestamp).getTime(),
-          status: transaction.status
+          timestamp: transaction.timestamp,
+          status: transaction.status as TransactionStatus
         });
         
         return transaction;
@@ -128,7 +130,7 @@ export const useMonetizationStore = defineStore('monetization', {
         console.error('Failed to withdraw:', error);
         throw error;
       }
-    }
+    },
 
     updateRealtimeBalance(newBalance: number) {
       this.wallet.availableBalance = newBalance;
