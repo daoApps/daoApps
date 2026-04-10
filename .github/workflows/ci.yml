@@ -1,0 +1,62 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [20.x]
+        
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        
+    - name: Install dependencies
+      working-directory: ./apps/AgentPit
+      run: npm ci
+      
+    - name: Run Prettier check
+      working-directory: ./apps/AgentPit
+      run: npm run format:check
+      
+    - name: Run ESLint check
+      working-directory: ./apps/AgentPit
+      run: npm run lint:check
+      
+    - name: Run TypeScript type check
+      working-directory: ./apps/AgentPit
+      run: npx vue-tsc -b
+      
+    - name: Run unit tests
+      working-directory: ./apps/AgentPit
+      run: npm run test:run
+      
+    - name: Upload coverage report
+      uses: codecov/codecov-action@v4
+      with:
+        files: ./apps/AgentPit/coverage/lcov.info
+      if: success()
+      
+    - name: Build for production
+      working-directory: ./apps/AgentPit
+      run: npm run build
+      
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-artifacts
+        path: ./apps/AgentPit/dist/
+      if: success()
