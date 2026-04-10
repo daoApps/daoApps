@@ -108,4 +108,84 @@ describe('MessageInput', () => {
       }
     })
     const textarea = wrapper.find('textarea')
-    expect(textarea.attributes('disabled')).toBe
+    expect(textarea.attributes('disabled')).toBeDefined()
+    const sendButton = wrapper.findAll('button').at(-1)!
+    expect(sendButton.attributes('disabled')).toBeDefined()
+  })
+
+  it('should disable textarea and send button when isStreaming is true', async () => {
+    const wrapper = mount(MessageInput, {
+      props: {
+        modelValue: 'Test',
+        isStreaming: true
+      }
+    })
+    const textarea = wrapper.find('textarea')
+    expect(textarea.attributes('disabled')).toBeDefined()
+    const sendButton = wrapper.findAll('button').at(-1)!
+    expect(sendButton.attributes('disabled')).toBeDefined()
+  })
+
+  it('should emit attach-file event with "image" when image button is clicked', async () => {
+    const wrapper = mount(MessageInput, {
+      props: {
+        modelValue: ''
+      }
+    })
+    const buttons = wrapper.findAll('button')
+    const imageButton = buttons[0]
+    await imageButton.trigger('click')
+    expect(wrapper.emitted('attach-file')).toHaveLength(1)
+    expect(wrapper.emitted('attach-file')?.[0]).toEqual(['image'])
+  })
+
+  it('should emit attach-file event with "file" when file button is clicked', async () => {
+    const wrapper = mount(MessageInput, {
+      props: {
+        modelValue: ''
+      }
+    })
+    const buttons = wrapper.findAll('button')
+    const fileButton = buttons[1]
+    await fileButton.trigger('click')
+    expect(wrapper.emitted('attach-file')).toHaveLength(1)
+    expect(wrapper.emitted('attach-file')?.[0]).toEqual(['file'])
+  })
+
+  it('should emit attach-file event with "code" when code button is clicked', async () => {
+    const wrapper = mount(MessageInput, {
+      props: {
+        modelValue: ''
+      }
+    })
+    const buttons = wrapper.findAll('button')
+    const codeButton = buttons[2]
+    await codeButton.trigger('click')
+    expect(wrapper.emitted('attach-file')).toHaveLength(1)
+    expect(wrapper.emitted('attach-file')?.[0]).toEqual(['code'])
+  })
+
+  it('should not emit send event when isStreaming is true', async () => {
+    const wrapper = mount(MessageInput, {
+      props: {
+        modelValue: 'Test message',
+        isStreaming: true
+      }
+    })
+    const sendButton = wrapper.findAll('button').at(-1)!
+    await sendButton.trigger('click')
+    expect(wrapper.emitted('send')).toBeUndefined()
+  })
+
+  it('should not emit send event when disabled is true', async () => {
+    const wrapper = mount(MessageInput, {
+      props: {
+        modelValue: 'Test message',
+        disabled: true
+      }
+    })
+    const sendButton = wrapper.findAll('button').at(-1)!
+    await sendButton.trigger('click')
+    expect(wrapper.emitted('send')).toBeUndefined()
+  })
+})

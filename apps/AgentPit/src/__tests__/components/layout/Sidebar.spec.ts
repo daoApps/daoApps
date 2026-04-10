@@ -178,3 +178,45 @@ describe('Sidebar', () => {
     it('isMobileOpen 为 true 时应该显示移动端侧边栏', () => {
       const appStore = useAppStore()
       appStore.mobileSidebarOpen = true
+      const wrapper = createWrapper()
+      const mobileSidebar = wrapper.find('.lg:hidden')
+      expect(mobileSidebar.exists()).toBe(true)
+    })
+
+    it('isMobileOpen 为 false 时不应该显示移动端侧边栏', () => {
+      const appStore = useAppStore()
+      appStore.mobileSidebarOpen = false
+      const wrapper = createWrapper()
+      const mobileSidebar = wrapper.find('.lg:hidden')
+      expect(mobileSidebar.exists()).toBe(false)
+    })
+
+    it('点击移动端遮罩层应该调用 appStore.setMobileSidebarOpen(false)', async () => {
+      const appStore = useAppStore()
+      appStore.mobileSidebarOpen = true
+      const setMobileSidebarOpenSpy = vi.spyOn(appStore, 'setMobileSidebarOpen')
+      const wrapper = createWrapper()
+      const overlay = wrapper.find('.backdrop-blur-sm')
+      await overlay.trigger('click')
+      expect(setMobileSidebarOpenSpy).toHaveBeenCalledWith(false)
+    })
+
+    it('点击移动端关闭按钮应该调用 appStore.setMobileSidebarOpen(false)', async () => {
+      const appStore = useAppStore()
+      appStore.mobileSidebarOpen = true
+      const setMobileSidebarOpenSpy = vi.spyOn(appStore, 'setMobileSidebarOpen')
+      const wrapper = createWrapper()
+      const closeButtons = wrapper.findAll('button')
+      const closeButton = closeButtons[closeButtons.length - 1]
+      await closeButton.trigger('click')
+      expect(setMobileSidebarOpenSpy).toHaveBeenCalledWith(false)
+    })
+
+    it('移动端侧边栏应该显示标题', () => {
+      const appStore = useAppStore()
+      appStore.mobileSidebarOpen = true
+      const wrapper = createWrapper()
+      expect(wrapper.text()).toContain('导航菜单')
+    })
+  })
+})
