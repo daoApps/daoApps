@@ -75,4 +75,11 @@ main {
     padding: 24px 16px;
   }
 }
+
+/* 小屏幕设备优化 */
+@media (max-width: 480px) {
+  .main-content {
+    padding: 20px 12px;
+  }
+}
 </style>

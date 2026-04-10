@@ -411,6 +411,12 @@ const statistics = ref([
 }
 
 /* 响应式设计 */
+@media (max-width: 1280px) {
+  .main-content {
+    padding: 40px 24px;
+  }
+}
+
 @media (max-width: 1024px) {
   .modules-grid {
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -419,6 +425,14 @@ const statistics = ref([
 
   .main-content {
     padding: 36px 20px;
+  }
+
+  .hero-title {
+    font-size: clamp(24px, 4vw, 42px);
+  }
+
+  .hero-subtitle {
+    font-size: clamp(14px, 2vw, 20px);
   }
 }
 
@@ -452,6 +466,18 @@ const statistics = ref([
   .extra-modules-section {
     margin-bottom: 36px;
   }
+
+  .hero-title {
+    font-size: clamp(20px, 5vw, 32px);
+  }
+
+  .hero-subtitle {
+    font-size: clamp(12px, 2.5vw, 18px);
+  }
+
+  .section-title {
+    font-size: 22px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -463,6 +489,45 @@ const statistics = ref([
 
   .stats-grid {
     grid-template-columns: 1fr;
+  }
+
+  .hero-title {
+    font-size: clamp(18px, 6vw, 28px);
+  }
+
+  .hero-subtitle {
+    font-size: clamp(11px, 3vw, 16px);
+  }
+
+  .section-title {
+    font-size: 20px;
+  }
+
+  .stat-value {
+    font-size: 24px;
+  }
+
+  .stat-label {
+    font-size: 12px;
+  }
+}
+
+/* 浏览器兼容性修复 */
+@supports not (aspect-ratio: 1 / 1.15) {
+  .hexagon {
+    height: 0;
+    padding-bottom: 115%;
+  }
+}
+
+/* 确保颜色混合在旧浏览器中正常工作 */
+@supports not (color-mix(in srgb, var(--card-color) 60%, black)) {
+  .hexagon {
+    background: linear-gradient(
+      135deg,
+      var(--card-color) 0%,
+      #000 100%
+    );
   }
 }
 </style>

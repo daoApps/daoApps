@@ -123,6 +123,25 @@ const handleClick = (event: MouseEvent) => {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* 浏览器兼容性修复 */
+@supports not (aspect-ratio: 1 / 1.15) {
+  .hexagon {
+    height: 0;
+    padding-bottom: 115%;
+  }
+}
+
+/* 确保颜色混合在旧浏览器中正常工作 */
+@supports not (color-mix(in srgb, var(--card-color) 60%, black)) {
+  .hexagon {
+    background: linear-gradient(
+      135deg,
+      var(--card-color) 0%,
+      #000 100%
+    );
+  }
+}
+
 .card-content {
   position: absolute;
   inset: 8%;
@@ -182,7 +201,7 @@ const handleClick = (event: MouseEvent) => {
 
 .hover-hint {
   position: absolute;
-  bottom: 20%;
+  bottom: 15%;
   left: 50%;
   transform: translateX(-50%);
   font-size: 11px;
@@ -190,6 +209,8 @@ const handleClick = (event: MouseEvent) => {
   font-weight: 600;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
   white-space: nowrap;
+  z-index: 1;
+  pointer-events: none;
 }
 
 .module-badge {
@@ -287,5 +308,70 @@ const handleClick = (event: MouseEvent) => {
 
 .ripple-enter-active {
   animation: ripple 0.6s ease-out;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .icon-wrapper {
+    width: 48px;
+    height: 48px;
+  }
+
+  .module-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .module-title {
+    font-size: 13px;
+  }
+
+  .module-description {
+    font-size: 10px;
+  }
+
+  .hover-hint {
+    font-size: 10px;
+  }
+
+  .module-badge {
+    min-width: 20px;
+    height: 20px;
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .icon-wrapper {
+    width: 44px;
+    height: 44px;
+  }
+
+  .module-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .module-title {
+    font-size: 12px;
+  }
+
+  .module-description {
+    font-size: 9px;
+  }
+
+  .hover-hint {
+    font-size: 9px;
+  }
+
+  .module-badge {
+    min-width: 18px;
+    height: 18px;
+    font-size: 9px;
+  }
+
+  .card-content {
+    padding: 10px;
+  }
 }
 </style>
