@@ -59,6 +59,7 @@ vi.stubGlobal('document', {
     style: {},
     appendChild: vi.fn(),
     removeChild: vi.fn(),
+    insertBefore: vi.fn(),
     getElementsByClassName: vi.fn(() => []),
     querySelector: vi.fn(() => null),
     querySelectorAll: vi.fn(() => [])
