@@ -1,5 +1,5 @@
 // src/services/api/monetization.ts
-import { httpClient } from './client';
+import { httpClient, withMock } from './client';
 import { API_CONFIG } from '../config';
 
 // Mock 数据导入
@@ -39,38 +39,27 @@ export interface WithdrawRequest {
 // API 服务
 export const monetizationApi = {
   // 获取钱包余额
-  async getWallet(): Promise<Wallet> {
-    if (API_CONFIG.useMock) {
-      return Promise.resolve(mockMonetization.getWallet());
-    }
-    const response = await httpClient.get<Wallet>('/monetization/wallet');
-    return response.data;
-  },
+  getWallet: withMock(
+    () => mockMonetization.getWallet(),
+    () => httpClient.get<Wallet>('/monetization/wallet').then(res => res.data)
+  ),
 
   // 获取收益数据
-  async getRevenue(): Promise<RevenueData> {
-    if (API_CONFIG.useMock) {
-      return Promise.resolve(mockMonetization.getRevenueData());
-    }
-    const response = await httpClient.get<RevenueData>('/monetization/revenue');
-    return response.data;
-  },
+  getRevenue: withMock(
+    () => mockMonetization.getRevenueData(),
+    () => httpClient.get<RevenueData>('/monetization/revenue').then(res => res.data)
+  ),
 
   // 获取交易历史
-  async getTransactions(): Promise<Transaction[]> {
-    if (API_CONFIG.useMock) {
-      return Promise.resolve(mockMonetization.getTransactionHistory());
-    }
-    const response = await httpClient.get<Transaction[]>('/monetization/transactions');
-    return response.data;
-  },
+  getTransactions: withMock(
+    () => mockMonetization.getTransactionHistory(),
+    () => httpClient.get<Transaction[]>('/monetization/transactions').then(res => res.data)
+  ),
 
   // 发起提现
-  async withdraw(request: WithdrawRequest): Promise<Transaction> {
-    if (API_CONFIG.useMock) {
-      return Promise.resolve(mockMonetization.withdraw(request));
-    }
-    const response = await httpClient.post<Transaction>('/monetization/withdraw', request);
-    return response.data;
-  }
+  withdraw: withMock(
+    (request: WithdrawRequest) => mockMonetization.withdraw(request),
+    (request: WithdrawRequest) =>
+      httpClient.post<Transaction>('/monetization/withdraw', request).then(res => res.data)
+  )
 };

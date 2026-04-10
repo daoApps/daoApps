@@ -1,5 +1,5 @@
 // src/services/api/home.ts
-import { httpClient } from './client';
+import { httpClient, withMock } from './client';
 import { API_CONFIG } from '../config';
 
 // Mock 数据导入
@@ -19,11 +19,8 @@ export interface Module {
 // API 服务
 export const homeApi = {
   // 获取模块列表
-  async getModules(): Promise<Module[]> {
-    if (API_CONFIG.useMock) {
-      return Promise.resolve(mockHome.getHomeModules());
-    }
-    const response = await httpClient.get<Module[]>('/home/modules');
-    return response.data;
-  }
+  getModules: withMock(
+    () => mockHome.getHomeModules(),
+    () => httpClient.get<Module[]>('/home/modules').then(res => res.data)
+  )
 };

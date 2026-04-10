@@ -1,5 +1,5 @@
 // src/services/api/chat.ts
-import { httpClient } from './client';
+import { httpClient, withMock, withMockStream } from './client';
 import { API_CONFIG } from '../config';
 
 // Mock 数据导入
@@ -25,39 +25,31 @@ export interface Message {
 // API 服务
 export const chatApi = {
   // 获取对话列表
-  async getConversations(): Promise<Conversation[]> {
-    if (API_CONFIG.useMock) {
-      return Promise.resolve(mockChat.getConversations());
-    }
-    const response = await httpClient.get<Conversation[]>('/chat/conversations');
-    return response.data;
-  },
+  getConversations: withMock(
+    () => mockChat.getConversations(),
+    () => httpClient.get<Conversation[]>('/chat/conversations').then(res => res.data)
+  ),
 
   // 获取消息历史
-  async getMessages(conversationId: string): Promise<Message[]> {
-    if (API_CONFIG.useMock) {
-      return Promise.resolve(mockChat.getMessages(conversationId));
-    }
-    const response = await httpClient.get<Message[]>(`/chat/conversations/${conversationId}`);
-    return response.data;
-  },
+  getMessages: withMock(
+    (conversationId: string) => mockChat.getMessages(conversationId),
+    (conversationId: string) =>
+      httpClient.get<Message[]>(`/chat/conversations/${conversationId}`).then(res => res.data)
+  ),
 
   // 发送消息
-  async sendMessage(conversationId: string, content: string): Promise<Message> {
-    if (API_CONFIG.useMock) {
-      return Promise.resolve(mockChat.sendMessage(conversationId, content));
-    }
-    const response = await httpClient.post<Message>(
-      `/chat/conversations/${conversationId}/messages`,
-      { content }
-    );
-    return response.data;
-  },
+  sendMessage: withMock(
+    (conversationId: string, content: string) => mockChat.sendMessage(conversationId, content),
+    (conversationId: string, content: string) =>
+      httpClient.post<Message>(
+        `/chat/conversations/${conversationId}/messages`,
+        { content }
+      ).then(res => res.data)
+  ),
 
   // 流式接收消息（SSE）
-  streamMessages(conversationId: string, callback: (message: Message) => void): EventSource {
-    if (API_CONFIG.useMock) {
-      // Mock 流式响应
+  streamMessages: withMockStream(
+    (conversationId: string, callback: (message: Message) => void) => {
       setTimeout(() => {
         callback({
           id: `mock-${Date.now()}`,
@@ -68,19 +60,20 @@ export const chatApi = {
         });
       }, 1000);
       return {} as EventSource;
+    },
+    (conversationId: string, callback: (message: Message) => void) => {
+      const eventSource = new EventSource(
+        `${API_CONFIG.baseURL}/chat/conversations/${conversationId}/stream`
+      );
+      eventSource.onmessage = (event) => {
+        try {
+          const message = JSON.parse(event.data);
+          callback(message);
+        } catch (error) {
+          console.error('Failed to parse SSE message:', error);
+        }
+      };
+      return eventSource;
     }
-
-    const eventSource = new EventSource(
-      `${API_CONFIG.baseURL}/chat/conversations/${conversationId}/stream`
-    );
-    eventSource.onmessage = (event) => {
-      try {
-        const message = JSON.parse(event.data);
-        callback(message);
-      } catch (error) {
-        console.error('Failed to parse SSE message:', error);
-      }
-    };
-    return eventSource;
-  }
+  )
 };

@@ -1,5 +1,5 @@
 // src/services/api/sphinx.ts
-import { httpClient } from './client';
+import { httpClient, withMock } from './client';
 import { API_CONFIG } from '../config';
 
 // Mock 数据导入
@@ -31,38 +31,29 @@ export interface SiteGenerateRequest {
 // API 服务
 export const sphinxApi = {
   // 获取模板列表
-  async getTemplates(): Promise<Template[]> {
-    if (API_CONFIG.useMock) {
-      return Promise.resolve(mockSphinx.getTemplates());
-    }
-    const response = await httpClient.get<Template[]>('/sphinx/templates');
-    return response.data;
-  },
+  getTemplates: withMock(
+    () => mockSphinx.getTemplates(),
+    () => httpClient.get<Template[]>('/sphinx/templates').then(res => res.data)
+  ),
 
   // 预览网站
-  async getSitePreview(siteId: string): Promise<SitePreview> {
-    if (API_CONFIG.useMock) {
-      return Promise.resolve(mockSphinx.getSitePreview(siteId));
-    }
-    const response = await httpClient.get<SitePreview>(`/sphinx/preview/${siteId}`);
-    return response.data;
-  },
+  getSitePreview: withMock(
+    (siteId: string) => mockSphinx.getSitePreview(siteId),
+    (siteId: string) =>
+      httpClient.get<SitePreview>(`/sphinx/preview/${siteId}`).then(res => res.data)
+  ),
 
   // 生成网站
-  async generateSite(request: SiteGenerateRequest): Promise<SitePreview> {
-    if (API_CONFIG.useMock) {
-      return Promise.resolve(mockSphinx.generateSite(request));
-    }
-    const response = await httpClient.post<SitePreview>('/sphinx/generate', request);
-    return response.data;
-  },
+  generateSite: withMock(
+    (request: SiteGenerateRequest) => mockSphinx.generateSite(request),
+    (request: SiteGenerateRequest) =>
+      httpClient.post<SitePreview>('/sphinx/generate', request).then(res => res.data)
+  ),
 
   // 发布网站
-  async publishSite(siteId: string): Promise<SitePreview> {
-    if (API_CONFIG.useMock) {
-      return Promise.resolve(mockSphinx.publishSite(siteId));
-    }
-    const response = await httpClient.post<SitePreview>(`/sphinx/publish/${siteId}`);
-    return response.data;
-  }
+  publishSite: withMock(
+    (siteId: string) => mockSphinx.publishSite(siteId),
+    (siteId: string) =>
+      httpClient.post<SitePreview>(`/sphinx/publish/${siteId}`).then(res => res.data)
+  )
 };

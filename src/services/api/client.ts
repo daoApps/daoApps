@@ -102,3 +102,27 @@ class HttpClient {
 }
 
 export const httpClient = new HttpClient();
+
+export function withMock<T, Args extends any[]>(
+  mockFn: (...args: Args) => T | Promise<T>,
+  realApiFn: (...args: Args) => Promise<T>
+): (...args: Args) => Promise<T> {
+  return async (...args: Args): Promise<T> => {
+    if (API_CONFIG.useMock) {
+      return Promise.resolve(mockFn(...args));
+    }
+    return realApiFn(...args);
+  };
+}
+
+export function withMockStream<T, Args extends any[]>(
+  mockFn: (...args: Args) => T,
+  realApiFn: (...args: Args) => T
+): (...args: Args) => T {
+  return (...args: Args): T => {
+    if (API_CONFIG.useMock) {
+      return mockFn(...args);
+    }
+    return realApiFn(...args);
+  };
+}
