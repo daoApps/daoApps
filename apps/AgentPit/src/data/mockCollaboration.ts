@@ -1,78 +1,78 @@
 export interface Agent {
-  id: string
-  name: string
-  avatar: string
-  role: string
-  specialty: string[]
-  status: 'online' | 'busy' | 'offline' | 'idle' | 'working' | 'waiting' | 'error'
-  description: string
-  skills: string[]
-  level: number
-  responseStyle: 'formal' | 'friendly' | 'humorous'
-  outputDetail: 'concise' | 'normal' | 'detailed'
-  tools: string[]
-  collaborationMode: 'leader' | 'collaborator' | 'reviewer'
-  completedTasks: number
-  avgTime: number
-  accuracy: number
+  id: string;
+  name: string;
+  avatar: string;
+  role: string;
+  specialty: string[];
+  status: 'online' | 'busy' | 'offline' | 'idle' | 'working' | 'waiting' | 'error';
+  description: string;
+  skills: string[];
+  level: number;
+  responseStyle: 'formal' | 'friendly' | 'humorous';
+  outputDetail: 'concise' | 'normal' | 'detailed';
+  tools: string[];
+  collaborationMode: 'leader' | 'collaborator' | 'reviewer';
+  completedTasks: number;
+  avgTime: number;
+  accuracy: number;
 }
 
 export interface Task {
-  id: string
-  title: string
-  description: string
-  status: 'pending' | 'in_progress' | 'completed' | 'paused' | 'cancelled' | 'error'
-  priority: 'low' | 'medium' | 'high' | 'urgent'
-  progress: number
-  assignedAgentId?: string
-  subtasks?: Task[]
-  dependencies?: string[]
-  startTime?: number
-  endTime?: number
-  estimatedTime?: number
-  result?: string
-  qualityScore?: number
+  id: string;
+  title: string;
+  description: string;
+  status: 'pending' | 'in_progress' | 'completed' | 'paused' | 'cancelled' | 'error';
+  priority: 'low' | 'medium' | 'high' | 'urgent';
+  progress: number;
+  assignedAgentId?: string;
+  subtasks?: Task[];
+  dependencies?: string[];
+  startTime?: number;
+  endTime?: number;
+  estimatedTime?: number;
+  result?: string;
+  qualityScore?: number;
 }
 
 export interface CollaborationSession {
-  id: string
-  title: string
-  createdAt: number
-  updatedAt: number
-  agents: string[]
-  tasks: Task[]
-  status: 'active' | 'completed' | 'paused'
-  result?: CollaborationResult
+  id: string;
+  title: string;
+  createdAt: number;
+  updatedAt: number;
+  agents: string[];
+  tasks: Task[];
+  status: 'active' | 'completed' | 'paused';
+  result?: CollaborationResult;
 }
 
 export interface CollaborationResult {
-  id: string
-  sessionId: string
-  summary: string
-  agentResults: AgentResult[]
-  overallScore: number
-  exportFormats: string[]
+  id: string;
+  sessionId: string;
+  summary: string;
+  agentResults: AgentResult[];
+  overallScore: number;
+  exportFormats: string[];
 }
 
 export interface AgentResult {
-  agentId: string
-  agentName: string
-  output: string
-  score: number
-  feedback?: string
-  timestamp: number
+  agentId: string;
+  agentName: string;
+  output: string;
+  score: number;
+  feedback?: string;
+  timestamp: number;
 }
 
 export interface Message {
-  id: string
-  fromAgentId: string
-  fromAgentName: string
-  toAgentId?: string
-  toAgentName?: string
-  type: 'request' | 'response' | 'notification' | 'warning' | 'conflict'
-  content: string
-  timestamp: number
-  sessionId: string
+  id: string;
+  fromAgentId: string;
+  fromAgentName: string;
+  toAgentId?: string;
+  toAgentName?: string;
+  type: 'request' | 'response' | 'notification' | 'warning' | 'conflict';
+  content: string;
+  timestamp: number;
+  sessionId: string;
 }
 
 export const presetAgents: Agent[] = [
@@ -92,7 +92,7 @@ export const presetAgents: Agent[] = [
     collaborationMode: 'leader',
     completedTasks: 156,
     avgTime: 45,
-    accuracy: 98,
+    accuracy: 98
   },
   {
     id: 'agent-writer',
@@ -110,7 +110,7 @@ export const presetAgents: Agent[] = [
     collaborationMode: 'collaborator',
     completedTasks: 234,
     avgTime: 30,
-    accuracy: 96,
+    accuracy: 96
   },
   {
     id: 'agent-coder',
@@ -128,7 +128,7 @@ export const presetAgents: Agent[] = [
     collaborationMode: 'collaborator',
     completedTasks: 312,
     avgTime: 60,
-    accuracy: 99,
+    accuracy: 99
   },
   {
     id: 'agent-researcher',
@@ -146,7 +146,7 @@ export const presetAgents: Agent[] = [
     collaborationMode: 'collaborator',
     completedTasks: 189,
     avgTime: 50,
-    accuracy: 97,
+    accuracy: 97
   },
   {
     id: 'agent-designer',
@@ -164,7 +164,7 @@ export const presetAgents: Agent[] = [
     collaborationMode: 'collaborator',
     completedTasks: 167,
     avgTime: 40,
-    accuracy: 95,
+    accuracy: 95
   },
   {
     id: 'agent-analyst',
@@ -182,7 +182,7 @@ export const presetAgents: Agent[] = [
     collaborationMode: 'reviewer',
     completedTasks: 145,
     avgTime: 35,
-    accuracy: 96,
+    accuracy: 96
   },
   {
     id: 'agent-translator',
@@ -200,7 +200,7 @@ export const presetAgents: Agent[] = [
     collaborationMode: 'collaborator',
     completedTasks: 278,
     avgTime: 25,
-    accuracy: 98,
+    accuracy: 98
   },
   {
     id: 'agent-consultant',
@@ -218,9 +218,9 @@ export const presetAgents: Agent[] = [
     collaborationMode: 'leader',
     completedTasks: 89,
     avgTime: 90,
-    accuracy: 94,
-  },
-]
+    accuracy: 94
+  }
+];
 
 export const sampleTasks: Task[] = [
   {
@@ -232,14 +232,38 @@ export const sampleTasks: Task[] = [
     progress: 65,
     assignedAgentId: 'agent-planner',
     subtasks: [
-      { id: 'task-1-1', title: '市场背景调研', description: '收集目标市场和竞争对手信息', status: 'completed', priority: 'high', progress: 100, assignedAgentId: 'agent-researcher' },
-      { id: 'task-1-2', title: '活动主题与创意', description: '确定发布会主题和核心创意概念', status: 'completed', priority: 'high', progress: 100, assignedAgentId: 'agent-writer' },
-      { id: 'task-1-3', title: '预算编制', description: '制定详细的活动预算表', status: 'in_progress', priority: 'medium', progress: 45, assignedAgentId: 'agent-analyst' }
+      {
+        id: 'task-1-1',
+        title: '市场背景调研',
+        description: '收集目标市场和竞争对手信息',
+        status: 'completed',
+        priority: 'high',
+        progress: 100,
+        assignedAgentId: 'agent-researcher'
+      },
+      {
+        id: 'task-1-2',
+        title: '活动主题与创意',
+        description: '确定发布会主题和核心创意概念',
+        status: 'completed',
+        priority: 'high',
+        progress: 100,
+        assignedAgentId: 'agent-writer'
+      },
+      {
+        id: 'task-1-3',
+        title: '预算编制',
+        description: '制定详细的活动预算表',
+        status: 'in_progress',
+        priority: 'medium',
+        progress: 45,
+        assignedAgentId: 'agent-analyst'
+      }
     ],
     startTime: Date.now() - 3600000,
-    estimatedTime: 7200000,
-  },
-]
+    estimatedTime: 7200000
+  }
+];
 
 export const mockSessions: CollaborationSession[] = [
   {
@@ -247,11 +271,17 @@ export const mockSessions: CollaborationSession[] = [
     title: '新产品发布策划',
     createdAt: Date.now() - 86400000,
     updatedAt: Date.now(),
-    agents: ['agent-planner', 'agent-writer', 'agent-researcher', 'agent-designer', 'agent-analyst'],
+    agents: [
+      'agent-planner',
+      'agent-writer',
+      'agent-researcher',
+      'agent-designer',
+      'agent-analyst'
+    ],
     tasks: [sampleTasks[0]!],
-    status: 'active',
-  },
-]
+    status: 'active'
+  }
+];
 
 export const mockMessages: Message[] = [
   {
@@ -263,7 +293,7 @@ export const mockMessages: Message[] = [
     type: 'request',
     content: '请协助收集目标市场的最新数据和竞争对手信息，重点关注近6个月的市场动态。',
     timestamp: Date.now() - 3600000,
-    sessionId: 'session-1',
+    sessionId: 'session-1'
   },
   {
     id: 'msg-2',
@@ -274,27 +304,27 @@ export const mockMessages: Message[] = [
     type: 'response',
     content: '已完成市场调研，发现3个主要竞争对手近期都有新品发布计划，建议我们提前2周启动预热。',
     timestamp: Date.now() - 3500000,
-    sessionId: 'session-1',
-  },
-]
+    sessionId: 'session-1'
+  }
+];
 
 export const taskTypeRecommendations: Record<string, string[]> = {
-  '策划': ['agent-planner', 'agent-researcher', 'agent-writer'],
-  '写作': ['agent-writer', 'agent-translator'],
-  '编程': ['agent-coder', 'agent-analyst'],
-  '数据': ['agent-analyst', 'agent-researcher'],
-  '设计': ['agent-designer', 'agent-writer'],
-  '商业': ['agent-consultant', 'agent-analyst', 'agent-researcher'],
-  '翻译': ['agent-translator', 'agent-writer'],
-  '研究': ['agent-researcher', 'agent-analyst'],
-}
+  策划: ['agent-planner', 'agent-researcher', 'agent-writer'],
+  写作: ['agent-writer', 'agent-translator'],
+  编程: ['agent-coder', 'agent-analyst'],
+  数据: ['agent-analyst', 'agent-researcher'],
+  设计: ['agent-designer', 'agent-writer'],
+  商业: ['agent-consultant', 'agent-analyst', 'agent-researcher'],
+  翻译: ['agent-translator', 'agent-writer'],
+  研究: ['agent-researcher', 'agent-analyst']
+};
 
 export function getRecommendedAgents(taskDescription: string): string[] {
-  const recommendations: string[] = []
+  const recommendations: string[] = [];
   for (const [keyword, agents] of Object.entries(taskTypeRecommendations)) {
     if (taskDescription.includes(keyword)) {
-      recommendations.push(...agents)
+      recommendations.push(...agents);
     }
   }
-  return [...new Set(recommendations)]
+  return [...new Set(recommendations)];
 }

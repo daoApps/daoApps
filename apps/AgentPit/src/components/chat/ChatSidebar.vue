@@ -1,76 +1,79 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { useChatStore } from '@/stores/useChatStore'
-import { availableAgents } from '@/data/mockChat'
+import { ref, computed } from 'vue';
+import { useChatStore } from '@/stores/useChatStore';
+import { availableAgents } from '@/data/mockChat';
 
-const chatStore = useChatStore()
-const searchQuery = ref('')
-const showAgentSelector = ref(false)
+const chatStore = useChatStore();
+const searchQuery = ref('');
+const showAgentSelector = ref(false);
 
 const filteredConversations = computed(() => {
   if (!searchQuery.value.trim()) {
-    return chatStore.conversations
+    return chatStore.conversations;
   }
-  const query = searchQuery.value.toLowerCase()
-  return chatStore.conversations.filter(conv =>
-    conv.title.toLowerCase().includes(query) ||
-    conv.messages.some(msg => msg.content.toLowerCase().includes(query))
-  )
-})
+  const query = searchQuery.value.toLowerCase();
+  return chatStore.conversations.filter(
+    (conv) =>
+      conv.title.toLowerCase().includes(query) ||
+      conv.messages.some((msg) => msg.content.toLowerCase().includes(query))
+  );
+});
 
 const handleNewConversation = () => {
-  chatStore.createConversation(chatStore.activeAgent || undefined)
-}
+  chatStore.createConversation(chatStore.activeAgent || undefined);
+};
 
 const handleSelectConversation = (id: string) => {
-  chatStore.setActiveConversation(id)
-}
+  chatStore.setActiveConversation(id);
+};
 
 const handleDeleteConversation = (id: string, event: Event) => {
-  event.stopPropagation()
+  event.stopPropagation();
   if (confirm('确定要删除这个对话吗？')) {
-    chatStore.deleteConversation(id)
+    chatStore.deleteConversation(id);
   }
-}
+};
 
 const handleRenameConversation = (id: string, event: Event) => {
-  event.stopPropagation()
-  const conv = chatStore.conversations.find(c => c.id === id)
+  event.stopPropagation();
+  const conv = chatStore.conversations.find((c) => c.id === id);
   if (conv) {
-    const newTitle = prompt('请输入新的对话标题：', conv.title)
+    const newTitle = prompt('请输入新的对话标题：', conv.title);
     if (newTitle && newTitle.trim()) {
-      conv.title = newTitle.trim()
-      chatStore.persistConversations()
+      conv.title = newTitle.trim();
+      chatStore.persistConversations();
     }
   }
-}
+};
 
 const handleSwitchAgent = (agentId: string) => {
-  const agent = availableAgents.find(a => a.id === agentId)
+  const agent = availableAgents.find((a) => a.id === agentId);
   if (agent) {
-    chatStore.setActiveAgent(agent)
-    showAgentSelector.value = false
+    chatStore.setActiveAgent(agent);
+    showAgentSelector.value = false;
   }
-}
+};
 
 const formatTime = (timestamp: number) => {
-  const date = new Date(timestamp)
-  const now = new Date()
-  const diffMs = now.getTime() - date.getTime()
-  const diffMins = Math.floor(diffMs / 60000)
-  const diffHours = Math.floor(diffMs / 3600000)
-  const diffDays = Math.floor(diffMs / 86400000)
+  const date = new Date(timestamp);
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffMins = Math.floor(diffMs / 60000);
+  const diffHours = Math.floor(diffMs / 3600000);
+  const diffDays = Math.floor(diffMs / 86400000);
 
-  if (diffMins < 1) return '刚刚'
-  if (diffMins < 60) return `${diffMins}分钟前`
-  if (diffHours < 24) return `${diffHours}小时前`
-  if (diffDays < 7) return `${diffDays}天前`
-  return date.toLocaleDateString('zh-CN')
-}
+  if (diffMins < 1) return '刚刚';
+  if (diffMins < 60) return `${diffMins}分钟前`;
+  if (diffHours < 24) return `${diffHours}小时前`;
+  if (diffDays < 7) return `${diffDays}天前`;
+  return date.toLocaleDateString('zh-CN');
+};
 </script>
 
 <template>
-  <div class="h-full flex flex-col bg-gray-50 dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700">
+  <div
+    class="h-full flex flex-col bg-gray-50 dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700"
+  >
     <!-- 头部 -->
     <div class="p-4 border-b border-gray-200 dark:border-gray-700">
       <div class="flex items-center justify-between mb-3">
@@ -81,7 +84,12 @@ const formatTime = (timestamp: number) => {
           @click="handleNewConversation"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 4v16m8-8H4"
+            />
           </svg>
         </button>
       </div>
@@ -97,11 +105,19 @@ const formatTime = (timestamp: number) => {
             <span>{{ chatStore.activeAgent?.name || '选择智能体' }}</span>
           </span>
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 9l-7 7-7-7"
+            />
           </svg>
         </button>
 
-        <div v-if="showAgentSelector" class="absolute z-10 w-full mt-1 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1">
+        <div
+          v-if="showAgentSelector"
+          class="absolute z-10 w-full mt-1 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1"
+        >
           <button
             v-for="agent in availableAgents"
             :key="agent.id"
@@ -167,8 +183,18 @@ const formatTime = (timestamp: number) => {
                 title="重命名"
                 @click.stop="handleRenameConversation(conv.id, $event)"
               >
-                <svg class="w-3.5 h-3.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                <svg
+                  class="w-3.5 h-3.5 text-gray-500"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                  />
                 </svg>
               </button>
               <button
@@ -176,8 +202,18 @@ const formatTime = (timestamp: number) => {
                 title="删除"
                 @click.stop="handleDeleteConversation(conv.id, $event)"
               >
-                <svg class="w-3.5 h-3.5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                <svg
+                  class="w-3.5 h-3.5 text-red-500"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                  />
                 </svg>
               </button>
             </div>

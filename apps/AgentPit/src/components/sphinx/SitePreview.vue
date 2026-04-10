@@ -1,52 +1,54 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 
-type DeviceType = 'desktop' | 'tablet' | 'mobile'
+type DeviceType = 'desktop' | 'tablet' | 'mobile';
 
 const props = defineProps<{
-  siteName?: string
-  templateId?: string
-}>()
+  siteName?: string;
+  templateId?: string;
+}>();
 
-const device = ref<DeviceType>('desktop')
-const zoom = ref(100)
-const isRefreshing = ref(false)
-const customContent = ref<string | null>(null)
+const device = ref<DeviceType>('desktop');
+const zoom = ref(100);
+const isRefreshing = ref(false);
+const customContent = ref<string | null>(null);
 
 const deviceWidths: Record<DeviceType, string> = {
   desktop: '100%',
   tablet: '768px',
   mobile: '375px'
-}
+};
 
 const deviceHeights: Record<DeviceType, string> = {
   desktop: '700px',
   tablet: '1024px',
   mobile: '667px'
-}
+};
 
 const currentUrl = computed(() => {
-  return props.siteName ? `${props.siteName.toLowerCase().replace(/\s+/g, '-')}.com` : 'my-website.com'
-})
+  return props.siteName
+    ? `${props.siteName.toLowerCase().replace(/\s+/g, '-')}.com`
+    : 'my-website.com';
+});
 
 const handleRefresh = () => {
-  isRefreshing.value = true
+  isRefreshing.value = true;
   setTimeout(() => {
-    isRefreshing.value = false
-  }, 1500)
-}
+    isRefreshing.value = false;
+  }, 1500);
+};
 
 const handleZoomIn = () => {
-  if (zoom.value < 150) zoom.value += 10
-}
+  if (zoom.value < 150) zoom.value += 10;
+};
 
 const handleZoomOut = () => {
-  if (zoom.value > 50) zoom.value -= 10
-}
+  if (zoom.value > 50) zoom.value -= 10;
+};
 
 const generateMockSiteContent = (): string => {
   if (customContent.value) {
-    return customContent.value
+    return customContent.value;
   }
 
   if (!props.templateId) {
@@ -64,7 +66,7 @@ const generateMockSiteContent = (): string => {
           </div>
         </div>
       </div>
-    `
+    `;
   }
 
   return `
@@ -160,26 +162,28 @@ const generateMockSiteContent = (): string => {
         </footer>
       </body>
     </html>
-  `
-}
+  `;
+};
 
 onMounted(() => {
   window.addEventListener('apply-code', ((e: CustomEvent) => {
-    customContent.value = e.detail
-  }) as EventListener)
-})
+    customContent.value = e.detail;
+  }) as EventListener);
+});
 
 onUnmounted(() => {
   window.removeEventListener('apply-code', ((e: CustomEvent) => {
-    customContent.value = e.detail
-  }) as EventListener)
-})
+    customContent.value = e.detail;
+  }) as EventListener);
+});
 </script>
 
 <template>
   <div class="space-y-4">
     <!-- 工具栏 -->
-    <div class="flex items-center justify-between bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 border border-gray-200 dark:border-gray-700">
+    <div
+      class="flex items-center justify-between bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 border border-gray-200 dark:border-gray-700"
+    >
       <!-- 设备切换 -->
       <div class="flex items-center space-x-2">
         <span class="text-sm text-gray-600 dark:text-gray-400">设备视图:</span>
@@ -203,15 +207,40 @@ onUnmounted(() => {
       <!-- 缩放和刷新控制 -->
       <div class="flex items-center space-x-4">
         <div class="flex items-center space-x-2">
-          <button :disabled="zoom <= 50" class="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded disabled:opacity-50" @click="handleZoomOut">
-            <svg class="w-4 h-4 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/>
+          <button
+            :disabled="zoom <= 50"
+            class="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded disabled:opacity-50"
+            @click="handleZoomOut"
+          >
+            <svg
+              class="w-4 h-4 text-gray-600 dark:text-gray-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
             </svg>
           </button>
-          <span class="text-sm text-gray-600 dark:text-gray-400 min-w-[50px] text-center">{{ zoom }}%</span>
-          <button :disabled="zoom >= 150" class="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded disabled:opacity-50" @click="handleZoomIn">
-            <svg class="w-4 h-4 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+          <span class="text-sm text-gray-600 dark:text-gray-400 min-w-[50px] text-center"
+            >{{ zoom }}%</span
+          >
+          <button
+            :disabled="zoom >= 150"
+            class="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded disabled:opacity-50"
+            @click="handleZoomIn"
+          >
+            <svg
+              class="w-4 h-4 text-gray-600 dark:text-gray-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 4v16m8-8H4"
+              />
             </svg>
           </button>
         </div>
@@ -221,8 +250,18 @@ onUnmounted(() => {
           class="flex items-center space-x-1 px-3 py-1.5 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors disabled:opacity-50"
           @click="handleRefresh"
         >
-          <svg :class="['w-4 h-4', isRefreshing && 'animate-spin']" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+          <svg
+            :class="['w-4 h-4', isRefreshing && 'animate-spin']"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+            />
           </svg>
           <span class="text-sm">{{ isRefreshing ? '刷新中...' : '刷新' }}</span>
         </button>
@@ -230,7 +269,9 @@ onUnmounted(() => {
     </div>
 
     <!-- iframe 预览区域 -->
-    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+    <div
+      class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden"
+    >
       <!-- 浏览器地址栏 -->
       <div class="bg-gray-800 dark:bg-gray-900 px-4 py-2 flex items-center space-x-2">
         <div class="flex space-x-1.5">
@@ -239,14 +280,19 @@ onUnmounted(() => {
           <div class="w-3 h-3 rounded-full bg-green-500"></div>
         </div>
         <div class="flex-1 flex justify-center">
-          <div class="bg-gray-700 dark:bg-gray-800 rounded px-4 py-1 text-xs text-gray-300 max-w-md w-full text-center truncate">
+          <div
+            class="bg-gray-700 dark:bg-gray-800 rounded px-4 py-1 text-xs text-gray-300 max-w-md w-full text-center truncate"
+          >
             {{ currentUrl }}{{ templateId ? ` (模板: ${templateId})` : '' }}
           </div>
         </div>
       </div>
 
       <!-- iframe 容器 -->
-      <div class="bg-gray-100 dark:bg-gray-900 p-6 flex justify-center overflow-auto" style="min-height: 500px;">
+      <div
+        class="bg-gray-100 dark:bg-gray-900 p-6 flex justify-center overflow-auto"
+        style="min-height: 500px"
+      >
         <div
           class="bg-white dark:bg-gray-800 rounded-lg shadow-xl overflow-hidden transition-all duration-300"
           :style="{
@@ -257,9 +303,14 @@ onUnmounted(() => {
             height: deviceHeights[device]
           }"
         >
-          <div v-if="isRefreshing" class="flex items-center justify-center h-full bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700">
+          <div
+            v-if="isRefreshing"
+            class="flex items-center justify-center h-full bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700"
+          >
             <div class="text-center">
-              <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
+              <div
+                class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"
+              ></div>
               <p class="text-gray-600 dark:text-gray-400">正在刷新预览...</p>
             </div>
           </div>

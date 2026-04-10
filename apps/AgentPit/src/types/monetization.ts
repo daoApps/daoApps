@@ -4,54 +4,54 @@
  */
 
 /** 货币类型 */
-export type Currency = 'CNY' | 'USD' | 'EUR' | 'GBP'
+export type Currency = 'CNY' | 'USD' | 'EUR' | 'GBP';
 
 /** 交易类型 */
-export type TransactionType = 'income' | 'expense'
+export type TransactionType = 'income' | 'expense';
 
 /** 交易状态 */
-export type TransactionStatus = 'success' | 'processing' | 'failed'
+export type TransactionStatus = 'success' | 'processing' | 'failed';
 
 /** 钱包数据接口 */
 export interface WalletData {
   /** 总余额（包含冻结金额） */
-  totalBalance: number
+  totalBalance: number;
   /** 可用余额 */
-  availableBalance: number
+  availableBalance: number;
   /** 冻结余额（待结算/提现中） */
-  frozenBalance: number
+  frozenBalance: number;
   /** 货币单位 */
-  currency: Currency
+  currency: Currency;
 }
 
 /** 收益数据点接口 */
 export interface RevenueDataPoint {
   /** 日期标签（如 "4月9日"） */
-  date: string
+  date: string;
   /** 当日收入 */
-  revenue: number
+  revenue: number;
   /** 当日支出 */
-  expenses: number
+  expenses: number;
   /** 当日净利润 */
-  profit: number
+  profit: number;
 }
 
 /** 交易记录接口 */
 export interface TransactionRecord {
   /** 交易编号（格式：TXN + YYYYMMDD + 序号） */
-  id: string
+  id: string;
   /** 交易类型：收入或支出 */
-  type: TransactionType
+  type: TransactionType;
   /** 交易金额 */
-  amount: number
+  amount: number;
   /** 交易状态 */
-  status: TransactionStatus
+  status: TransactionStatus;
   /** 交易时间戳 */
-  timestamp: string
+  timestamp: string;
   /** 交易描述 */
-  description: string
+  description: string;
   /** 收入/支出分类 */
-  category: TransactionCategory
+  category: TransactionCategory;
 }
 
 /** 交易分类常量 */
@@ -72,58 +72,58 @@ export const TransactionCategory = {
   CONTENT_CREATION: '内容创作',
   /** 订阅服务收入 */
   SUBSCRIPTION: '订阅服务'
-} as const
+} as const;
 
-export type TransactionCategory = (typeof TransactionCategory)[keyof typeof TransactionCategory]
+export type TransactionCategory = (typeof TransactionCategory)[keyof typeof TransactionCategory];
 
 /** 收入来源分布项 */
 export interface SourceDistribution {
   /** 来源名称 */
-  name: string
+  name: string;
   /** 占比百分比 (0-100) */
-  value: number
+  value: number;
   /** 显示颜色（十六进制） */
-  color: string
+  color: string;
 }
 
 /** 财务指标汇总 */
 export interface FinancialMetrics {
   /** 总收入 */
-  totalIncome: number
+  totalIncome: number;
   /** 总支出 */
-  totalExpense: number
+  totalExpense: number;
   /** 净利润 */
-  netProfit: number
+  netProfit: number;
   /** 利润率 (%) */
-  profitRate: number
+  profitRate: number;
   /** 月度对比数据 */
-  monthlyComparison: MonthlyComparison[]
+  monthlyComparison: MonthlyComparison[];
 }
 
 /** 月度对比数据 */
 export interface MonthlyComparison {
   /** 月份标签 */
-  month: string
+  month: string;
   /** 当月收入 */
-  income: number
+  income: number;
   /** 当月支出 */
-  expense: number
+  expense: number;
 }
 
 /** 提现请求接口 */
 export interface WithdrawRequest {
   /** 提现金额 */
-  amount: number
+  amount: number;
   /** 提现方式 */
-  method: WithdrawMethod
+  method: WithdrawMethod;
   /** 目标账户信息 */
-  accountInfo: string
+  accountInfo: string;
   /** 备注 */
-  note?: string
+  note?: string;
 }
 
 /** 提现方式 */
-export type WithdrawMethod = 'bank_card' | 'alipay' | 'wechat'
+export type WithdrawMethod = 'bank_card' | 'alipay' | 'wechat';
 
 /** 钱包操作类型 */
 export type WalletActionType =
@@ -131,4 +131,4 @@ export type WalletActionType =
   | 'view_transactions'
   | 'withdraw'
   | 'view_revenue_chart'
-  | 'view_source_distribution'
+  | 'view_source_distribution';

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, reactive, computed, watch } from 'vue'
-import { useDebounce } from '@/composables/useDebounce'
-import type { SearchResult, SearchFilter } from '@/types/memory'
+import { ref, reactive, computed, watch } from 'vue';
+import { useDebounce } from '@/composables/useDebounce';
+import type { SearchResult, SearchFilter } from '@/types/memory';
 
 /**
  * MemorySearch 组件 Props 接口
@@ -12,12 +12,12 @@ interface Props {
    * 搜索数据源数组
    * @default []
    */
-  data?: SearchResult[]
+  data?: SearchResult[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
   data: () => []
-})
+});
 
 /**
  * MemorySearch 组件事件定义
@@ -28,121 +28,124 @@ const emit = defineEmits<{
    * 搜索结果选中事件
    * @param {SearchResult} result - 选中的搜索结果对象
    */
-  resultSelect: [result: SearchResult]
-}>()
+  resultSelect: [result: SearchResult];
+}>();
 
-const searchQuery = ref('')
-const debouncedSearch = useDebounce(searchQuery, 300)
-const searchHistory = ref<string[]>([])
-const showFilters = ref(false)
-const sortBy = ref<'relevance' | 'time' | 'size'>('relevance')
+const searchQuery = ref('');
+const debouncedSearch = useDebounce(searchQuery, 300);
+const searchHistory = ref<string[]>([]);
+const showFilters = ref(false);
+const sortBy = ref<'relevance' | 'time' | 'size'>('relevance');
 const filter = reactive<SearchFilter>({
   dateRange: undefined,
   fileType: undefined,
   tags: []
-})
+});
 
 const availableTags = computed(() => {
-  const tagSet = new Set<string>()
-  props.data.forEach(item => item.tags?.forEach(tag => tagSet.add(tag)))
-  return Array.from(tagSet)
-})
+  const tagSet = new Set<string>();
+  props.data.forEach((item) => item.tags?.forEach((tag) => tagSet.add(tag)));
+  return Array.from(tagSet);
+});
 
 const filteredResults = computed(() => {
-  let results = [...props.data]
+  let results = [...props.data];
 
   // 搜索过滤
   if (debouncedSearch.value) {
-    const query = debouncedSearch.value.toLowerCase()
-    results = results.filter(item =>
-      item.title.toLowerCase().includes(query) ||
-      item.content.toLowerCase().includes(query)
-    )
+    const query = debouncedSearch.value.toLowerCase();
+    results = results.filter(
+      (item) =>
+        item.title.toLowerCase().includes(query) || item.content.toLowerCase().includes(query)
+    );
   }
 
   // 时间范围过滤
   if (filter.dateRange) {
-    const start = new Date(filter.dateRange.start).getTime()
-    const end = new Date(filter.dateRange.end).getTime()
-    results = results.filter(item => {
-      const itemTime = new Date(item.timestamp).getTime()
-      return itemTime >= start && itemTime <= end
-    })
+    const start = new Date(filter.dateRange.start).getTime();
+    const end = new Date(filter.dateRange.end).getTime();
+    results = results.filter((item) => {
+      const itemTime = new Date(item.timestamp).getTime();
+      return itemTime >= start && itemTime <= end;
+    });
   }
 
   // 文件类型过滤
   if (filter.fileType) {
-    results = results.filter(item => item.type === filter.fileType)
+    results = results.filter((item) => item.type === filter.fileType);
   }
 
   // 标签过滤
   if (filter.tags && filter.tags.length > 0) {
-    results = results.filter(item =>
-      filter.tags!.some(tag => item.tags?.includes(tag))
-    )
+    results = results.filter((item) => filter.tags!.some((tag) => item.tags?.includes(tag)));
   }
 
   // 排序
   switch (sortBy.value) {
     case 'relevance':
-      results.sort((a, b) => b.relevance - a.relevance)
-      break
+      results.sort((a, b) => b.relevance - a.relevance);
+      break;
     case 'time':
-      results.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
-      break
+      results.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+      break;
     case 'size':
-      results.sort((a, b) => (b.size || 0) - (a.size || 0))
-      break
+      results.sort((a, b) => (b.size || 0) - (a.size || 0));
+      break;
   }
 
-  return results
-})
+  return results;
+});
 
 const highlightText = (text: string, query: string): string => {
-  if (!query) return text
-  const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi')
-  return text.replace(regex, '<mark class="bg-yellow-200 dark:bg-yellow-800 px-0.5 rounded">$1</mark>')
-}
+  if (!query) return text;
+  const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+  return text.replace(
+    regex,
+    '<mark class="bg-yellow-200 dark:bg-yellow-800 px-0.5 rounded">$1</mark>'
+  );
+};
 
 const addToHistory = (query: string) => {
-  if (!query.trim()) return
-  const history = searchHistory.value.filter(h => h !== query)
-  history.unshift(query)
-  searchHistory.value = history.slice(0, 10)
-}
+  if (!query.trim()) return;
+  const history = searchHistory.value.filter((h) => h !== query);
+  history.unshift(query);
+  searchHistory.value = history.slice(0, 10);
+};
 
 const selectFromHistory = (query: string) => {
-  searchQuery.value = query
-}
+  searchQuery.value = query;
+};
 
 const clearHistory = () => {
-  searchHistory.value = []
-}
+  searchHistory.value = [];
+};
 
 const toggleTag = (tag: string) => {
-  const index = filter.tags?.indexOf(tag) ?? -1
+  const index = filter.tags?.indexOf(tag) ?? -1;
   if (index > -1) {
-    filter.tags?.splice(index, 1)
+    filter.tags?.splice(index, 1);
   } else {
-    filter.tags?.push(tag)
+    filter.tags?.push(tag);
   }
-}
+};
 
 const clearFilters = () => {
-  filter.dateRange = undefined
-  filter.fileType = undefined
-  filter.tags = []
-}
+  filter.dateRange = undefined;
+  filter.fileType = undefined;
+  filter.tags = [];
+};
 
 watch(debouncedSearch, (newVal) => {
   if (newVal) {
-    addToHistory(newVal)
+    addToHistory(newVal);
   }
-})
+});
 </script>
 
 <template>
-  <div class="memory-search__container bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+  <div
+    class="memory-search__container bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden"
+  >
     <!-- 搜索栏 -->
     <div class="p-4 border-b border-gray-200 dark:border-gray-700">
       <div class="relative">
@@ -164,7 +167,10 @@ watch(debouncedSearch, (newVal) => {
 
       <!-- 搜索历史 -->
       <Transition name="slide">
-        <div v-if="searchHistory.length > 0 && !debouncedSearch" class="mt-3 flex items-center gap-2 flex-wrap">
+        <div
+          v-if="searchHistory.length > 0 && !debouncedSearch"
+          class="mt-3 flex items-center gap-2 flex-wrap"
+        >
           <span class="text-xs text-gray-500 dark:text-gray-400">最近搜索:</span>
           <button
             v-for="(item, index) in searchHistory.slice(0, 5)"
@@ -185,14 +191,19 @@ watch(debouncedSearch, (newVal) => {
     </div>
 
     <!-- 筛选和排序工具栏 -->
-    <div class="flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
+    <div
+      class="flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700"
+    >
       <div class="flex items-center gap-3">
         <button
           class="px-3 py-1.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-1"
           @click="showFilters = !showFilters"
         >
           🔽 筛选
-          <span v-if="filter.dateRange || filter.fileType || (filter.tags && filter.tags.length > 0)" class="ml-1 w-2 h-2 bg-blue-500 rounded-full"></span>
+          <span
+            v-if="filter.dateRange || filter.fileType || (filter.tags && filter.tags.length > 0)"
+            class="ml-1 w-2 h-2 bg-blue-500 rounded-full"
+          ></span>
         </button>
 
         <!-- 排序选择 -->
@@ -206,17 +217,29 @@ watch(debouncedSearch, (newVal) => {
         </select>
       </div>
 
-      <div class="text-sm font-medium" :class="filteredResults.length > 0 ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'">
+      <div
+        class="text-sm font-medium"
+        :class="
+          filteredResults.length > 0
+            ? 'text-gray-900 dark:text-white'
+            : 'text-gray-500 dark:text-gray-400'
+        "
+      >
         {{ filteredResults.length }} 条结果
       </div>
     </div>
 
     <!-- 高级筛选面板 -->
     <Transition name="expand">
-      <div v-if="showFilters" class="px-4 py-4 bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 space-y-4">
+      <div
+        v-if="showFilters"
+        class="px-4 py-4 bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 space-y-4"
+      >
         <!-- 时间范围 -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">时间范围</label>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+            >时间范围</label
+          >
           <div class="flex gap-3">
             <input
               v-model="filter.dateRange!.start"
@@ -234,7 +257,9 @@ watch(debouncedSearch, (newVal) => {
 
         <!-- 文件类型 -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">文件类型</label>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+            >文件类型</label
+          >
           <select
             v-model="filter.fileType"
             class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -250,15 +275,19 @@ watch(debouncedSearch, (newVal) => {
 
         <!-- 标签筛选 -->
         <div v-if="availableTags.length > 0">
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">标签</label>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+            >标签</label
+          >
           <div class="flex flex-wrap gap-2">
             <button
               v-for="tag in availableTags"
               :key="tag"
               class="px-3 py-1 text-xs rounded-full transition-colors"
-              :class="filter.tags?.includes(tag)
-                ? 'bg-blue-500 text-white'
-                : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'"
+              :class="
+                filter.tags?.includes(tag)
+                  ? 'bg-blue-500 text-white'
+                  : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+              "
               @click="toggleTag(tag)"
             >
               {{ tag }}
@@ -296,7 +325,9 @@ watch(debouncedSearch, (newVal) => {
                 v-html="highlightText(result.content, debouncedSearch)"
               ></p>
               <div class="flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400">
-                <span class="px-2 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">{{ result.type }}</span>
+                <span class="px-2 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">{{
+                  result.type
+                }}</span>
                 <span>{{ new Date(result.timestamp).toLocaleDateString('zh-CN') }}</span>
                 <span v-if="result.size">{{ (result.size / 1024).toFixed(1) }} KB</span>
               </div>
@@ -311,7 +342,16 @@ watch(debouncedSearch, (newVal) => {
               </div>
             </div>
             <div class="text-right flex-shrink-0">
-              <div class="text-lg font-bold" :class="result.relevance > 0.8 ? 'text-green-500' : result.relevance > 0.5 ? 'text-yellow-500' : 'text-gray-400'">
+              <div
+                class="text-lg font-bold"
+                :class="
+                  result.relevance > 0.8
+                    ? 'text-green-500'
+                    : result.relevance > 0.5
+                      ? 'text-yellow-500'
+                      : 'text-gray-400'
+                "
+              >
                 {{ Math.round(result.relevance * 100) }}%
               </div>
               <div class="text-xs text-gray-400">相关度</div>
@@ -321,7 +361,10 @@ watch(debouncedSearch, (newVal) => {
       </TransitionGroup>
 
       <!-- 无结果 -->
-      <div v-else-if="debouncedSearch" class="flex flex-col items-center justify-center py-16 text-gray-400">
+      <div
+        v-else-if="debouncedSearch"
+        class="flex flex-col items-center justify-center py-16 text-gray-400"
+      >
         <p class="text-5xl mb-4">🔍</p>
         <p class="text-lg font-medium">未找到匹配结果</p>
         <p class="text-sm mt-2">尝试使用不同的关键词或调整筛选条件</p>

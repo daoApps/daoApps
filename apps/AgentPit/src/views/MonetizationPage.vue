@@ -1,36 +1,36 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import MainLayout from '@/components/layout/MainLayout.vue'
-import WalletCard from '@/components/monetization/WalletCard.vue'
-import RevenueChart from '@/components/monetization/RevenueChart.vue'
-import TransactionHistory from '@/components/monetization/TransactionHistory.vue'
-import WithdrawModal from '@/components/monetization/WithdrawModal.vue'
-import FinancialReport from '@/components/monetization/FinancialReport.vue'
-import NotificationBar from '@/components/monetization/NotificationBar.vue'
-import { useMonetizationStore } from '@/stores/useMonetizationStore'
-import { useRealtimeData } from '@/composables/useRealtimeData'
+import { onMounted, ref } from 'vue';
+import MainLayout from '@/components/layout/MainLayout.vue';
+import WalletCard from '@/components/monetization/WalletCard.vue';
+import RevenueChart from '@/components/monetization/RevenueChart.vue';
+import TransactionHistory from '@/components/monetization/TransactionHistory.vue';
+import WithdrawModal from '@/components/monetization/WithdrawModal.vue';
+import FinancialReport from '@/components/monetization/FinancialReport.vue';
+import NotificationBar from '@/components/monetization/NotificationBar.vue';
+import { useMonetizationStore } from '@/stores/useMonetizationStore';
+import { useRealtimeData } from '@/composables/useRealtimeData';
 
-const store = useMonetizationStore()
-const showWithdrawModal = ref(false)
+const store = useMonetizationStore();
+const showWithdrawModal = ref(false);
 
-const { notifications, startRealtimeUpdates, removeNotification } = useRealtimeData(store)
+const { notifications, startRealtimeUpdates, removeNotification } = useRealtimeData(store);
 
 onMounted(async () => {
-  await store.fetchWalletData()
-  startRealtimeUpdates()
-})
+  await store.fetchWalletData();
+  startRealtimeUpdates();
+});
 
 const handleRecharge = () => {
-  console.log('充值功能')
-}
+  console.log('充值功能');
+};
 
 const handleWithdrawSuccess = (amount: number, method: string) => {
-  console.log(`提现成功: ¥${amount}, 方式: ${method}`)
-}
+  console.log(`提现成功: ¥${amount}, 方式: ${method}`);
+};
 
 const handleWithdraw = () => {
-  showWithdrawModal.value = true
-}
+  showWithdrawModal.value = true;
+};
 </script>
 
 <template>
@@ -62,11 +62,7 @@ const handleWithdraw = () => {
 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div class="lg:col-span-1">
-          <WalletCard
-            :data="store.wallet"
-            @recharge="handleRecharge"
-            @withdraw="handleWithdraw"
-          />
+          <WalletCard :data="store.wallet" @recharge="handleRecharge" @withdraw="handleWithdraw" />
         </div>
 
         <div class="lg:col-span-2">

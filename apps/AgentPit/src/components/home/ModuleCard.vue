@@ -1,27 +1,27 @@
 <script setup lang="ts">
-import { ref, computed, defineAsyncComponent } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, computed, defineAsyncComponent } from 'vue';
+import { useRouter } from 'vue-router';
 
 interface Props {
-  id: string
-  title: string
-  description: string
-  icon: string
-  routePath: string
-  color?: string
-  badge?: string | number
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  routePath: string;
+  color?: string;
+  badge?: string | number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   color: '#6366f1',
   badge: undefined
-})
+});
 
-const router = useRouter()
-const isHovered = ref(false)
-const showRipple = ref(false)
-const rippleX = ref(0)
-const rippleY = ref(0)
+const router = useRouter();
+const isHovered = ref(false);
+const showRipple = ref(false);
+const rippleX = ref(0);
+const rippleY = ref(0);
 
 const iconMap: Record<string, any> = {
   Wallet: defineAsyncComponent(() => import('@/components/icons/IconWallet.vue')),
@@ -35,29 +35,29 @@ const iconMap: Record<string, any> = {
   Cpu: defineAsyncComponent(() => import('@/components/icons/IconCpu.vue')),
   LifeRing: defineAsyncComponent(() => import('@/components/icons/IconLifeRing.vue')),
   Cog: defineAsyncComponent(() => import('@/components/icons/IconCog.vue'))
-}
+};
 
-const IconComponent = computed(() => iconMap[props.icon])
+const IconComponent = computed(() => iconMap[props.icon]);
 
 const handleMouseEnter = () => {
-  isHovered.value = true
-}
+  isHovered.value = true;
+};
 
 const handleMouseLeave = () => {
-  isHovered.value = false
-}
+  isHovered.value = false;
+};
 
 const handleClick = (event: MouseEvent) => {
-  const rect = (event.currentTarget as HTMLElement).getBoundingClientRect()
-  rippleX.value = event.clientX - rect.left
-  rippleY.value = event.clientY - rect.top
-  showRipple.value = true
+  const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
+  rippleX.value = event.clientX - rect.left;
+  rippleY.value = event.clientY - rect.top;
+  showRipple.value = true;
 
   setTimeout(() => {
-    showRipple.value = false
-    router.push(props.routePath)
-  }, 300)
-}
+    showRipple.value = false;
+    router.push(props.routePath);
+  }, 300);
+};
 </script>
 
 <template>
@@ -80,9 +80,7 @@ const handleClick = (event: MouseEvent) => {
         <p class="module-description">{{ description }}</p>
 
         <Transition name="hint-fade">
-          <div v-if="isHovered" class="hover-hint">
-            点击进入 →
-          </div>
+          <div v-if="isHovered" class="hover-hint">点击进入 →</div>
         </Transition>
 
         <span v-if="badge" class="module-badge">
@@ -215,12 +213,7 @@ const handleClick = (event: MouseEvent) => {
 .glow-effect {
   position: absolute;
   inset: -2px;
-  background: linear-gradient(
-    135deg,
-    var(--card-color),
-    transparent,
-    var(--card-color)
-  );
+  background: linear-gradient(135deg, var(--card-color), transparent, var(--card-color));
   clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
   opacity: 0;
   filter: blur(15px);

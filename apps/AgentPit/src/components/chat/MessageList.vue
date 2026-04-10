@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { ref, watch, nextTick, onMounted } from 'vue'
-import { marked } from 'marked'
-import DOMPurify from 'dompurify'
-import type { Message } from '@/types/chat'
-import { useTypewriter } from '@/composables/useTypewriter'
-import MultimediaMessage from './MultimediaMessage.vue'
+import { ref, watch, nextTick, onMounted } from 'vue';
+import { marked } from 'marked';
+import DOMPurify from 'dompurify';
+import type { Message } from '@/types/chat';
+import { useTypewriter } from '@/composables/useTypewriter';
+import MultimediaMessage from './MultimediaMessage.vue';
 
 /**
  * MessageList 组件 Props 接口
@@ -14,75 +14,108 @@ interface Props {
   /**
    * 消息数组
    */
-  messages: Message[]
+  messages: Message[];
   /**
    * 是否正在流式接收消息
    * @default false
    */
-  isStreaming?: boolean
+  isStreaming?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   isStreaming: false
-})
+});
 
-const messageListRef = ref<HTMLDivElement>()
-const { displayedText, startTyping } = useTypewriter()
+const messageListRef = ref<HTMLDivElement>();
+const { displayedText, startTyping } = useTypewriter();
 
 const renderMarkdown = (content: string): string => {
   try {
-    const rawHtml = marked(content) as string
+    const rawHtml = marked(content) as string;
     return DOMPurify.sanitize(rawHtml, {
-      ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'u', 's', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'blockquote', 'pre', 'code', 'a', 'table', 'thead', 'tbody', 'tr', 'th', 'td'],
+      ALLOWED_TAGS: [
+        'p',
+        'br',
+        'strong',
+        'em',
+        'u',
+        's',
+        'h1',
+        'h2',
+        'h3',
+        'h4',
+        'h5',
+        'h6',
+        'ul',
+        'ol',
+        'li',
+        'blockquote',
+        'pre',
+        'code',
+        'a',
+        'table',
+        'thead',
+        'tbody',
+        'tr',
+        'th',
+        'td'
+      ],
       ALLOWED_ATTR: ['href', 'target', 'rel', 'class']
-    })
+    });
   } catch {
-    return content
+    return content;
   }
-}
+};
 
 const scrollToBottom = () => {
   nextTick(() => {
     if (messageListRef.value) {
-      messageListRef.value.scrollTop = messageListRef.value.scrollHeight
+      messageListRef.value.scrollTop = messageListRef.value.scrollHeight;
     }
-  })
-}
+  });
+};
 
-watch(() => props.messages.length, () => {
-  scrollToBottom()
-}, { immediate: true })
+watch(
+  () => props.messages.length,
+  () => {
+    scrollToBottom();
+  },
+  { immediate: true }
+);
 
-watch(() => props.isStreaming, (streaming) => {
-  if (!streaming && props.messages.length > 0) {
-    const lastMessage = props.messages[props.messages.length - 1]
-    if (lastMessage?.role === 'assistant' && lastMessage.isStreaming) {
-      startTyping(lastMessage.content)
+watch(
+  () => props.isStreaming,
+  (streaming) => {
+    if (!streaming && props.messages.length > 0) {
+      const lastMessage = props.messages[props.messages.length - 1];
+      if (lastMessage?.role === 'assistant' && lastMessage.isStreaming) {
+        startTyping(lastMessage.content);
+      }
     }
   }
-})
+);
 
 onMounted(() => {
-  scrollToBottom()
-})
+  scrollToBottom();
+});
 
 const formatTimestamp = (timestamp: number): string => {
-  const date = new Date(timestamp)
-  return date.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })
-}
+  const date = new Date(timestamp);
+  return date.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+};
 
 const getStatusIcon = (status?: string) => {
   switch (status) {
     case 'sending':
-      return '<span class="inline-block w-2 h-2 rounded-full bg-yellow-400 animate-pulse"></span>'
+      return '<span class="inline-block w-2 h-2 rounded-full bg-yellow-400 animate-pulse"></span>';
     case 'sent':
-      return '<span class="inline-block w-2 h-2 rounded-full bg-blue-400"></span>'
+      return '<span class="inline-block w-2 h-2 rounded-full bg-blue-400"></span>';
     case 'read':
-      return '<span class="inline-block w-2 h-2 rounded-full bg-green-400"></span>'
+      return '<span class="inline-block w-2 h-2 rounded-full bg-green-400"></span>';
     default:
-      return ''
+      return '';
   }
-}
+};
 </script>
 
 <template>
@@ -91,9 +124,7 @@ const getStatusIcon = (status?: string) => {
     <div v-if="messages.length === 0" class="flex items-center justify-center h-full">
       <div class="text-center max-w-md">
         <div class="text-6xl mb-4">💬</div>
-        <h3 class="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">
-          开始新对话
-        </h3>
+        <h3 class="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">开始新对话</h3>
         <p class="text-sm text-gray-500 dark:text-gray-400">
           选择一个快捷指令或直接输入您的问题，与 AI 助手开始对话
         </p>
@@ -105,11 +136,18 @@ const getStatusIcon = (status?: string) => {
       <!-- 用户消息 -->
       <div v-if="message.role === 'user'" class="flex justify-end">
         <div class="max-w-[80%] lg:max-w-[70%]">
-          <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-2xl rounded-br-md px-4 py-3 shadow-sm">
+          <div
+            class="bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-2xl rounded-br-md px-4 py-3 shadow-sm"
+          >
             <!-- 多媒体消息 -->
-            <MultimediaMessage v-if="message.messageType && message.messageType !== 'text'" :message="message" />
+            <MultimediaMessage
+              v-if="message.messageType && message.messageType !== 'text'"
+              :message="message"
+            />
             <!-- 文本内容 -->
-            <div v-if="message.content" class="text-sm whitespace-pre-wrap break-words">{{ message.content }}</div>
+            <div v-if="message.content" class="text-sm whitespace-pre-wrap break-words">
+              {{ message.content }}
+            </div>
           </div>
           <div class="flex items-center justify-end gap-2 mt-1 px-2">
             <span class="text-xs text-gray-400">{{ formatTimestamp(message.timestamp) }}</span>
@@ -122,15 +160,26 @@ const getStatusIcon = (status?: string) => {
       <div v-else class="flex justify-start">
         <div class="max-w-[80%] lg:max-w-[70%]">
           <div class="flex items-start gap-2 mb-1">
-            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
+            <div
+              class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center text-white text-sm font-bold flex-shrink-0"
+            >
               🤖
             </div>
-            <div class="flex-1 bg-gray-100 dark:bg-gray-800 rounded-2xl rounded-bl-md px-4 py-3 shadow-sm">
+            <div
+              class="flex-1 bg-gray-100 dark:bg-gray-800 rounded-2xl rounded-bl-md px-4 py-3 shadow-sm"
+            >
               <!-- 多媒体消息 -->
-              <MultimediaMessage v-if="message.messageType && message.messageType !== 'text'" :message="message" />
+              <MultimediaMessage
+                v-if="message.messageType && message.messageType !== 'text'"
+                :message="message"
+              />
               <!-- 流式输出时使用打字机效果 -->
               <div
-                v-if="message.isStreaming && index === messages.length - 1 && (!message.messageType || message.messageType === 'text')"
+                v-if="
+                  message.isStreaming &&
+                  index === messages.length - 1 &&
+                  (!message.messageType || message.messageType === 'text')
+                "
                 class="prose prose-sm dark:prose-invert max-w-none markdown-content"
                 v-html="renderMarkdown(displayedText || message.content)"
               ></div>
@@ -142,9 +191,18 @@ const getStatusIcon = (status?: string) => {
               ></div>
               <!-- 流式指示器 -->
               <div v-if="isStreaming && message.isStreaming" class="flex items-center gap-1 mt-2">
-                <span class="w-1.5 h-1.5 rounded-full bg-gray-400 animate-bounce" style="animation-delay: 0ms"></span>
-                <span class="w-1.5 h-1.5 rounded-full bg-gray-400 animate-bounce" style="animation-delay: 150ms"></span>
-                <span class="w-1.5 h-1.5 rounded-full bg-gray-400 animate-bounce" style="animation-delay: 300ms"></span>
+                <span
+                  class="w-1.5 h-1.5 rounded-full bg-gray-400 animate-bounce"
+                  style="animation-delay: 0ms"
+                ></span>
+                <span
+                  class="w-1.5 h-1.5 rounded-full bg-gray-400 animate-bounce"
+                  style="animation-delay: 150ms"
+                ></span>
+                <span
+                  class="w-1.5 h-1.5 rounded-full bg-gray-400 animate-bounce"
+                  style="animation-delay: 300ms"
+                ></span>
               </div>
             </div>
           </div>
@@ -194,7 +252,8 @@ const getStatusIcon = (status?: string) => {
   color: #e5e7eb;
 }
 
-.markdown-content :deep(ul), .markdown-content :deep(ol) {
+.markdown-content :deep(ul),
+.markdown-content :deep(ol) {
   padding-left: 1.5rem;
   margin: 0.5rem 0;
 }
@@ -230,7 +289,8 @@ const getStatusIcon = (status?: string) => {
   margin: 0.75rem 0;
 }
 
-.markdown-content :deep(th), .markdown-content :deep(td) {
+.markdown-content :deep(th),
+.markdown-content :deep(td) {
   border: 1px solid #e5e7eb;
   padding: 0.5rem;
   text-align: left;

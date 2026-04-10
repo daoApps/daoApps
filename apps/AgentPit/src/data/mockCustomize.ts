@@ -1,143 +1,145 @@
 export interface Avatar {
-  id: string
-  emoji: string
-  category: 'person' | 'animal' | 'abstract' | 'tech' | 'nature' | 'food'
-  name: string
+  id: string;
+  emoji: string;
+  category: 'person' | 'animal' | 'abstract' | 'tech' | 'nature' | 'food';
+  name: string;
 }
 
 export interface ThemeColor {
-  id: string
-  name: string
-  primary: string
-  secondary: string
-  accent: string
-  background: string
-  text: string
-  preview: string
+  id: string;
+  name: string;
+  primary: string;
+  secondary: string;
+  accent: string;
+  background: string;
+  text: string;
+  preview: string;
 }
 
 export interface Ability {
-  id: string
-  name: string
-  description: string
-  category: 'conversation' | 'creative' | 'analysis' | 'tool' | 'multimodal'
-  icon: string
-  isPremium: boolean
-  dependencies?: string[]
-  defaultParams: Record<string, unknown>
+  id: string;
+  name: string;
+  description: string;
+  category: 'conversation' | 'creative' | 'analysis' | 'tool' | 'multimodal';
+  icon: string;
+  isPremium: boolean;
+  dependencies?: string[];
+  defaultParams: Record<string, unknown>;
 }
 
 export interface AgentTemplate {
-  id: string
-  name: string
-  icon: string
-  description: string
-  category: string
-  recommendedAbilities: string[]
+  id: string;
+  name: string;
+  icon: string;
+  description: string;
+  category: string;
+  recommendedAbilities: string[];
 }
 
 export interface AgentConfig {
   basicInfo: {
-    name: string
-    description: string
-    avatarId: string
-    customAvatar?: string
-    tags: string[]
-    category: string
-  }
+    name: string;
+    description: string;
+    avatarId: string;
+    customAvatar?: string;
+    tags: string[];
+    category: string;
+  };
   appearance: {
-    themeId: string
+    themeId: string;
     customColors?: {
-      primary: string
-      secondary: string
-      accent: string
-    }
-    titleFont: string
-    bodyFont: string
-    fontSize: number
-    layoutStyle: 'card' | 'list' | 'timeline' | 'dashboard'
-    borderRadius: number
-    shadowIntensity: 'none' | 'light' | 'medium' | 'heavy'
-    darkMode: boolean
-  }
+      primary: string;
+      secondary: string;
+      accent: string;
+    };
+    titleFont: string;
+    bodyFont: string;
+    fontSize: number;
+    layoutStyle: 'card' | 'list' | 'timeline' | 'dashboard';
+    borderRadius: number;
+    shadowIntensity: 'none' | 'light' | 'medium' | 'heavy';
+    darkMode: boolean;
+  };
   abilities: {
-    enabledAbilities: { [key: string]: { enabled: boolean; proficiency: number; params: Record<string, unknown> } }
-    presetTemplate?: string
-  }
+    enabledAbilities: {
+      [key: string]: { enabled: boolean; proficiency: number; params: Record<string, unknown> };
+    };
+    presetTemplate?: string;
+  };
   businessModel: {
-    mode: 'free' | 'subscription' | 'payPerUse' | 'membership'
+    mode: 'free' | 'subscription' | 'payPerUse' | 'membership';
     pricing: {
-      monthlyPrice?: number
-      quarterlyPrice?: number
-      yearlyPrice?: number
-      perUsePrice?: number
-      trialDays?: number
-    }
+      monthlyPrice?: number;
+      quarterlyPrice?: number;
+      yearlyPrice?: number;
+      perUsePrice?: number;
+      trialDays?: number;
+    };
     membershipLevels?: Array<{
-      name: string
-      price: number
-      features: string[]
-    }>
+      name: string;
+      price: number;
+      features: string[];
+    }>;
     serviceLimits: {
-      availableSlots: Array<{ start: string; end: string }>
-      maxConcurrentUsers: number
-      dailyRequestLimit: number
-      apiRateLimit: number
-    }
-    platformCommission: number
+      availableSlots: Array<{ start: string; end: string }>;
+      maxConcurrentUsers: number;
+      dailyRequestLimit: number;
+      apiRateLimit: number;
+    };
+    platformCommission: number;
     trialSettings?: {
-      days: number
-      featureLimits: string[]
-    }
-  }
+      days: number;
+      featureLimits: string[];
+    };
+  };
 }
 
 export interface AgentItem {
-  id: string
-  name: string
-  description: string
-  avatar: string
-  status: 'published' | 'draft' | 'disabled' | 'reviewing'
-  tags: string[]
-  category: string
-  createdAt: string
-  updatedAt: string
-  config: AgentConfig
+  id: string;
+  name: string;
+  description: string;
+  avatar: string;
+  status: 'published' | 'draft' | 'disabled' | 'reviewing';
+  tags: string[];
+  category: string;
+  createdAt: string;
+  updatedAt: string;
+  config: AgentConfig;
   stats: {
-    totalCalls: number
-    activeUsers: number
-    revenue: number
-    rating: number
-  }
+    totalCalls: number;
+    activeUsers: number;
+    revenue: number;
+    rating: number;
+  };
 }
 
 export interface AnalyticsData {
   overview: {
-    todayCalls: number
-    weekCalls: number
-    monthCalls: number
-    callsGrowth: number
-    activeUsers: number
-    avgResponseTime: number
-    satisfactionScore: number
-  }
-  callTrend: Array<{ date: string; value: number }>
-  userSource: Array<{ name: string; value: number }>
-  topQuestions: Array<{ question: string; count: number }>
-  revenueTrend: Array<{ date: string; value: number }>
+    todayCalls: number;
+    weekCalls: number;
+    monthCalls: number;
+    callsGrowth: number;
+    activeUsers: number;
+    avgResponseTime: number;
+    satisfactionScore: number;
+  };
+  callTrend: Array<{ date: string; value: number }>;
+  userSource: Array<{ name: string; value: number }>;
+  topQuestions: Array<{ question: string; count: number }>;
+  revenueTrend: Array<{ date: string; value: number }>;
   feedbacks: Array<{
-    id: string
-    content: string
-    rating: number
-    time: string
-    replied: boolean
-  }>
+    id: string;
+    content: string;
+    rating: number;
+    time: string;
+    replied: boolean;
+  }>;
   performance: {
-    successRate: number
-    errorRate: number
-    avgTokenConsumption: number
-    peakConcurrency: number
-  }
+    successRate: number;
+    errorRate: number;
+    avgTokenConsumption: number;
+    peakConcurrency: number;
+  };
 }
 
 export const avatarLibrary: Avatar[] = [
@@ -174,7 +176,7 @@ export const avatarLibrary: Avatar[] = [
   { id: 'f2', emoji: '☕', category: 'food', name: '咖啡' },
   { id: 'f3', emoji: '🎂', category: 'food', name: '蛋糕' },
   { id: 'f4', emoji: '🍎', category: 'food', name: '苹果' }
-]
+];
 
 export const themeColors: ThemeColor[] = [
   {
@@ -297,7 +299,7 @@ export const themeColors: ThemeColor[] = [
     text: '#1E293B',
     preview: 'linear-gradient(135deg, #475569, #64748B)'
   }
-]
+];
 
 export const fontOptions = [
   { id: 'system-ui', label: '系统默认', family: 'system-ui, -apple-system, sans-serif' },
@@ -306,7 +308,7 @@ export const fontOptions = [
   { id: 'noto-sans', label: 'Noto Sans SC', family: "'Noto Sans SC', sans-serif" },
   { id: 'playfair', label: 'Playfair Display', family: "'Playfair Display', serif" },
   { id: 'source-han', label: 'Source Han Serif', family: "'Source Han Serif SC', serif" }
-]
+];
 
 export const abilities: Ability[] = [
   {
@@ -466,7 +468,7 @@ export const abilities: Ability[] = [
     dependencies: ['text-generation'],
     defaultParams: { genre: 'mixed', tone: 'expressive', length: 'flexible' }
   }
-]
+];
 
 export const agentTemplates: AgentTemplate[] = [
   {
@@ -507,7 +509,12 @@ export const agentTemplates: AgentTemplate[] = [
     icon: '🎧',
     description: '7x24 小时自动客户服务和支持',
     category: 'service',
-    recommendedAbilities: ['conversation-understanding', 'emotion-recognition', 'context-memory', 'knowledge-base']
+    recommendedAbilities: [
+      'conversation-understanding',
+      'emotion-recognition',
+      'context-memory',
+      'knowledge-base'
+    ]
   },
   {
     id: 'template-educator',
@@ -515,7 +522,12 @@ export const agentTemplates: AgentTemplate[] = [
     icon: '📚',
     description: '个性化教学和学习辅导助手',
     category: 'education',
-    recommendedAbilities: ['conversation-understanding', 'knowledge-base', 'translation', 'file-processing']
+    recommendedAbilities: [
+      'conversation-understanding',
+      'knowledge-base',
+      'translation',
+      'file-processing'
+    ]
   },
   {
     id: 'template-entertainment',
@@ -523,7 +535,12 @@ export const agentTemplates: AgentTemplate[] = [
     icon: '🎮',
     description: '聊天陪伴、游戏互动、趣味问答',
     category: 'entertainment',
-    recommendedAbilities: ['conversation-understanding', 'emotion-recognition', 'creative-writing', 'text-generation']
+    recommendedAbilities: [
+      'conversation-understanding',
+      'emotion-recognition',
+      'creative-writing',
+      'text-generation'
+    ]
   },
   {
     id: 'template-multimodal',
@@ -531,9 +548,14 @@ export const agentTemplates: AgentTemplate[] = [
     icon: '🌟',
     description: '支持文本、图像、语音等多种交互方式',
     category: 'other',
-    recommendedAbilities: ['conversation-understanding', 'image-description', 'voice-input', 'text-generation']
+    recommendedAbilities: [
+      'conversation-understanding',
+      'image-description',
+      'voice-input',
+      'text-generation'
+    ]
   }
-]
+];
 
 export const sampleAgents: AgentItem[] = [
   {
@@ -547,19 +569,51 @@ export const sampleAgents: AgentItem[] = [
     createdAt: '2024-01-15T08:00:00Z',
     updatedAt: '2024-03-20T14:30:00Z',
     config: {
-      basicInfo: { name: '法律小助手', description: '专业的法律咨询智能体', avatarId: 'p3', tags: ['法律', '咨询'], category: 'assistant' },
-      appearance: { themeId: 'theme-blue', titleFont: 'system-ui', bodyFont: 'system-ui', fontSize: 16, layoutStyle: 'card', borderRadius: 12, shadowIntensity: 'medium', darkMode: false },
+      basicInfo: {
+        name: '法律小助手',
+        description: '专业的法律咨询智能体',
+        avatarId: 'p3',
+        tags: ['法律', '咨询'],
+        category: 'assistant'
+      },
+      appearance: {
+        themeId: 'theme-blue',
+        titleFont: 'system-ui',
+        bodyFont: 'system-ui',
+        fontSize: 16,
+        layoutStyle: 'card',
+        borderRadius: 12,
+        shadowIntensity: 'medium',
+        darkMode: false
+      },
       abilities: {
         enabledAbilities: {
-          'conversation-understanding': { enabled: true, proficiency: 90, params: { temperature: 0.5, maxTokens: 2048, contextWindow: 8192 } },
-          'knowledge-base': { enabled: true, proficiency: 85, params: { retrievalMethod: 'hybrid', topK: 5 } },
-          'text-generation': { enabled: true, proficiency: 80, params: { creativity: 0.4, style: 'formal', outputFormat: 'markdown' } }
+          'conversation-understanding': {
+            enabled: true,
+            proficiency: 90,
+            params: { temperature: 0.5, maxTokens: 2048, contextWindow: 8192 }
+          },
+          'knowledge-base': {
+            enabled: true,
+            proficiency: 85,
+            params: { retrievalMethod: 'hybrid', topK: 5 }
+          },
+          'text-generation': {
+            enabled: true,
+            proficiency: 80,
+            params: { creativity: 0.4, style: 'formal', outputFormat: 'markdown' }
+          }
         }
       },
       businessModel: {
         mode: 'subscription',
         pricing: { monthlyPrice: 99, yearlyPrice: 999 },
-        serviceLimits: { availableSlots: [{ start: '00:00', end: '23:59' }], maxConcurrentUsers: 50, dailyRequestLimit: 1000, apiRateLimit: 60 },
+        serviceLimits: {
+          availableSlots: [{ start: '00:00', end: '23:59' }],
+          maxConcurrentUsers: 50,
+          dailyRequestLimit: 1000,
+          apiRateLimit: 60
+        },
         platformCommission: 20
       }
     },
@@ -576,20 +630,60 @@ export const sampleAgents: AgentItem[] = [
     createdAt: '2024-02-20T10:00:00Z',
     updatedAt: '2024-04-01T09:15:00Z',
     config: {
-      basicInfo: { name: '编程大师', description: '全栈编程开发助手', avatarId: 'p6', tags: ['编程', '开发', '技术'], category: 'assistant' },
-      appearance: { themeId: 'theme-green', titleFont: 'roboto', bodyFont: 'roboto', fontSize: 14, layoutStyle: 'dashboard', borderRadius: 8, shadowIntensity: 'light', darkMode: true },
+      basicInfo: {
+        name: '编程大师',
+        description: '全栈编程开发助手',
+        avatarId: 'p6',
+        tags: ['编程', '开发', '技术'],
+        category: 'assistant'
+      },
+      appearance: {
+        themeId: 'theme-green',
+        titleFont: 'roboto',
+        bodyFont: 'roboto',
+        fontSize: 14,
+        layoutStyle: 'dashboard',
+        borderRadius: 8,
+        shadowIntensity: 'light',
+        darkMode: true
+      },
       abilities: {
         enabledAbilities: {
-          'code-generation': { enabled: true, proficiency: 95, params: { language: 'auto', styleGuide: 'standard', comments: true } },
-          'code-execution': { enabled: true, proficiency: 90, params: { timeout: 30, memoryLimit: '512MB', languages: ['python', 'javascript', 'typescript'] } },
-          'web-search': { enabled: true, proficiency: 85, params: { searchEngine: 'auto', resultCount: 10, safeSearch: true } },
-          'logical-reasoning': { enabled: true, proficiency: 88, params: { reasoningDepth: 'deep', stepByStep: true } }
+          'code-generation': {
+            enabled: true,
+            proficiency: 95,
+            params: { language: 'auto', styleGuide: 'standard', comments: true }
+          },
+          'code-execution': {
+            enabled: true,
+            proficiency: 90,
+            params: {
+              timeout: 30,
+              memoryLimit: '512MB',
+              languages: ['python', 'javascript', 'typescript']
+            }
+          },
+          'web-search': {
+            enabled: true,
+            proficiency: 85,
+            params: { searchEngine: 'auto', resultCount: 10, safeSearch: true }
+          },
+          'logical-reasoning': {
+            enabled: true,
+            proficiency: 88,
+            params: { reasoningDepth: 'deep', stepByStep: true }
+          }
         }
       },
       businessModel: {
         mode: 'payPerUse',
         pricing: { perUsePrice: 0.5 },
-        serviceLimits: { availableSlots: [{ start: '00:00', end: '23:59' }], maxConcurrentUsers: 100, dailyRequestLimit: 5000, apiRateLimit: 120 },
+        serviceLimits: {
+          availableSlots: [{ start: '00:00', end: '23:59' }],
+          maxConcurrentUsers: 100,
+          dailyRequestLimit: 5000,
+          apiRateLimit: 120
+        },
         platformCommission: 15
       }
     },
@@ -606,13 +700,40 @@ export const sampleAgents: AgentItem[] = [
     createdAt: '2024-03-05T14:00:00Z',
     updatedAt: '2024-04-05T11:20:00Z',
     config: {
-      basicInfo: { name: '创意写作精灵', description: 'AI 驱动的创意写作伙伴', avatarId: 'ab1', tags: ['写作', '创意', '内容'], category: 'creative' },
-      appearance: { themeId: 'theme-purple', titleFont: 'playfair', bodyFont: 'noto-sans', fontSize: 17, layoutStyle: 'timeline', borderRadius: 16, shadowIntensity: 'heavy', darkMode: false },
+      basicInfo: {
+        name: '创意写作精灵',
+        description: 'AI 驱动的创意写作伙伴',
+        avatarId: 'ab1',
+        tags: ['写作', '创意', '内容'],
+        category: 'creative'
+      },
+      appearance: {
+        themeId: 'theme-purple',
+        titleFont: 'playfair',
+        bodyFont: 'noto-sans',
+        fontSize: 17,
+        layoutStyle: 'timeline',
+        borderRadius: 16,
+        shadowIntensity: 'heavy',
+        darkMode: false
+      },
       abilities: {
         enabledAbilities: {
-          'text-generation': { enabled: true, proficiency: 95, params: { creativity: 0.95, style: 'artistic', outputFormat: 'markdown' } },
-          'creative-writing': { enabled: true, proficiency: 92, params: { genre: 'mixed', tone: 'expressive', length: 'flexible' } },
-          'translation': { enabled: true, proficiency: 80, params: { targetLanguage: 'auto', formality: 'literary' } }
+          'text-generation': {
+            enabled: true,
+            proficiency: 95,
+            params: { creativity: 0.95, style: 'artistic', outputFormat: 'markdown' }
+          },
+          'creative-writing': {
+            enabled: true,
+            proficiency: 92,
+            params: { genre: 'mixed', tone: 'expressive', length: 'flexible' }
+          },
+          translation: {
+            enabled: true,
+            proficiency: 80,
+            params: { targetLanguage: 'auto', formality: 'literary' }
+          }
         }
       },
       businessModel: {
@@ -620,10 +741,23 @@ export const sampleAgents: AgentItem[] = [
         pricing: { monthlyPrice: 49, quarterlyPrice: 129, yearlyPrice: 499 },
         membershipLevels: [
           { name: '普通版', price: 49, features: ['基础写作', '每日 50 次', '标准速度'] },
-          { name: 'VIP 版', price: 149, features: ['高级写作', '每日 200 次', '优先响应', '专属模板'] },
-          { name: 'SVIP 版', price: 299, features: ['无限写作', '无限制', '最快响应', 'API 接入', '定制训练'] }
+          {
+            name: 'VIP 版',
+            price: 149,
+            features: ['高级写作', '每日 200 次', '优先响应', '专属模板']
+          },
+          {
+            name: 'SVIP 版',
+            price: 299,
+            features: ['无限写作', '无限制', '最快响应', 'API 接入', '定制训练']
+          }
         ],
-        serviceLimits: { availableSlots: [{ start: '00:00', end: '23:59' }], maxConcurrentUsers: 200, dailyRequestLimit: 10000, apiRateLimit: 200 },
+        serviceLimits: {
+          availableSlots: [{ start: '00:00', end: '23:59' }],
+          maxConcurrentUsers: 200,
+          dailyRequestLimit: 10000,
+          apiRateLimit: 200
+        },
         platformCommission: 25
       }
     },
@@ -640,19 +774,51 @@ export const sampleAgents: AgentItem[] = [
     createdAt: '2024-03-18T09:00:00Z',
     updatedAt: '2024-04-02T16:45:00Z',
     config: {
-      basicInfo: { name: '数据分析专家', description: '智能数据分析助手', avatarId: 't4', tags: ['数据', '分析', '报表'], category: 'analysis' },
-      appearance: { themeId: 'theme-teal', titleFont: 'inter', bodyFont: 'inter', fontSize: 15, layoutStyle: 'dashboard', borderRadius: 10, shadowIntensity: 'medium', darkMode: false },
+      basicInfo: {
+        name: '数据分析专家',
+        description: '智能数据分析助手',
+        avatarId: 't4',
+        tags: ['数据', '分析', '报表'],
+        category: 'analysis'
+      },
+      appearance: {
+        themeId: 'theme-teal',
+        titleFont: 'inter',
+        bodyFont: 'inter',
+        fontSize: 15,
+        layoutStyle: 'dashboard',
+        borderRadius: 10,
+        shadowIntensity: 'medium',
+        darkMode: false
+      },
       abilities: {
         enabledAbilities: {
-          'data-analysis': { enabled: true, proficiency: 88, params: { dataVolume: 'large', accuracyPriority: true, visualization: 'auto' } },
-          'file-processing': { enabled: true, proficiency: 85, params: { maxSize: '50MB', formats: ['pdf', 'xlsx', 'csv', 'json'] } },
-          'logical-reasoning': { enabled: true, proficiency: 82, params: { reasoningDepth: 'medium', stepByStep: true } }
+          'data-analysis': {
+            enabled: true,
+            proficiency: 88,
+            params: { dataVolume: 'large', accuracyPriority: true, visualization: 'auto' }
+          },
+          'file-processing': {
+            enabled: true,
+            proficiency: 85,
+            params: { maxSize: '50MB', formats: ['pdf', 'xlsx', 'csv', 'json'] }
+          },
+          'logical-reasoning': {
+            enabled: true,
+            proficiency: 82,
+            params: { reasoningDepth: 'medium', stepByStep: true }
+          }
         }
       },
       businessModel: {
         mode: 'free',
         pricing: {},
-        serviceLimits: { availableSlots: [{ start: '09:00', end: '18:00' }], maxConcurrentUsers: 20, dailyRequestLimit: 100, apiRateLimit: 20 },
+        serviceLimits: {
+          availableSlots: [{ start: '09:00', end: '18:00' }],
+          maxConcurrentUsers: 20,
+          dailyRequestLimit: 100,
+          apiRateLimit: 20
+        },
         platformCommission: 0
       }
     },
@@ -669,20 +835,56 @@ export const sampleAgents: AgentItem[] = [
     createdAt: '2024-04-01T11:00:00Z',
     updatedAt: '2024-04-08T13:00:00Z',
     config: {
-      basicInfo: { name: '智能客服小蜜', description: '7x24 小时在线客服机器人', avatarId: 'p2', tags: ['客服', '服务', '自动化'], category: 'service' },
-      appearance: { themeId: 'theme-orange', titleFont: 'noto-sans', bodyFont: 'noto-sans', fontSize: 16, layoutStyle: 'card', borderRadius: 12, shadowIntensity: 'light', darkMode: false },
+      basicInfo: {
+        name: '智能客服小蜜',
+        description: '7x24 小时在线客服机器人',
+        avatarId: 'p2',
+        tags: ['客服', '服务', '自动化'],
+        category: 'service'
+      },
+      appearance: {
+        themeId: 'theme-orange',
+        titleFont: 'noto-sans',
+        bodyFont: 'noto-sans',
+        fontSize: 16,
+        layoutStyle: 'card',
+        borderRadius: 12,
+        shadowIntensity: 'light',
+        darkMode: false
+      },
       abilities: {
         enabledAbilities: {
-          'conversation-understanding': { enabled: true, proficiency: 92, params: { temperature: 0.3, maxTokens: 1024, contextWindow: 16384 } },
-          'emotion-recognition': { enabled: true, proficiency: 88, params: { sensitivity: 0.9, empathyLevel: 'high' } },
-          'context-memory': { enabled: true, proficiency: 85, params: { memoryDepth: 'session', maxHistory: 50 } },
-          'knowledge-base': { enabled: true, proficiency: 90, params: { retrievalMethod: 'vector', topK: 3 } }
+          'conversation-understanding': {
+            enabled: true,
+            proficiency: 92,
+            params: { temperature: 0.3, maxTokens: 1024, contextWindow: 16384 }
+          },
+          'emotion-recognition': {
+            enabled: true,
+            proficiency: 88,
+            params: { sensitivity: 0.9, empathyLevel: 'high' }
+          },
+          'context-memory': {
+            enabled: true,
+            proficiency: 85,
+            params: { memoryDepth: 'session', maxHistory: 50 }
+          },
+          'knowledge-base': {
+            enabled: true,
+            proficiency: 90,
+            params: { retrievalMethod: 'vector', topK: 3 }
+          }
         }
       },
       businessModel: {
         mode: 'subscription',
         pricing: { monthlyPrice: 299, yearlyPrice: 2990, trialDays: 14 },
-        serviceLimits: { availableSlots: [{ start: '00:00', end: '23:59' }], maxConcurrentUsers: 500, dailyRequestLimit: 10000, apiRateLimit: 300 },
+        serviceLimits: {
+          availableSlots: [{ start: '00:00', end: '23:59' }],
+          maxConcurrentUsers: 500,
+          dailyRequestLimit: 10000,
+          apiRateLimit: 300
+        },
         platformCommission: 18
       }
     },
@@ -699,20 +901,56 @@ export const sampleAgents: AgentItem[] = [
     createdAt: '2024-02-10T07:00:00Z',
     updatedAt: '2024-03-28T10:30:00Z',
     config: {
-      basicInfo: { name: '英语学习伴侣', description: '个性化英语学习助手', avatarId: 't3', tags: ['教育', '英语', '学习'], category: 'education' },
-      appearance: { themeId: 'theme-indigo', titleFont: 'source-han', bodyFont: 'noto-sans', fontSize: 16, layoutStyle: 'card', borderRadius: 14, shadowIntensity: 'medium', darkMode: false },
+      basicInfo: {
+        name: '英语学习伴侣',
+        description: '个性化英语学习助手',
+        avatarId: 't3',
+        tags: ['教育', '英语', '学习'],
+        category: 'education'
+      },
+      appearance: {
+        themeId: 'theme-indigo',
+        titleFont: 'source-han',
+        bodyFont: 'noto-sans',
+        fontSize: 16,
+        layoutStyle: 'card',
+        borderRadius: 14,
+        shadowIntensity: 'medium',
+        darkMode: false
+      },
       abilities: {
         enabledAbilities: {
-          'conversation-understanding': { enabled: true, proficiency: 90, params: { temperature: 0.6, maxTokens: 1536, contextWindow: 4096 } },
-          'translation': { enabled: true, proficiency: 95, params: { targetLanguage: 'en', formality: 'neutral' } },
-          'voice-input': { enabled: true, proficiency: 85, params: { language: 'en-US', realTime: true } },
-          'text-generation': { enabled: true, proficiency: 82, params: { creativity: 0.5, style: 'educational', outputFormat: 'plain' } }
+          'conversation-understanding': {
+            enabled: true,
+            proficiency: 90,
+            params: { temperature: 0.6, maxTokens: 1536, contextWindow: 4096 }
+          },
+          translation: {
+            enabled: true,
+            proficiency: 95,
+            params: { targetLanguage: 'en', formality: 'neutral' }
+          },
+          'voice-input': {
+            enabled: true,
+            proficiency: 85,
+            params: { language: 'en-US', realTime: true }
+          },
+          'text-generation': {
+            enabled: true,
+            proficiency: 82,
+            params: { creativity: 0.5, style: 'educational', outputFormat: 'plain' }
+          }
         }
       },
       businessModel: {
         mode: 'freemium' as any,
         pricing: { monthlyPrice: 39, trialDays: 7 },
-        serviceLimits: { availableSlots: [{ start: '06:00', end: '23:00' }], maxConcurrentUsers: 100, dailyRequestLimit: 500, apiRateLimit: 60 },
+        serviceLimits: {
+          availableSlots: [{ start: '06:00', end: '23:00' }],
+          maxConcurrentUsers: 100,
+          dailyRequestLimit: 500,
+          apiRateLimit: 60
+        },
         platformCommission: 22
       }
     },
@@ -729,19 +967,51 @@ export const sampleAgents: AgentItem[] = [
     createdAt: '2024-01-28T12:00:00Z',
     updatedAt: '2024-03-15T08:00:00Z',
     config: {
-      basicInfo: { name: '健康顾问', description: '基于权威医学知识的健康咨询助手', avatarId: 'p4', tags: ['健康', '医疗', '咨询'], category: 'assistant' },
-      appearance: { themeId: 'theme-green', titleFont: 'noto-sans', bodyFont: 'noto-sans', fontSize: 15, layoutStyle: 'list', borderRadius: 12, shadowIntensity: 'light', darkMode: false },
+      basicInfo: {
+        name: '健康顾问',
+        description: '基于权威医学知识的健康咨询助手',
+        avatarId: 'p4',
+        tags: ['健康', '医疗', '咨询'],
+        category: 'assistant'
+      },
+      appearance: {
+        themeId: 'theme-green',
+        titleFont: 'noto-sans',
+        bodyFont: 'noto-sans',
+        fontSize: 15,
+        layoutStyle: 'list',
+        borderRadius: 12,
+        shadowIntensity: 'light',
+        darkMode: false
+      },
       abilities: {
         enabledAbilities: {
-          'conversation-understanding': { enabled: true, proficiency: 88, params: { temperature: 0.4, maxTokens: 1536, contextWindow: 8192 } },
-          'knowledge-base': { enabled: true, proficiency: 92, params: { retrievalMethod: 'vector', topK: 5 } },
-          'context-memory': { enabled: true, proficiency: 75, params: { memoryDepth: 'long', maxHistory: 200 } }
+          'conversation-understanding': {
+            enabled: true,
+            proficiency: 88,
+            params: { temperature: 0.4, maxTokens: 1536, contextWindow: 8192 }
+          },
+          'knowledge-base': {
+            enabled: true,
+            proficiency: 92,
+            params: { retrievalMethod: 'vector', topK: 5 }
+          },
+          'context-memory': {
+            enabled: true,
+            proficiency: 75,
+            params: { memoryDepth: 'long', maxHistory: 200 }
+          }
         }
       },
       businessModel: {
         mode: 'free',
         pricing: {},
-        serviceLimits: { availableSlots: [{ start: '08:00', end: '22:00' }], maxConcurrentUsers: 30, dailyRequestLimit: 200, apiRateLimit: 30 },
+        serviceLimits: {
+          availableSlots: [{ start: '08:00', end: '22:00' }],
+          maxConcurrentUsers: 30,
+          dailyRequestLimit: 200,
+          apiRateLimit: 30
+        },
         platformCommission: 0
       }
     },
@@ -758,25 +1028,57 @@ export const sampleAgents: AgentItem[] = [
     createdAt: '2024-04-05T15:00:00Z',
     updatedAt: '2024-04-09T17:30:00Z',
     config: {
-      basicInfo: { name: '旅行规划师', description: '智能旅行规划助手', avatarId: 't1', tags: ['旅行', '规划', '推荐'], category: 'entertainment' },
-      appearance: { themeId: 'theme-cyan', titleFont: 'inter', bodyFont: 'noto-sans', fontSize: 16, layoutStyle: 'card', borderRadius: 16, shadowIntensity: 'heavy', darkMode: false },
+      basicInfo: {
+        name: '旅行规划师',
+        description: '智能旅行规划助手',
+        avatarId: 't1',
+        tags: ['旅行', '规划', '推荐'],
+        category: 'entertainment'
+      },
+      appearance: {
+        themeId: 'theme-cyan',
+        titleFont: 'inter',
+        bodyFont: 'noto-sans',
+        fontSize: 16,
+        layoutStyle: 'card',
+        borderRadius: 16,
+        shadowIntensity: 'heavy',
+        darkMode: false
+      },
       abilities: {
         enabledAbilities: {
-          'conversation-understanding': { enabled: true, proficiency: 85, params: { temperature: 0.7, maxTokens: 2048, contextWindow: 8192 } },
-          'web-search': { enabled: true, proficiency: 90, params: { searchEngine: 'auto', resultCount: 15, safeSearch: false } },
-          'text-generation': { enabled: true, proficiency: 88, params: { creativity: 0.8, style: 'engaging', outputFormat: 'markdown' } }
+          'conversation-understanding': {
+            enabled: true,
+            proficiency: 85,
+            params: { temperature: 0.7, maxTokens: 2048, contextWindow: 8192 }
+          },
+          'web-search': {
+            enabled: true,
+            proficiency: 90,
+            params: { searchEngine: 'auto', resultCount: 15, safeSearch: false }
+          },
+          'text-generation': {
+            enabled: true,
+            proficiency: 88,
+            params: { creativity: 0.8, style: 'engaging', outputFormat: 'markdown' }
+          }
         }
       },
       businessModel: {
         mode: 'payPerUse',
         pricing: { perUsePrice: 2 },
-        serviceLimits: { availableSlots: [{ start: '00:00', end: '23:59' }], maxConcurrentUsers: 50, dailyRequestLimit: 500, apiRateLimit: 30 },
+        serviceLimits: {
+          availableSlots: [{ start: '00:00', end: '23:59' }],
+          maxConcurrentUsers: 50,
+          dailyRequestLimit: 500,
+          apiRateLimit: 30
+        },
         platformCommission: 20
       }
     },
     stats: { totalCalls: 120, activeUsers: 35, revenue: 240, rating: 0 }
   }
-]
+];
 
 export const analyticsData: AnalyticsData = {
   overview: {
@@ -789,9 +1091,12 @@ export const analyticsData: AnalyticsData = {
     satisfactionScore: 4.7
   },
   callTrend: [
-    { date: '04-04', value: 1120 }, { date: '04-05', value: 1340 },
-    { date: '04-06', value: 980 }, { date: '04-07', value: 1450 },
-    { date: '04-08', value: 1280 }, { date: '04-09', value: 1520 },
+    { date: '04-04', value: 1120 },
+    { date: '04-05', value: 1340 },
+    { date: '04-06', value: 980 },
+    { date: '04-07', value: 1450 },
+    { date: '04-08', value: 1280 },
+    { date: '04-09', value: 1520 },
     { date: '04-10', value: 1247 }
   ],
   userSource: [
@@ -813,18 +1118,57 @@ export const analyticsData: AnalyticsData = {
     { question: '如何联系技术支持？', count: 234 }
   ],
   revenueTrend: [
-    { date: '04-04', value: 3200 }, { date: '04-05', value: 3800 },
-    { date: '04-06', value: 2900 }, { date: '04-07', value: 4200 },
-    { date: '04-08', value: 3600 }, { date: '04-09', value: 4500 },
+    { date: '04-04', value: 3200 },
+    { date: '04-05', value: 3800 },
+    { date: '04-06', value: 2900 },
+    { date: '04-07', value: 4200 },
+    { date: '04-08', value: 3600 },
+    { date: '04-09', value: 4500 },
     { date: '04-10', value: 4100 }
   ],
   feedbacks: [
-    { id: 'fb-1', content: '非常好用，回答准确且快速！', rating: 5, time: '2024-04-10 14:30', replied: true },
-    { id: 'fb-2', content: '功能强大，但希望能增加更多模板', rating: 4, time: '2024-04-10 11:20', replied: true },
-    { id: 'fb-3', content: '界面美观，操作简单直观', rating: 5, time: '2024-04-09 18:45', replied: false },
-    { id: 'fb-4', content: '定价合理，性价比很高', rating: 4, time: '2024-04-09 15:10', replied: true },
-    { id: 'fb-5', content: '偶尔会有延迟，但整体体验不错', rating: 3, time: '2024-04-08 09:30', replied: false },
-    { id: 'fb-6', content: '客服响应及时，解决问题效率高', rating: 5, time: '2024-04-07 16:20', replied: true }
+    {
+      id: 'fb-1',
+      content: '非常好用，回答准确且快速！',
+      rating: 5,
+      time: '2024-04-10 14:30',
+      replied: true
+    },
+    {
+      id: 'fb-2',
+      content: '功能强大，但希望能增加更多模板',
+      rating: 4,
+      time: '2024-04-10 11:20',
+      replied: true
+    },
+    {
+      id: 'fb-3',
+      content: '界面美观，操作简单直观',
+      rating: 5,
+      time: '2024-04-09 18:45',
+      replied: false
+    },
+    {
+      id: 'fb-4',
+      content: '定价合理，性价比很高',
+      rating: 4,
+      time: '2024-04-09 15:10',
+      replied: true
+    },
+    {
+      id: 'fb-5',
+      content: '偶尔会有延迟，但整体体验不错',
+      rating: 3,
+      time: '2024-04-08 09:30',
+      replied: false
+    },
+    {
+      id: 'fb-6',
+      content: '客服响应及时，解决问题效率高',
+      rating: 5,
+      time: '2024-04-07 16:20',
+      replied: true
+    }
   ],
   performance: {
     successRate: 99.2,
@@ -832,7 +1176,7 @@ export const analyticsData: AnalyticsData = {
     avgTokenConsumption: 456,
     peakConcurrency: 156
   }
-}
+};
 
 export const abilityPresets = [
   {
@@ -847,7 +1191,13 @@ export const abilityPresets = [
     name: '专业型',
     description: '面向专业领域的深度能力组合',
     icon: '🎓',
-    abilities: ['conversation-understanding', 'knowledge-base', 'data-analysis', 'logical-reasoning', 'file-processing']
+    abilities: [
+      'conversation-understanding',
+      'knowledge-base',
+      'data-analysis',
+      'logical-reasoning',
+      'file-processing'
+    ]
   },
   {
     id: 'preset-creative',
@@ -861,9 +1211,15 @@ export const abilityPresets = [
     name: '效率型',
     description: '提升工作效率的工具型能力组合',
     icon: '⚡',
-    abilities: ['web-search', 'code-execution', 'api-integration', 'file-processing', 'summarization']
+    abilities: [
+      'web-search',
+      'code-execution',
+      'api-integration',
+      'file-processing',
+      'summarization'
+    ]
   }
-]
+];
 
 export const categories = [
   { value: 'assistant', label: '助手' },
@@ -873,7 +1229,7 @@ export const categories = [
   { value: 'entertainment', label: '娱乐' },
   { value: 'education', label: '教育' },
   { value: 'other', label: '其他' }
-]
+];
 
 export const defaultAgentConfig: AgentConfig = {
   basicInfo: {
@@ -907,4 +1263,4 @@ export const defaultAgentConfig: AgentConfig = {
     },
     platformCommission: 20
   }
-}
+};

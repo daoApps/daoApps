@@ -1,27 +1,27 @@
 <script setup lang="ts">
-import { ref, reactive, computed, watch } from 'vue'
-import { categories } from '@/data/mockMarketplace'
-import { useDebounce } from '@/composables/useDebounce'
+import { ref, reactive, computed, watch } from 'vue';
+import { categories } from '@/data/mockMarketplace';
+import { useDebounce } from '@/composables/useDebounce';
 
 export interface FilterState {
-  search: string
-  category: string
-  subCategory: string
-  priceRange: [number, number]
-  minRating: number
-  sortBy: 'default' | 'price_asc' | 'price_desc' | 'sales' | 'rating' | 'newest' | 'discount'
-  deliveryType: string[]
+  search: string;
+  category: string;
+  subCategory: string;
+  priceRange: [number, number];
+  minRating: number;
+  sortBy: 'default' | 'price_asc' | 'price_desc' | 'sales' | 'rating' | 'newest' | 'discount';
+  deliveryType: string[];
 }
 
 interface Props {
-  totalResults: number
+  totalResults: number;
 }
 
-const props = defineProps<Props>()
+const props = defineProps<Props>();
 
 const emit = defineEmits<{
-  filterChange: [filters: FilterState]
-}>()
+  filterChange: [filters: FilterState];
+}>();
 
 const filters = reactive<FilterState>({
   search: '',
@@ -31,12 +31,12 @@ const filters = reactive<FilterState>({
   minRating: 0,
   sortBy: 'default',
   deliveryType: []
-})
+});
 
-const searchInput = ref('')
-const debouncedSearch = useDebounce(searchInput, 300)
-const expandedCategories = ref<Set<string>>(new Set())
-const showMobileFilters = ref(false)
+const searchInput = ref('');
+const debouncedSearch = useDebounce(searchInput, 300);
+const expandedCategories = ref<Set<string>>(new Set());
+const showMobileFilters = ref(false);
 
 const sortOptions = [
   { value: 'default', label: '综合排序', icon: '📊' },
@@ -46,50 +46,50 @@ const sortOptions = [
   { value: 'price_asc', label: '价格从低到高', icon: '↑' },
   { value: 'price_desc', label: '价格从高到低', icon: '↓' },
   { value: 'discount', label: '折扣力度', icon: '💰' }
-]
+];
 
 watch(debouncedSearch, (newVal) => {
-  filters.search = newVal
-})
+  filters.search = newVal;
+});
 
 watch(
   () => ({ ...filters }),
   () => {
-    emit('filterChange', { ...filters })
+    emit('filterChange', { ...filters });
   },
   { deep: true }
-)
+);
 
 const updateFilter = <K extends keyof FilterState>(key: K, value: FilterState[K]) => {
-  filters[key] = value
-}
+  filters[key] = value;
+};
 
 const handleCategorySelect = (categoryId: string, subCategoryId?: string) => {
-  filters.category = categoryId
-  filters.subCategory = subCategoryId || ''
+  filters.category = categoryId;
+  filters.subCategory = subCategoryId || '';
   if (!subCategoryId) {
-    toggleCategoryExpand(categoryId)
+    toggleCategoryExpand(categoryId);
   }
-}
+};
 
 const toggleCategoryExpand = (categoryId: string) => {
   if (expandedCategories.value.has(categoryId)) {
-    expandedCategories.value.delete(categoryId)
+    expandedCategories.value.delete(categoryId);
   } else {
-    expandedCategories.value.add(categoryId)
+    expandedCategories.value.add(categoryId);
   }
-}
+};
 
 const clearAllFilters = () => {
-  filters.search = ''
-  filters.category = ''
-  filters.subCategory = ''
-  filters.priceRange = [0, 100000]
-  filters.minRating = 0
-  filters.sortBy = 'default'
-  filters.deliveryType = []
-  searchInput.value = ''
-}
+  filters.search = '';
+  filters.category = '';
+  filters.subCategory = '';
+  filters.priceRange = [0, 100000];
+  filters.minRating = 0;
+  filters.sortBy = 'default';
+  filters.deliveryType = [];
+  searchInput.value = '';
+};
 
 const activeFilterCount = computed(() => {
   const activeFilters = [
@@ -99,17 +99,27 @@ const activeFilterCount = computed(() => {
     filters.minRating > 0 ? String(filters.minRating) : '',
     filters.priceRange[0] > 0 || filters.priceRange[1] < 100000 ? '1' : '',
     filters.deliveryType.length > 0 ? '1' : ''
-  ].filter(Boolean)
-  return activeFilters.length
-})
+  ].filter(Boolean);
+  return activeFilters.length;
+});
 </script>
 
 <template>
   <div class="space-y-4">
     <div class="flex gap-3 items-center">
       <div class="flex-1 relative">
-        <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        <svg
+          class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+          />
         </svg>
         <input
           v-model="searchInput"
@@ -123,7 +133,12 @@ const activeFilterCount = computed(() => {
           @click="searchInput = ''"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
         </button>
       </div>
@@ -133,10 +148,18 @@ const activeFilterCount = computed(() => {
         @click="showMobileFilters = true"
       >
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
+          />
         </svg>
         筛选
-        <span v-if="activeFilterCount > 0" class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
+        <span
+          v-if="activeFilterCount > 0"
+          class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center"
+        >
           {{ activeFilterCount }}
         </span>
       </button>
@@ -144,7 +167,9 @@ const activeFilterCount = computed(() => {
 
     <div class="flex gap-4">
       <aside class="hidden lg:block w-56 flex-shrink-0">
-        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 sticky top-4 space-y-4">
+        <div
+          class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 sticky top-4 space-y-4"
+        >
           <h3 class="font-semibold text-gray-900 dark:text-white text-sm">全部分类</h3>
           <div class="space-y-1 max-h-[calc(100vh-200px)] overflow-y-auto">
             <button
@@ -169,10 +194,8 @@ const activeFilterCount = computed(() => {
                     : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
                 ]"
                 @click="
-                  category.children
-                    ? toggleCategoryExpand(category.id)
-                    : null;
-                  handleCategorySelect(category.id)
+                  category.children ? toggleCategoryExpand(category.id) : null;
+                  handleCategorySelect(category.id);
                 "
               >
                 <div class="flex items-center gap-2.5">
@@ -189,11 +212,19 @@ const activeFilterCount = computed(() => {
                   stroke="currentColor"
                   viewBox="0 0 24 24"
                 >
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 5l7 7-7 7"
+                  />
                 </svg>
               </button>
 
-              <div v-if="category.children && expandedCategories.has(category.id)" class="ml-4 mt-1 space-y-0.5">
+              <div
+                v-if="category.children && expandedCategories.has(category.id)"
+                class="ml-4 mt-1 space-y-0.5"
+              >
                 <button
                   v-for="sub in category.children"
                   :key="sub.id"
@@ -215,7 +246,9 @@ const activeFilterCount = computed(() => {
       </aside>
 
       <div class="flex-1 space-y-4">
-        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 space-y-4">
+        <div
+          class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 space-y-4"
+        >
           <div class="flex flex-wrap items-center gap-3">
             <div class="flex items-center gap-2 flex-wrap">
               <span class="text-sm text-gray-500 dark:text-gray-400">排序：</span>
@@ -237,7 +270,11 @@ const activeFilterCount = computed(() => {
             </div>
 
             <div class="ml-auto text-sm text-gray-500 dark:text-gray-400">
-              共 <span class="font-semibold text-primary-600 dark:text-primary-400">{{ totalResults }}</span> 个结果
+              共
+              <span class="font-semibold text-primary-600 dark:text-primary-400">{{
+                totalResults
+              }}</span>
+              个结果
             </div>
           </div>
 
@@ -249,7 +286,13 @@ const activeFilterCount = computed(() => {
                 placeholder="最低"
                 :value="filters.priceRange[0] || ''"
                 class="w-20 px-2 py-1.5 text-xs border border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                @input="(e) => updateFilter('priceRange', [parseInt((e.target as HTMLInputElement).value) || 0, filters.priceRange[1]])"
+                @input="
+                  (e) =>
+                    updateFilter('priceRange', [
+                      parseInt((e.target as HTMLInputElement).value) || 0,
+                      filters.priceRange[1]
+                    ])
+                "
               />
               <span class="text-gray-400">-</span>
               <input
@@ -257,7 +300,13 @@ const activeFilterCount = computed(() => {
                 placeholder="最高"
                 :value="filters.priceRange[1] >= 100000 ? '' : filters.priceRange[1]"
                 class="w-20 px-2 py-1.5 text-xs border border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                @input="(e) => updateFilter('priceRange', [filters.priceRange[0], parseInt((e.target as HTMLInputElement).value) || 100000])"
+                @input="
+                  (e) =>
+                    updateFilter('priceRange', [
+                      filters.priceRange[0],
+                      parseInt((e.target as HTMLInputElement).value) || 100000
+                    ])
+                "
               />
             </div>
 
@@ -266,7 +315,9 @@ const activeFilterCount = computed(() => {
               <select
                 :value="filters.minRating"
                 class="px-2 py-1.5 text-xs border border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                @change="(e) => updateFilter('minRating', Number((e.target as HTMLSelectElement).value))"
+                @change="
+                  (e) => updateFilter('minRating', Number((e.target as HTMLSelectElement).value))
+                "
               >
                 <option :value="0">不限</option>
                 <option :value="4">4分以上</option>
@@ -293,7 +344,7 @@ const activeFilterCount = computed(() => {
                     } else {
                       types.push(type);
                     }
-                    updateFilter('deliveryType', types)
+                    updateFilter('deliveryType', types);
                   "
                 >
                   {{ type === 'digital' ? '数字产品' : type === 'physical' ? '实体商品' : '服务' }}
@@ -307,7 +358,12 @@ const activeFilterCount = computed(() => {
               @click="clearAllFilters"
             >
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
               清除筛选
             </button>
@@ -318,15 +374,29 @@ const activeFilterCount = computed(() => {
 
     <div v-if="showMobileFilters" class="fixed inset-0 z-50 lg:hidden">
       <div class="absolute inset-0 bg-black/40" @click="showMobileFilters = false" />
-      <div class="absolute right-0 top-0 bottom-0 w-80 max-w-full bg-white dark:bg-gray-800 shadow-2xl overflow-y-auto">
-        <div class="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 py-4 flex items-center justify-between z-10">
+      <div
+        class="absolute right-0 top-0 bottom-0 w-80 max-w-full bg-white dark:bg-gray-800 shadow-2xl overflow-y-auto"
+      >
+        <div
+          class="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 py-4 flex items-center justify-between z-10"
+        >
           <h3 class="font-semibold text-gray-900 dark:text-white">筛选条件</h3>
           <button
             class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
             @click="showMobileFilters = false"
           >
-            <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            <svg
+              class="w-5 h-5 text-gray-500 dark:text-gray-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
         </div>
@@ -356,10 +426,8 @@ const activeFilterCount = computed(() => {
                       : 'hover:bg-gray-50 dark:hover:bg-gray-700'
                   ]"
                   @click="
-                    category.children
-                      ? toggleCategoryExpand(category.id)
-                      : null;
-                    handleCategorySelect(category.id)
+                    category.children ? toggleCategoryExpand(category.id) : null;
+                    handleCategorySelect(category.id);
                   "
                 >
                   <div class="flex items-center gap-2.5">
@@ -368,16 +436,27 @@ const activeFilterCount = computed(() => {
                   </div>
                   <svg
                     v-if="category.children"
-                    :class="['w-4 h-4 text-gray-400 transition-transform', expandedCategories.has(category.id) ? 'rotate-90' : '']"
+                    :class="[
+                      'w-4 h-4 text-gray-400 transition-transform',
+                      expandedCategories.has(category.id) ? 'rotate-90' : ''
+                    ]"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
                   >
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 5l7 7-7 7"
+                    />
                   </svg>
                 </button>
 
-                <div v-if="category.children && expandedCategories.has(category.id)" class="ml-4 mt-1 space-y-0.5">
+                <div
+                  v-if="category.children && expandedCategories.has(category.id)"
+                  class="ml-4 mt-1 space-y-0.5"
+                >
                   <button
                     v-for="sub in category.children"
                     :key="sub.id"
@@ -404,7 +483,13 @@ const activeFilterCount = computed(() => {
                 placeholder="最低价"
                 :value="filters.priceRange[0] || ''"
                 class="flex-1 px-3 py-2 text-sm border border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                @input="(e) => updateFilter('priceRange', [parseInt((e.target as HTMLInputElement).value) || 0, filters.priceRange[1]])"
+                @input="
+                  (e) =>
+                    updateFilter('priceRange', [
+                      parseInt((e.target as HTMLInputElement).value) || 0,
+                      filters.priceRange[1]
+                    ])
+                "
               />
               <span class="text-gray-400">-</span>
               <input
@@ -412,7 +497,13 @@ const activeFilterCount = computed(() => {
                 placeholder="最高价"
                 :value="filters.priceRange[1] >= 100000 ? '' : filters.priceRange[1]"
                 class="flex-1 px-3 py-2 text-sm border border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                @input="(e) => updateFilter('priceRange', [filters.priceRange[0], parseInt((e.target as HTMLInputElement).value) || 100000])"
+                @input="
+                  (e) =>
+                    updateFilter('priceRange', [
+                      filters.priceRange[0],
+                      parseInt((e.target as HTMLInputElement).value) || 100000
+                    ])
+                "
               />
             </div>
           </div>
@@ -422,7 +513,9 @@ const activeFilterCount = computed(() => {
             <select
               :value="filters.minRating"
               class="w-full px-3 py-2 text-sm border border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-              @change="(e) => updateFilter('minRating', Number((e.target as HTMLSelectElement).value))"
+              @change="
+                (e) => updateFilter('minRating', Number((e.target as HTMLSelectElement).value))
+              "
             >
               <option :value="0">不限</option>
               <option :value="4">4分以上</option>
@@ -455,7 +548,7 @@ const activeFilterCount = computed(() => {
                     } else {
                       types.push(value);
                     }
-                    updateFilter('deliveryType', types)
+                    updateFilter('deliveryType', types);
                   "
                 />
                 <span class="text-sm text-gray-700 dark:text-gray-300">{{ label }}</span>
@@ -464,7 +557,9 @@ const activeFilterCount = computed(() => {
           </div>
         </div>
 
-        <div class="sticky bottom-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 p-4 flex gap-3">
+        <div
+          class="sticky bottom-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 p-4 flex gap-3"
+        >
           <button
             class="flex-1 py-2.5 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-700"
             @click="clearAllFilters"

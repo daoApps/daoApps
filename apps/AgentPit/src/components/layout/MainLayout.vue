@@ -1,32 +1,31 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import Header from './Header.vue'
-import Sidebar from './Sidebar.vue'
-import Footer from './Footer.vue'
-import { useAppStore } from '../../stores/useAppStore'
+import { computed } from 'vue';
+import Header from './Header.vue';
+import Sidebar from './Sidebar.vue';
+import Footer from './Footer.vue';
+import { useAppStore } from '../../stores/useAppStore';
 
-const appStore = useAppStore()
+const appStore = useAppStore();
 
-const sidebarWidth = computed(() => appStore.sidebarOpen ? 'w-64' : 'w-16')
-const mainMarginLeft = computed(() => appStore.sidebarOpen ? 'lg:ml-64' : 'lg:ml-16')
+const sidebarWidth = computed(() => (appStore.sidebarOpen ? 'w-64' : 'w-16'));
+const mainMarginLeft = computed(() => (appStore.sidebarOpen ? 'lg:ml-64' : 'lg:ml-16'));
 
 const handleToggleSidebar = () => {
-  appStore.toggleSidebar()
-}
+  appStore.toggleSidebar();
+};
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
+  <div
+    class="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900 transition-colors duration-200"
+  >
     <!-- 顶部导航栏 -->
     <Header @toggle-sidebar="handleToggleSidebar" />
 
     <!-- 主体内容区域 -->
     <div class="flex flex-1 pt-16">
       <!-- 侧边栏（桌面端固定定位） -->
-      <div
-        class="hidden lg:block transition-all duration-300 ease-in-out"
-        :class="sidebarWidth"
-      >
+      <div class="hidden lg:block transition-all duration-300 ease-in-out" :class="sidebarWidth">
         <Sidebar />
       </div>
 

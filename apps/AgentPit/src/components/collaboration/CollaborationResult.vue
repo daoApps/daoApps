@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import type { CollaborationResult as CollabResult } from '../../data/mockCollaboration'
+import { ref, computed } from 'vue';
+import type { CollaborationResult as CollabResult } from '../../data/mockCollaboration';
 
 const props = defineProps<{
-  result?: CollabResult | null
-  isRunning?: boolean
-}>()
+  result?: CollabResult | null;
+  isRunning?: boolean;
+}>();
 
 const emit = defineEmits<{
-  (e: 'export', format: string): void
-  (e: 'clear'): void
-}>()
+  (e: 'export', format: string): void;
+  (e: 'clear'): void;
+}>();
 
-const activeTab = ref<'output' | 'history'>('output')
-const viewMode = ref<'markdown' | 'json' | 'raw'>('markdown')
+const activeTab = ref<'output' | 'history'>('output');
+const viewMode = ref<'markdown' | 'json' | 'raw'>('markdown');
 
 // Mock result data for demonstration
 const mockResult: CollabResult = {
@@ -75,7 +75,7 @@ const mockResult: CollabResult = {
     '',
     '---',
     '',
-    `*生成时间: ${new Date().toLocaleString('zh-CN')}*`,
+    `*生成时间: ${new Date().toLocaleString('zh-CN')}*`
   ].join('\n'),
   agentResults: [
     {
@@ -105,17 +105,17 @@ const mockResult: CollabResult = {
   ],
   overallScore: 96,
   exportFormats: ['markdown', 'json', 'pdf', 'docx']
-}
+};
 
-const currentResult = computed(() => props.result || mockResult)
+const currentResult = computed(() => props.result || mockResult);
 
 const formattedJSON = computed(() => {
   try {
-    return JSON.stringify(currentResult.value, null, 2)
+    return JSON.stringify(currentResult.value, null, 2);
   } catch {
-    return '{}'
+    return '{}';
   }
-})
+});
 
 const renderMarkdown = (text: string) => {
   // Simple markdown-like rendering
@@ -124,59 +124,62 @@ const renderMarkdown = (text: string) => {
     .replace(/^## (.*$)/gm, '<h2 class="text-xl font-semibold mb-3 mt-6">$1</h2>')
     .replace(/^### (.*$)/gm, '<h3 class="text-lg font-medium mb-2 mt-4">$1</h3>')
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    .replace(/`([^`]+)`/g, '<code class="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 rounded text-sm">$1</code>')
+    .replace(
+      /`([^`]+)`/g,
+      '<code class="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 rounded text-sm">$1</code>'
+    )
     .replace(/^- (.*$)/gm, '<li class="ml-4 list-disc">$1</li>')
     .replace(/^\d+\. (.*$)/gm, '<li class="ml-4 list-decimal">$1</li>')
-    .replace(/\n/g, '<br/>')
-}
+    .replace(/\n/g, '<br/>');
+};
 
 const copyToClipboard = async () => {
   try {
-    await navigator.clipboard.writeText(formattedJSON.value)
-    alert('已复制到剪贴板！')
+    await navigator.clipboard.writeText(formattedJSON.value);
+    alert('已复制到剪贴板！');
   } catch (err) {
-    console.error('复制失败:', err)
+    console.error('复制失败:', err);
   }
-}
+};
 
 const downloadAsFile = (format: string) => {
-  let content = ''
-  let mimeType = ''
-  let extension = ''
+  let content = '';
+  let mimeType = '';
+  let extension = '';
 
   switch (format) {
     case 'markdown':
-      content = currentResult.value.summary
-      mimeType = 'text/markdown'
-      extension = 'md'
-      break
+      content = currentResult.value.summary;
+      mimeType = 'text/markdown';
+      extension = 'md';
+      break;
     case 'json':
-      content = formattedJSON.value
-      mimeType = 'application/json'
-      extension = 'json'
-      break
+      content = formattedJSON.value;
+      mimeType = 'application/json';
+      extension = 'json';
+      break;
     case 'pdf':
-      alert('PDF 导出功能需要后端支持')
-      return
+      alert('PDF 导出功能需要后端支持');
+      return;
     case 'docx':
-      alert('DOCX 导出功能需要后端支持')
-      return
+      alert('DOCX 导出功能需要后端支持');
+      return;
     default:
-      return
+      return;
   }
 
-  const blob = new Blob([content], { type: mimeType })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = `collaboration-result-${Date.now()}.${extension}`
-  document.body.appendChild(a)
-  a.click()
-  document.body.removeChild(a)
-  URL.revokeObjectURL(url)
+  const blob = new Blob([content], { type: mimeType });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `collaboration-result-${Date.now()}.${extension}`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 
-  emit('export', format)
-}
+  emit('export', format);
+};
 
 const executionHistory = ref([
   {
@@ -221,26 +224,28 @@ const executionHistory = ref([
     status: 'completed',
     details: '协作任务完成，整体评分 96 分'
   }
-])
+]);
 
 const formatHistoryTime = (timestamp: number) => {
   return new Date(timestamp).toLocaleTimeString('zh-CN', {
     hour: '2-digit',
     minute: '2-digit',
     second: '2-digit'
-  })
-}
+  });
+};
 
 const historyStatusConfig = {
   success: { color: 'text-green-600 bg-green-50 dark:bg-green-900/20', icon: '✅' },
   running: { color: 'text-blue-600 bg-blue-50 dark:bg-blue-900/20', icon: '🔄' },
   error: { color: 'text-red-600 bg-red-50 dark:bg-red-900/20', icon: '❌' },
   completed: { color: 'text-purple-600 bg-purple-50 dark:bg-purple-900/20', icon: '🎉' }
-}
+};
 </script>
 
 <template>
-  <div class="h-full flex flex-col bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+  <div
+    class="h-full flex flex-col bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700"
+  >
     <!-- Header -->
     <div class="p-4 border-b border-gray-200 dark:border-gray-700">
       <div class="flex items-center justify-between mb-3">
@@ -249,12 +254,15 @@ const historyStatusConfig = {
         <!-- Score Badge -->
         <div v-if="currentResult" class="flex items-center gap-2">
           <span
-:class="[
-            'px-3 py-1 rounded-full text-sm font-bold',
-            currentResult.overallScore >= 90 ? 'bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-300' :
-            currentResult.overallScore >= 70 ? 'bg-yellow-100 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-300' :
-            'bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-300'
-          ]">
+            :class="[
+              'px-3 py-1 rounded-full text-sm font-bold',
+              currentResult.overallScore >= 90
+                ? 'bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-300'
+                : currentResult.overallScore >= 70
+                  ? 'bg-yellow-100 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-300'
+                  : 'bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-300'
+            ]"
+          >
             ⭐ {{ currentResult.overallScore }}分
           </span>
         </div>
@@ -290,12 +298,17 @@ const historyStatusConfig = {
     <!-- Content -->
     <div v-if="activeTab === 'output'" class="flex-1 overflow-hidden flex flex-col">
       <!-- View Mode Toggle & Actions -->
-      <div v-if="currentResult" class="px-4 py-2 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+      <div
+        v-if="currentResult"
+        class="px-4 py-2 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between"
+      >
         <div class="flex items-center gap-1 bg-gray-100 dark:bg-gray-700 rounded p-1">
           <button
             :class="[
               'px-3 py-1 text-xs font-medium rounded transition-colors',
-              viewMode === 'markdown' ? 'bg-white dark:bg-gray-600 shadow-sm' : 'hover:bg-gray-200 dark:hover:bg-gray-600'
+              viewMode === 'markdown'
+                ? 'bg-white dark:bg-gray-600 shadow-sm'
+                : 'hover:bg-gray-200 dark:hover:bg-gray-600'
             ]"
             @click="viewMode = 'markdown'"
           >
@@ -304,7 +317,9 @@ const historyStatusConfig = {
           <button
             :class="[
               'px-3 py-1 text-xs font-medium rounded transition-colors',
-              viewMode === 'json' ? 'bg-white dark:bg-gray-600 shadow-sm' : 'hover:bg-gray-200 dark:hover:bg-gray-600'
+              viewMode === 'json'
+                ? 'bg-white dark:bg-gray-600 shadow-sm'
+                : 'hover:bg-gray-200 dark:hover:bg-gray-600'
             ]"
             @click="viewMode = 'json'"
           >
@@ -313,7 +328,9 @@ const historyStatusConfig = {
           <button
             :class="[
               'px-3 py-1 text-xs font-medium rounded transition-colors',
-              viewMode === 'raw' ? 'bg-white dark:bg-gray-600 shadow-sm' : 'hover:bg-gray-200 dark:hover:bg-gray-600'
+              viewMode === 'raw'
+                ? 'bg-white dark:bg-gray-600 shadow-sm'
+                : 'hover:bg-gray-200 dark:hover:bg-gray-600'
             ]"
             @click="viewMode = 'raw'"
           >
@@ -329,10 +346,14 @@ const historyStatusConfig = {
             📋 复制
           </button>
           <div class="relative group">
-            <button class="px-3 py-1.5 text-xs font-medium text-white bg-blue-500 hover:bg-blue-600 rounded transition-colors">
+            <button
+              class="px-3 py-1.5 text-xs font-medium text-white bg-blue-500 hover:bg-blue-600 rounded transition-colors"
+            >
               ⬇️ 导出
             </button>
-            <div class="absolute right-0 top-full mt-1 w-32 bg-white dark:bg-gray-700 rounded-lg shadow-lg border border-gray-200 dark:border-gray-600 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10">
+            <div
+              class="absolute right-0 top-full mt-1 w-32 bg-white dark:bg-gray-700 rounded-lg shadow-lg border border-gray-200 dark:border-gray-600 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10"
+            >
               <button
                 v-for="format in currentResult.exportFormats"
                 :key="format"
@@ -349,33 +370,63 @@ const historyStatusConfig = {
       <!-- Output Content -->
       <div class="flex-1 overflow-auto p-4">
         <!-- Loading State -->
-        <div v-if="isRunning" class="flex flex-col items-center justify-center h-full text-gray-400 dark:text-gray-500">
+        <div
+          v-if="isRunning"
+          class="flex flex-col items-center justify-center h-full text-gray-400 dark:text-gray-500"
+        >
           <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
           <p class="text-sm font-medium">正在生成协作结果...</p>
           <p class="text-xs mt-2">请稍候，智能体正在协同工作</p>
         </div>
 
         <!-- Empty State -->
-        <div v-else-if="!currentResult" class="flex flex-col items-center justify-center h-full text-gray-400 dark:text-gray-500">
-          <svg class="w-16 h-16 mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+        <div
+          v-else-if="!currentResult"
+          class="flex flex-col items-center justify-center h-full text-gray-400 dark:text-gray-500"
+        >
+          <svg
+            class="w-16 h-16 mb-4 opacity-50"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+            ></path>
           </svg>
           <p class="text-sm font-medium">暂无结果</p>
           <p class="text-xs mt-1">运行协作任务后将在此显示结果</p>
         </div>
 
         <!-- Markdown View -->
-        <div v-else-if="viewMode === 'markdown'" class="prose prose-sm dark:prose-invert max-w-none" v-html="renderMarkdown(currentResult.summary)"></div>
+        <div
+          v-else-if="viewMode === 'markdown'"
+          class="prose prose-sm dark:prose-invert max-w-none"
+          v-html="renderMarkdown(currentResult.summary)"
+        ></div>
 
         <!-- JSON View -->
-        <pre v-else-if="viewMode === 'json'" class="text-xs bg-gray-50 dark:bg-gray-900 p-4 rounded-lg overflow-auto h-full"><code>{{ formattedJSON }}</code></pre>
+        <pre
+          v-else-if="viewMode === 'json'"
+          class="text-xs bg-gray-50 dark:bg-gray-900 p-4 rounded-lg overflow-auto h-full"
+        ><code>{{ formattedJSON }}</code></pre>
 
         <!-- Raw View -->
-        <pre v-else-if="viewMode === 'raw'" class="text-xs bg-gray-50 dark:bg-gray-900 p-4 rounded-lg overflow-auto whitespace-pre-wrap">{{ currentResult.summary }}</pre>
+        <pre
+          v-else-if="viewMode === 'raw'"
+          class="text-xs bg-gray-50 dark:bg-gray-900 p-4 rounded-lg overflow-auto whitespace-pre-wrap"
+          >{{ currentResult.summary }}</pre
+        >
       </div>
 
       <!-- Agent Results Summary -->
-      <div v-if="currentResult && currentResult.agentResults.length > 0" class="border-t border-gray-200 dark:border-gray-700 p-4">
+      <div
+        v-if="currentResult && currentResult.agentResults.length > 0"
+        class="border-t border-gray-200 dark:border-gray-700 p-4"
+      >
         <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-3">🤖 各智能体贡献</h3>
         <div class="space-y-2 max-h-48 overflow-y-auto">
           <div
@@ -384,19 +435,29 @@ const historyStatusConfig = {
             class="p-3 bg-gray-50 dark:bg-gray-750 rounded-lg"
           >
             <div class="flex items-center justify-between mb-2">
-              <span class="font-semibold text-sm text-gray-900 dark:text-white">{{ agentResult.agentName }}</span>
+              <span class="font-semibold text-sm text-gray-900 dark:text-white">{{
+                agentResult.agentName
+              }}</span>
               <span
-:class="[
-                'px-2 py-0.5 text-xs font-bold rounded-full',
-                agentResult.score >= 95 ? 'bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-300' :
-                agentResult.score >= 85 ? 'bg-yellow-100 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-300' :
-                'bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-300'
-              ]">
+                :class="[
+                  'px-2 py-0.5 text-xs font-bold rounded-full',
+                  agentResult.score >= 95
+                    ? 'bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-300'
+                    : agentResult.score >= 85
+                      ? 'bg-yellow-100 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-300'
+                      : 'bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-300'
+                ]"
+              >
                 {{ agentResult.score }}分
               </span>
             </div>
-            <p class="text-xs text-gray-600 dark:text-gray-400 line-clamp-2">{{ agentResult.output }}</p>
-            <p v-if="agentResult.feedback" class="text-xs text-blue-600 dark:text-blue-400 mt-1 italic">
+            <p class="text-xs text-gray-600 dark:text-gray-400 line-clamp-2">
+              {{ agentResult.output }}
+            </p>
+            <p
+              v-if="agentResult.feedback"
+              class="text-xs text-blue-600 dark:text-blue-400 mt-1 italic"
+            >
               💬 {{ agentResult.feedback }}
             </p>
           </div>
@@ -414,17 +475,29 @@ const historyStatusConfig = {
         >
           <!-- Timeline Line -->
           <div class="flex flex-col items-center">
-            <div :class="['w-8 h-8 rounded-full flex items-center justify-center text-sm', (historyStatusConfig as any)[entry.status]?.color || '']">
+            <div
+              :class="[
+                'w-8 h-8 rounded-full flex items-center justify-center text-sm',
+                (historyStatusConfig as any)[entry.status]?.color || ''
+              ]"
+            >
               {{ (historyStatusConfig as any)[entry.status]?.icon || '' }}
             </div>
-            <div v-if="index < executionHistory.length - 1" class="w-0.5 h-full bg-gray-200 dark:bg-gray-600 my-1"></div>
+            <div
+              v-if="index < executionHistory.length - 1"
+              class="w-0.5 h-full bg-gray-200 dark:bg-gray-600 my-1"
+            ></div>
           </div>
 
           <!-- Content -->
           <div class="flex-1 min-w-0">
             <div class="flex items-center justify-between mb-1">
-              <span class="font-semibold text-sm text-gray-900 dark:text-white">{{ entry.action }}</span>
-              <span class="text-xs text-gray-500 dark:text-gray-400">{{ formatHistoryTime(entry.timestamp) }}</span>
+              <span class="font-semibold text-sm text-gray-900 dark:text-white">{{
+                entry.action
+              }}</span>
+              <span class="text-xs text-gray-500 dark:text-gray-400">{{
+                formatHistoryTime(entry.timestamp)
+              }}</span>
             </div>
             <p class="text-xs text-gray-600 dark:text-gray-400">{{ entry.details }}</p>
           </div>
