@@ -1,0 +1,32 @@
+[Unit]
+Description=DAO Apps Node.js Application
+After=network.target
+Documentation=https://github.com/daoCollective/daoApps
+
+[Service]
+Type=simple
+User={{APP_USER}}
+Group={{APP_USER}}
+WorkingDirectory={{APP_WORKDIR}}
+Environment=NODE_ENV=production
+Environment=PORT={{APP_PORT}}
+Environment=HOST=0.0.0.0
+ExecStart={{NODE_PATH}} /usr/bin/npm start
+Restart=always
+RestartSec=10
+# Increase startup timeout for larger applications
+TimeoutStartSec=60
+# Output to syslog
+StandardOutput=journal+console
+StandardError=journal+console
+# Log configuration
+SyslogIdentifier={{APP_NAME}}
+# Resource limits
+LimitNOFILE=65535
+# Security hardening
+PrivateTmp=true
+ProtectSystem=full
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target

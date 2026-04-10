@@ -99,6 +99,8 @@ celerybeat.pid
 .env
 .env.local
 .env.*.local
+.env.*
+!.env*.example
 .venv
 env/
 venv/
@@ -174,3 +176,82 @@ nul
 
 # 代码覆盖率报告
 coverage/
+
+# ==================== 敏感信息和密钥 ====================
+# 密钥文件和私钥
+*.pem
+*.key
+*.p12
+*.pfx
+*.asc
+*.gpg
+*.pgp
+private*.key
+*_private.key
+id_rsa
+id_dsa
+id_ecdsa
+id_ed25519
+*.keystore
+*.jks
+*.truststore
+
+# 服务账号和凭证
+service-account*.json
+*credentials*.json
+*creds*.json
+*.aws/
+*.gcp/
+*.azure/
+*.kube/
+kubeconfig*
+*.kubeconfig
+
+# 配置文件中的敏感信息
+*secrets*.yaml
+*secrets*.yml
+*secrets*.json
+*secret*.conf
+*credentials*.conf
+*private*.conf
+
+# 数据库备份和dump
+*.sql
+*.dump
+*.bak
+*.backup
+
+# 本地开发配置
+*.local.conf
+*.local.json
+*.local.yaml
+*.local.yml
+
+# SSH known_hosts
+.ssh/
+known_hosts
+
+# 身份令牌和session
+*.session
+*.token
+*.cookie
+
+# 云服务商配置
+.aws/credentials
+.gcp/credentials
+.azure/credentials
+.vault-token
+
+# 日志文件中可能包含敏感信息
+logs/
+*.log
+*.log.*
+
+# 构建和部署中间产物
+*.tar.gz
+*.tar
+*.zip
+*.gz
+build-*.tar
+build-*.tar.gz
+*-build.tar.gz

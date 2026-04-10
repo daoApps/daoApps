@@ -1,0 +1,15 @@
+# Logrotate configuration for DAO Apps
+# Install this file to /etc/logrotate.d/daoapps
+
+/var/log/daoapps/*.log {
+    daily
+    rotate 14
+    compress
+    delaycompress
+    notifempty
+    create 0640 daoapps daoapps
+    sharedscripts
+    postrotate
+        systemctl reload daoapps > /dev/null 2>&1 || true
+    endscript
+}

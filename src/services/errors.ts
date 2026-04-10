@@ -1,11 +1,11 @@
 // src/services/errors.ts
 export class ApiError extends Error {
-  constructor(
-    message: string,
-    public code: string = 'API_ERROR'
-  ) {
+  public code: string;
+
+  constructor(message: string, code: string = 'API_ERROR') {
     super(message);
     this.name = 'ApiError';
+    this.code = code;
   }
 }
 
@@ -17,22 +17,22 @@ export class NetworkError extends ApiError {
 }
 
 export class ServerError extends ApiError {
-  constructor(
-    public status: number,
-    message: string
-  ) {
+  public status: number;
+
+  constructor(status: number, message: string) {
     super(message, `SERVER_${status}`);
     this.name = 'ServerError';
+    this.status = status;
   }
 }
 
 export class ValidationError extends ApiError {
-  constructor(
-    message: string,
-    public fields: Record<string, string[]> = {}
-  ) {
+  public fields: Record<string, string[]>;
+
+  constructor(message: string, fields: Record<string, string[]> = {}) {
     super(message, 'VALIDATION_ERROR');
     this.name = 'ValidationError';
+    this.fields = fields;
   }
 }
 
