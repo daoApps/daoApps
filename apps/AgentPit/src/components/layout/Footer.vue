@@ -32,31 +32,23 @@ const socialLinks = [
 </script>
 
 <template>
-  <footer
-    class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-auto transition-colors duration-200"
-  >
+  <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-auto transition-colors duration-200">
     <div class="px-4 sm:px-6 lg:px-8 py-6">
-      <!-- 主要内容区域 -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-6">
-        <!-- 左侧：品牌信息 -->
         <div>
           <div class="flex items-center gap-2 mb-3">
-            <div
-            class="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white font-bold text-sm"
-          >
-            FL
+            <div class="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white font-bold text-sm">
+              FL
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Flexloop</h3>
           </div>
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Flexloop</h3>
           <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
             柔性循环智能平台，循道而行，自然而然
           </p>
         </div>
 
-        <!-- 中间：快速链接 -->
         <div>
-          <h3
-            class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider mb-3"
-          >
+          <h3 class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider mb-3">
             快速链接
           </h3>
           <ul class="space-y-2">
@@ -71,11 +63,8 @@ const socialLinks = [
           </ul>
         </div>
 
-        <!-- 右侧：法律信息 + 社交媒体 -->
         <div>
-          <h3
-            class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider mb-3"
-          >
+          <h3 class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider mb-3">
             法律信息
           </h3>
           <ul class="space-y-2 mb-4">
@@ -89,7 +78,6 @@ const socialLinks = [
             </li>
           </ul>
 
-          <!-- 社交媒体图标 -->
           <div class="flex items-center gap-3 pt-3 border-t border-gray-200 dark:border-gray-700">
             <a
               v-for="social in socialLinks"
@@ -98,12 +86,7 @@ const socialLinks = [
               :aria-label="social.name"
               class="p-2 rounded-lg text-gray-500 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200"
             >
-              <svg
-                class="w-5 h-5"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path :d="social.icon" />
               </svg>
             </a>
@@ -111,7 +94,6 @@ const socialLinks = [
         </div>
       </div>
 
-      <!-- 底部版权信息 -->
       <div class="pt-6 border-t border-gray-200 dark:border-gray-700">
         <p class="text-sm text-center text-gray-500 dark:text-gray-400">
           © {{ currentYear }} Flexloop. All rights reserved.
