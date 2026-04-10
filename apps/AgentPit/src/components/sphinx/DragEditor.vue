@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, reactive } from 'vue';
 
 interface ComponentItem {
-  id: string
-  type: string
-  name: string
-  icon: string
-  category: string
+  id: string;
+  type: string;
+  name: string;
+  icon: string;
+  category: string;
 }
 
 interface CanvasComponent extends ComponentItem {
-  props: Record<string, any>
+  props: Record<string, any>;
 }
 
 const componentLibrary: ComponentItem[] = [
@@ -18,17 +18,23 @@ const componentLibrary: ComponentItem[] = [
   { id: 'hero', type: 'hero', name: 'Hero 英雄区域', icon: '🦸', category: 'layout' },
   { id: 'features', type: 'features', name: 'Features 特性展示', icon: '⭐', category: 'content' },
   { id: 'about', type: 'about', name: 'About 关于我们', icon: 'ℹ️', category: 'content' },
-  { id: 'testimonials', type: 'testimonials', name: 'Testimonials 用户评价', icon: '💬', category: 'content' },
+  {
+    id: 'testimonials',
+    type: 'testimonials',
+    name: 'Testimonials 用户评价',
+    icon: '💬',
+    category: 'content'
+  },
   { id: 'pricing', type: 'pricing', name: 'Pricing 价格方案', icon: '💰', category: 'content' },
   { id: 'cta', type: 'cta', name: 'CTA 行动召唤', icon: '📢', category: 'content' },
   { id: 'contact', type: 'contact', name: 'Contact 联系表单', icon: '✉️', category: 'form' },
   { id: 'footer', type: 'footer', name: 'Footer 页脚', icon: '🔻', category: 'layout' }
-]
+];
 
-const canvasComponents = ref<CanvasComponent[]>([])
-const selectedComponent = ref<CanvasComponent | null>(null)
-const draggedComponent = ref<ComponentItem | null>(null)
-const isDraggingOverCanvas = ref(false)
+const canvasComponents = ref<CanvasComponent[]>([]);
+const selectedComponent = ref<CanvasComponent | null>(null);
+const draggedComponent = ref<ComponentItem | null>(null);
+const isDraggingOverCanvas = ref(false);
 
 const componentProps = reactive<Record<string, any>>({
   title: '',
@@ -38,130 +44,142 @@ const componentProps = reactive<Record<string, any>>({
   buttonColor: '#3B82F6',
   backgroundColor: '#FFFFFF',
   textColor: '#1F2937'
-})
+});
 
 const categories = [
   { id: 'all', label: '全部' },
   { id: 'layout', label: '布局' },
   { id: 'content', label: '内容' },
   { id: 'form', label: '表单' }
-]
+];
 
-const activeCategory = ref('all')
+const activeCategory = ref('all');
 
 const filteredComponents = () => {
   if (activeCategory.value === 'all') {
-    return componentLibrary
+    return componentLibrary;
   }
-  return componentLibrary.filter((c) => c.category === activeCategory.value)
-}
+  return componentLibrary.filter((c) => c.category === activeCategory.value);
+};
 
 const handleDragStart = (component: ComponentItem, event: DragEvent) => {
-  draggedComponent.value = component
+  draggedComponent.value = component;
   if (event.dataTransfer) {
-    event.dataTransfer.effectAllowed = 'copy'
-    event.dataTransfer.setData('text/plain', JSON.stringify(component))
+    event.dataTransfer.effectAllowed = 'copy';
+    event.dataTransfer.setData('text/plain', JSON.stringify(component));
   }
-}
+};
 
 const handleDragOver = (event: DragEvent) => {
-  event.preventDefault()
+  event.preventDefault();
   if (event.dataTransfer) {
-    event.dataTransfer.dropEffect = 'copy'
+    event.dataTransfer.dropEffect = 'copy';
   }
-  isDraggingOverCanvas.value = true
-}
+  isDraggingOverCanvas.value = true;
+};
 
 const handleDragLeave = () => {
-  isDraggingOverCanvas.value = false
-}
+  isDraggingOverCanvas.value = false;
+};
 
 const handleDrop = (event: DragEvent) => {
-  event.preventDefault()
-  isDraggingOverCanvas.value = false
+  event.preventDefault();
+  isDraggingOverCanvas.value = false;
 
-  const data = event.dataTransfer?.getData('text/plain')
+  const data = event.dataTransfer?.getData('text/plain');
   if (data) {
     try {
-      const component = JSON.parse(data) as ComponentItem
+      const component = JSON.parse(data) as ComponentItem;
       const newComponent: CanvasComponent = {
         ...component,
         id: `${component.id}-${Date.now()}`,
         props: getDefaultProps(component.type)
-      }
-      canvasComponents.value.push(newComponent)
+      };
+      canvasComponents.value.push(newComponent);
     } catch (e) {
-      console.error('Failed to parse dropped data:', e)
+      console.error('Failed to parse dropped data:', e);
     }
   }
 
-  draggedComponent.value = null
-}
+  draggedComponent.value = null;
+};
 
 const getDefaultProps = (type: string): Record<string, any> => {
   switch (type) {
     case 'header':
-      return { title: '网站名称', links: ['首页', '关于', '服务', '联系'] }
+      return { title: '网站名称', links: ['首页', '关于', '服务', '联系'] };
     case 'hero':
-      return { title: '欢迎来到我们的网站', subtitle: '专业的解决方案，助力您的业务增长', buttonText: '立即开始', buttonColor: '#3B82F6' }
+      return {
+        title: '欢迎来到我们的网站',
+        subtitle: '专业的解决方案，助力您的业务增长',
+        buttonText: '立即开始',
+        buttonColor: '#3B82F6'
+      };
     case 'features':
-      return { title: '我们的优势', features: ['快速响应', '安全可靠', '专业团队'] }
+      return { title: '我们的优势', features: ['快速响应', '安全可靠', '专业团队'] };
     case 'about':
-      return { title: '关于我们', description: '我们是一支专业的团队...' }
+      return { title: '关于我们', description: '我们是一支专业的团队...' };
     case 'testimonials':
-      return { title: '客户评价', testimonials: [] }
+      return { title: '客户评价', testimonials: [] };
     case 'pricing':
-      return { title: '价格方案', plans: [] }
+      return { title: '价格方案', plans: [] };
     case 'cta':
-      return { title: '准备好开始了吗？', subtitle: '立即联系我们', buttonText: '联系我们' }
+      return { title: '准备好开始了吗？', subtitle: '立即联系我们', buttonText: '联系我们' };
     case 'contact':
-      return { title: '联系我们', fields: ['姓名', '邮箱', '消息'] }
+      return { title: '联系我们', fields: ['姓名', '邮箱', '消息'] };
     case 'footer':
-      return { copyright: '© 2026 您的公司. All rights reserved.' }
+      return { copyright: '© 2026 您的公司. All rights reserved.' };
     default:
-      return {}
+      return {};
   }
-}
+};
 
 const selectComponent = (component: CanvasComponent) => {
-  selectedComponent.value = component
-  Object.assign(componentProps, component.props)
-}
+  selectedComponent.value = component;
+  Object.assign(componentProps, component.props);
+};
 
 const removeComponent = (index: number) => {
-  canvasComponents.value.splice(index, 1)
-  if (selectedComponent.value && canvasComponents.value.findIndex(c => c.id === selectedComponent.value!.id) === -1) {
-    selectedComponent.value = null
+  canvasComponents.value.splice(index, 1);
+  if (
+    selectedComponent.value &&
+    canvasComponents.value.findIndex((c) => c.id === selectedComponent.value!.id) === -1
+  ) {
+    selectedComponent.value = null;
   }
-}
+};
 
 const moveComponentUp = (index: number) => {
   if (index > 0) {
-    const temp = canvasComponents.value[index]!
-    canvasComponents.value[index] = canvasComponents.value[index - 1]!
-    canvasComponents.value[index - 1] = temp
+    const temp = canvasComponents.value[index]!;
+    canvasComponents.value[index] = canvasComponents.value[index - 1]!;
+    canvasComponents.value[index - 1] = temp;
   }
-}
+};
 
 const moveComponentDown = (index: number) => {
   if (index < canvasComponents.value.length - 1) {
-    const temp = canvasComponents.value[index]!
-    canvasComponents.value[index] = canvasComponents.value[index + 1]!
-    canvasComponents.value[index + 1] = temp
+    const temp = canvasComponents.value[index]!;
+    canvasComponents.value[index] = canvasComponents.value[index + 1]!;
+    canvasComponents.value[index + 1] = temp;
   }
-}
+};
 
 const updateProps = () => {
   if (selectedComponent.value) {
-    selectedComponent.value.props = { ...componentProps }
+    selectedComponent.value.props = { ...componentProps };
   }
-}
+};
 </script>
 
 <template>
-  <div class="flex h-[calc(100vh-120px)] gap-4 bg-gray-100 dark:bg-gray-900 rounded-xl overflow-hidden">
+  <div
+    class="flex h-[calc(100vh-120px)] gap-4 bg-gray-100 dark:bg-gray-900 rounded-xl overflow-hidden"
+  >
     <!-- 左侧组件面板 -->
-    <div class="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col overflow-hidden">
+    <div
+      class="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col overflow-hidden"
+    >
       <div class="p-4 border-b border-gray-200 dark:border-gray-700">
         <h3 class="font-semibold text-gray-900 dark:text-white">组件库</h3>
         <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">拖拽组件到画布</p>
@@ -195,7 +213,9 @@ const updateProps = () => {
         >
           <div class="flex items-center space-x-2">
             <span class="text-xl">{{ component.icon }}</span>
-            <span class="text-sm font-medium text-gray-900 dark:text-white">{{ component.name }}</span>
+            <span class="text-sm font-medium text-gray-900 dark:text-white">{{
+              component.name
+            }}</span>
           </div>
         </div>
       </div>
@@ -203,7 +223,9 @@ const updateProps = () => {
 
     <!-- 中间画布区域 -->
     <div class="flex-1 flex flex-col overflow-hidden">
-      <div class="p-4 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+      <div
+        class="p-4 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between"
+      >
         <h3 class="font-semibold text-gray-900 dark:text-white">画布预览</h3>
         <div class="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
           <span>{{ canvasComponents.length }} 个组件</span>
@@ -248,7 +270,9 @@ const updateProps = () => {
             @click="selectComponent(component)"
           >
             <!-- 组件操作按钮 -->
-            <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex space-x-1">
+            <div
+              class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex space-x-1"
+            >
               <button
                 :disabled="index === 0"
                 class="p-1.5 bg-white dark:bg-gray-700 rounded shadow-sm hover:bg-gray-100 dark:hover:bg-gray-600 disabled:opacity-30 text-xs"
@@ -285,9 +309,21 @@ const updateProps = () => {
 
             <!-- 简化的组件内容预览 -->
             <div class="mt-3 p-3 bg-gray-50 dark:bg-gray-700/50 rounded text-sm">
-              <div v-if="component.props.title" class="font-medium text-gray-800 dark:text-gray-200 mb-1">{{ component.props.title }}</div>
-              <div v-if="component.props.subtitle" class="text-gray-600 dark:text-gray-400 text-xs">{{ component.props.subtitle }}</div>
-              <div v-if="component.props.description" class="text-gray-600 dark:text-gray-400 text-xs mt-1">{{ component.props.description.substring(0, 80) }}...</div>
+              <div
+                v-if="component.props.title"
+                class="font-medium text-gray-800 dark:text-gray-200 mb-1"
+              >
+                {{ component.props.title }}
+              </div>
+              <div v-if="component.props.subtitle" class="text-gray-600 dark:text-gray-400 text-xs">
+                {{ component.props.subtitle }}
+              </div>
+              <div
+                v-if="component.props.description"
+                class="text-gray-600 dark:text-gray-400 text-xs mt-1"
+              >
+                {{ component.props.description.substring(0, 80) }}...
+              </div>
             </div>
           </div>
         </div>
@@ -295,12 +331,17 @@ const updateProps = () => {
     </div>
 
     <!-- 右侧属性面板 -->
-    <div class="w-72 bg-white dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700 flex flex-col overflow-hidden">
+    <div
+      class="w-72 bg-white dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700 flex flex-col overflow-hidden"
+    >
       <div class="p-4 border-b border-gray-200 dark:border-gray-700">
         <h3 class="font-semibold text-gray-900 dark:text-white">属性设置</h3>
       </div>
 
-      <div v-if="!selectedComponent" class="flex-1 flex items-center justify-center p-6 text-center">
+      <div
+        v-if="!selectedComponent"
+        class="flex-1 flex items-center justify-center p-6 text-center"
+      >
         <div>
           <div class="text-4xl mb-3">⚙️</div>
           <p class="text-sm text-gray-500 dark:text-gray-400">选择一个组件以编辑属性</p>
@@ -311,13 +352,17 @@ const updateProps = () => {
         <div class="pb-4 border-b border-gray-200 dark:border-gray-700">
           <div class="flex items-center space-x-2 mb-3">
             <span class="text-xl">{{ selectedComponent.icon }}</span>
-            <span class="font-medium text-gray-900 dark:text-white">{{ selectedComponent.name }}</span>
+            <span class="font-medium text-gray-900 dark:text-white">{{
+              selectedComponent.name
+            }}</span>
           </div>
           <p class="text-xs text-gray-500 dark:text-gray-400">ID: {{ selectedComponent.id }}</p>
         </div>
 
         <div v-if="componentProps.title !== undefined">
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">标题</label>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+            >标题</label
+          >
           <input
             v-model="componentProps.title"
             type="text"
@@ -327,7 +372,9 @@ const updateProps = () => {
         </div>
 
         <div v-if="componentProps.subtitle !== undefined">
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">副标题</label>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+            >副标题</label
+          >
           <input
             v-model="componentProps.subtitle"
             type="text"
@@ -337,7 +384,9 @@ const updateProps = () => {
         </div>
 
         <div v-if="componentProps.description !== undefined">
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">描述</label>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+            >描述</label
+          >
           <textarea
             v-model="componentProps.description"
             rows="3"
@@ -347,7 +396,9 @@ const updateProps = () => {
         </div>
 
         <div v-if="componentProps.buttonText !== undefined">
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">按钮文字</label>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+            >按钮文字</label
+          >
           <input
             v-model="componentProps.buttonText"
             type="text"
@@ -357,7 +408,9 @@ const updateProps = () => {
         </div>
 
         <div v-if="componentProps.buttonColor !== undefined">
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">按钮颜色</label>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+            >按钮颜色</label
+          >
           <div class="flex items-center space-x-2">
             <input
               v-model="componentProps.buttonColor"
@@ -375,7 +428,9 @@ const updateProps = () => {
         </div>
 
         <div v-if="componentProps.copyright !== undefined">
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">版权信息</label>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+            >版权信息</label
+          >
           <input
             v-model="componentProps.copyright"
             type="text"

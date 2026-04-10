@@ -1,58 +1,62 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { useForm, useField } from 'vee-validate'
-import * as yup from 'yup'
-import { avatarLibrary, categories, type AgentConfig } from '../../data/mockCustomize'
+import { ref, computed } from 'vue';
+import { useForm, useField } from 'vee-validate';
+import * as yup from 'yup';
+import { avatarLibrary, categories, type AgentConfig } from '../../data/mockCustomize';
 
 interface Props {
-  modelValue: AgentConfig['basicInfo']
+  modelValue: AgentConfig['basicInfo'];
 }
 
-const props = defineProps<Props>()
+const props = defineProps<Props>();
 const emit = defineEmits<{
-  'update:modelValue': [value: AgentConfig['basicInfo']]
-}>()
+  'update:modelValue': [value: AgentConfig['basicInfo']];
+}>();
 
 const schema = yup.object({
-  name: yup.string().required('名称为必填项').min(2, '名称至少 2 个字符').max(50, '名称最多 50 个字符'),
+  name: yup
+    .string()
+    .required('名称为必填项')
+    .min(2, '名称至少 2 个字符')
+    .max(50, '名称最多 50 个字符'),
   description: yup.string().max(500, '描述最多 500 字符').default(''),
   avatarId: yup.string().default(''),
   tags: yup.array().of(yup.string()).max(10, '最多 10 个标签').default([]),
   category: yup.string().required('请选择分类').default('assistant')
-})
+});
 
 const { handleSubmit, errors } = useForm({
   validationSchema: schema,
   initialValues: props.modelValue
-})
+});
 
-const { value: name } = useField<string>('name')
-const { value: description } = useField<string>('description')
-const { value: avatarId } = useField<string>('avatarId')
-const { value: tags } = useField<string[]>('tags')
-const { value: category } = useField<string>('category')
+const { value: name } = useField<string>('name');
+const { value: description } = useField<string>('description');
+const { value: avatarId } = useField<string>('avatarId');
+const { value: tags } = useField<string[]>('tags');
+const { value: category } = useField<string>('category');
 
-const tagInput = ref('')
-const showAvatarPicker = ref(false)
-const uploadedAvatar = ref<string | null>(null)
-const showMarkdownPreview = ref(false)
+const tagInput = ref('');
+const showAvatarPicker = ref(false);
+const uploadedAvatar = ref<string | null>(null);
+const showMarkdownPreview = ref(false);
 
-const nameLength = computed(() => name.value?.length ?? 0)
-const descLength = computed(() => description.value?.length ?? 0)
+const nameLength = computed(() => name.value?.length ?? 0);
+const descLength = computed(() => description.value?.length ?? 0);
 const selectedAvatar = computed(() => {
-  if (uploadedAvatar.value) return uploadedAvatar.value
-  const avatar = avatarLibrary.find(a => a.id === avatarId.value)
-  return avatar?.emoji || ''
-})
+  if (uploadedAvatar.value) return uploadedAvatar.value;
+  const avatar = avatarLibrary.find((a) => a.id === avatarId.value);
+  return avatar?.emoji || '';
+});
 
 const groupedAvatars = computed(() => {
-  const groups: Record<string, typeof avatarLibrary> = {}
-  avatarLibrary.forEach(avatar => {
-    if (!groups[avatar.category]) groups[avatar.category] = []
-    groups[avatar.category].push(avatar)
-  })
-  return groups
-})
+  const groups: Record<string, typeof avatarLibrary> = {};
+  avatarLibrary.forEach((avatar) => {
+    if (!groups[avatar.category]) groups[avatar.category] = [];
+    groups[avatar.category].push(avatar);
+  });
+  return groups;
+});
 
 const categoryLabels: Record<string, string> = {
   person: '人物',
@@ -61,58 +65,58 @@ const categoryLabels: Record<string, string> = {
   tech: '科技',
   nature: '自然',
   food: '美食'
-}
+};
 
 const addTag = () => {
-  const tag = tagInput.value.trim()
+  const tag = tagInput.value.trim();
   if (tag && !tags.value?.includes(tag) && (tags.value?.length ?? 0) < 10) {
-    tags.value = [...(tags.value || []), tag]
-    tagInput.value = ''
+    tags.value = [...(tags.value || []), tag];
+    tagInput.value = '';
   }
-}
+};
 
 const removeTag = (index: number) => {
-  tags.value = tags.value?.filter((_, i) => i !== index) ?? []
-}
+  tags.value = tags.value?.filter((_, i) => i !== index) ?? [];
+};
 
 const handleTagKeydown = (e: KeyboardEvent) => {
   if (e.key === 'Enter' || e.key === ',') {
-    e.preventDefault()
-    addTag()
+    e.preventDefault();
+    addTag();
   }
-}
+};
 
 const selectAvatar = (id: string) => {
-  avatarId.value = id
-  uploadedAvatar.value = null
-  showAvatarPicker.value = false
-}
+  avatarId.value = id;
+  uploadedAvatar.value = null;
+  showAvatarPicker.value = false;
+};
 
 const handleFileUpload = (event: Event) => {
-  const target = event.target as HTMLInputElement
-  const file = target.files?.[0]
+  const target = event.target as HTMLInputElement;
+  const file = target.files?.[0];
   if (file) {
     if (file.size > 2 * 1024 * 1024) {
-      alert('文件大小不能超过 2MB')
-      return
+      alert('文件大小不能超过 2MB');
+      return;
     }
-    const validTypes = ['image/jpeg', 'image/png', 'image/webp']
+    const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
     if (!validTypes.includes(file.type)) {
-      alert('仅支持 JPG、PNG 或 WebP 格式')
-      return
+      alert('仅支持 JPG、PNG 或 WebP 格式');
+      return;
     }
-    const reader = new FileReader()
+    const reader = new FileReader();
     reader.onload = (e) => {
-      uploadedAvatar.value = e.target?.result as string
-      showAvatarPicker.value = false
-    }
-    reader.readAsDataURL(file)
+      uploadedAvatar.value = e.target?.result as string;
+      showAvatarPicker.value = false;
+    };
+    reader.readAsDataURL(file);
   }
-}
+};
 
 const onSubmit = handleSubmit((values) => {
-  emit('update:modelValue', values as AgentConfig['basicInfo'])
-})
+  emit('update:modelValue', values as AgentConfig['basicInfo']);
+});
 </script>
 
 <template>
@@ -187,17 +191,29 @@ const onSubmit = handleSubmit((values) => {
           <p class="text-sm text-gray-600 dark:text-gray-400">点击选择头像或上传自定义图片</p>
           <p class="text-xs text-gray-400 mt-0.5">支持 JPG/PNG/WebP，最大 2MB</p>
         </div>
-        <label class="cursor-pointer px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors">
+        <label
+          class="cursor-pointer px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors"
+        >
           上传图片
-          <input type="file" accept=".jpg,.jpeg,.png,.webp" class="hidden" @change="handleFileUpload" />
+          <input
+            type="file"
+            accept=".jpg,.jpeg,.png,.webp"
+            class="hidden"
+            @change="handleFileUpload"
+          />
         </label>
       </div>
 
       <Transition name="slide-fade">
-        <div v-if="showAvatarPicker" class="mt-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
+        <div
+          v-if="showAvatarPicker"
+          class="mt-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700"
+        >
           <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">选择预设头像</h4>
           <div v-for="(group, cat) in groupedAvatars" :key="cat" class="mb-3 last:mb-0">
-            <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">{{ categoryLabels[cat] || cat }}</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">
+              {{ categoryLabels[cat] || cat }}
+            </p>
             <div class="flex flex-wrap gap-2">
               <button
                 v-for="avatar in group"
@@ -224,7 +240,9 @@ const onSubmit = handleSubmit((values) => {
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
         标签（最多 10 个）
       </label>
-      <div class="flex flex-wrap gap-2 p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 min-h-[44px]">
+      <div
+        class="flex flex-wrap gap-2 p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 min-h-[44px]"
+      >
         <span
           v-for="(tag, index) in tags"
           :key="index"
@@ -236,7 +254,9 @@ const onSubmit = handleSubmit((values) => {
             class="hover:text-red-500 transition-colors"
             aria-label="删除标签"
             @click="removeTag(index)"
-          >×</button>
+          >
+            ×
+          </button>
         </span>
         <input
           v-model="tagInput"
@@ -261,7 +281,9 @@ const onSubmit = handleSubmit((values) => {
         :class="{ 'border-red-500': errors.category }"
         aria-label="智能体分类"
       >
-        <option v-for="cat in categories" :key="cat.value" :value="cat.value">{{ cat.label }}</option>
+        <option v-for="cat in categories" :key="cat.value" :value="cat.value">
+          {{ cat.label }}
+        </option>
       </select>
       <p v-if="errors.category" class="text-red-500 text-xs mt-1">{{ errors.category }}</p>
     </div>

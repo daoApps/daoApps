@@ -1,29 +1,29 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
-import ModuleCard from '@/components/home/ModuleCard.vue'
-import MainLayout from '@/components/layout/MainLayout.vue'
-import { coreModules, extraModules } from '@/data/mockHome'
+import { ref, computed, onMounted } from 'vue';
+import ModuleCard from '@/components/home/ModuleCard.vue';
+import MainLayout from '@/components/layout/MainLayout.vue';
+import { coreModules, extraModules } from '@/data/mockHome';
 
-const isLoaded = ref(false)
+const isLoaded = ref(false);
 
-const mainTitle = 'AgentPit 智能体平台'
-const titleChars = computed(() => mainTitle.split(''))
+const mainTitle = 'AgentPit 智能体平台';
+const titleChars = computed(() => mainTitle.split(''));
 
-const subtitle = '打造您的自动赚钱平台 ✨'
-const secondaryTitle = '更多精彩功能 🌟'
+const subtitle = '打造您的自动赚钱平台 ✨';
+const secondaryTitle = '更多精彩功能 🌟';
 
 onMounted(() => {
   setTimeout(() => {
-    isLoaded.value = true
-  }, 100)
-})
+    isLoaded.value = true;
+  }, 100);
+});
 
 const statistics = ref([
   { label: '活跃用户', value: '1,234', color: '#6366f1' },
   { label: '智能体数量', value: '567', color: '#10b981' },
   { label: '交易额', value: '89K', color: '#3b82f6' },
   { label: '系统可用性', value: '99.9%', color: '#f59e0b' }
-])
+]);
 </script>
 
 <template>
@@ -40,10 +40,7 @@ const statistics = ref([
       <!-- 主内容区域 -->
       <div class="main-content">
         <!-- Hero Section -->
-        <section
-          class="hero-section"
-          :class="{ 'hero-visible': isLoaded }"
-        >
+        <section class="hero-section" :class="{ 'hero-visible': isLoaded }">
           <h1 class="hero-title">
             <TransitionGroup name="stagger" tag="span" appear>
               <span
@@ -75,13 +72,15 @@ const statistics = ref([
         </section>
 
         <!-- 额外功能模块 -->
-        <section
-          class="extra-modules-section"
-          :class="{ 'extra-visible': isLoaded }"
-        >
+        <section class="extra-modules-section" :class="{ 'extra-visible': isLoaded }">
           <h2 class="section-title">{{ secondaryTitle }}</h2>
 
-          <TransitionGroup name="card-list" appear tag="div" class="modules-grid modules-grid-small">
+          <TransitionGroup
+            name="card-list"
+            appear
+            tag="div"
+            class="modules-grid modules-grid-small"
+          >
             <ModuleCard
               v-for="(module, index) in extraModules"
               :key="module.id"
@@ -92,16 +91,15 @@ const statistics = ref([
         </section>
 
         <!-- 统计数据 -->
-        <section
-          class="statistics-section"
-          :class="{ 'stats-visible': isLoaded }"
-        >
+        <section class="statistics-section" :class="{ 'stats-visible': isLoaded }">
           <div class="stats-grid">
             <div
               v-for="(stat, index) in statistics"
               :key="stat.label"
               class="stat-card"
-              :style="{ animationDelay: `${(coreModules.length + extraModules.length + index) * 80}ms` }"
+              :style="{
+                animationDelay: `${(coreModules.length + extraModules.length + index) * 80}ms`
+              }"
             >
               <div class="stat-value" :style="{ color: stat.color }">
                 {{ stat.value }}
@@ -112,10 +110,7 @@ const statistics = ref([
         </section>
 
         <!-- 底部提示 -->
-        <footer
-          class="footer-hint"
-          :class="{ 'footer-visible': isLoaded }"
-        >
+        <footer class="footer-hint" :class="{ 'footer-visible': isLoaded }">
           <p>点击任意模块开始您的智能体之旅 →</p>
         </footer>
       </div>
@@ -182,7 +177,8 @@ const statistics = ref([
 }
 
 @keyframes pulse-glow {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.3;
     transform: scale(1);
   }
@@ -199,6 +195,7 @@ const statistics = ref([
   max-width: 1280px;
   margin: 0 auto;
   padding: 48px 24px;
+  box-sizing: border-box;
 }
 
 /* Hero Section */
@@ -226,7 +223,7 @@ const statistics = ref([
 
 .title-char {
   display: inline-block;
-  background: linear-gradient(135deg, #fbbf24 0%, #f472b6 50%, #22d3ee 100%);
+  background: linear-gradient(135deg, #fbbf24 0%, #f472b6 50%, #0ea5e9 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -240,6 +237,7 @@ const statistics = ref([
   font-weight: 500;
   letter-spacing: 0.5px;
   margin-bottom: 24px;
+  line-height: 1.4;
 }
 
 .divider-line {
@@ -321,7 +319,9 @@ const statistics = ref([
   text-align: center;
   opacity: 0;
   animation: slideInUp 0.5s ease-out forwards;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .stat-card:hover {
@@ -330,7 +330,7 @@ const statistics = ref([
 }
 
 .stat-value {
-  font-size: 36px;
+  font-size: clamp(24px, 3vw, 36px);
   font-weight: 800;
   margin-bottom: 8px;
   line-height: 1;
@@ -340,6 +340,7 @@ const statistics = ref([
   font-size: 14px;
   color: rgba(255, 255, 255, 0.75);
   font-weight: 500;
+  line-height: 1.2;
 }
 
 /* 底部提示 */

@@ -1,31 +1,20 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import VChart from 'vue-echarts'
-import { use } from 'echarts/core'
-import { CanvasRenderer } from 'echarts/renderers'
-import { PieChart, GaugeChart } from 'echarts/charts'
-import {
-  TitleComponent,
-  TooltipComponent,
-  LegendComponent
-} from 'echarts/components'
-import type { FinancialMetrics, SourceDistribution } from '@/types/monetization'
+import { computed } from 'vue';
+import VChart from 'vue-echarts';
+import { use } from 'echarts/core';
+import { CanvasRenderer } from 'echarts/renderers';
+import { PieChart, GaugeChart } from 'echarts/charts';
+import { TitleComponent, TooltipComponent, LegendComponent } from 'echarts/components';
+import type { FinancialMetrics, SourceDistribution } from '@/types/monetization';
 
-use([
-  CanvasRenderer,
-  PieChart,
-  GaugeChart,
-  TitleComponent,
-  TooltipComponent,
-  LegendComponent
-])
+use([CanvasRenderer, PieChart, GaugeChart, TitleComponent, TooltipComponent, LegendComponent]);
 
 interface Props {
-  metrics: FinancialMetrics
-  sourceData: SourceDistribution[]
+  metrics: FinancialMetrics;
+  sourceData: SourceDistribution[];
 }
 
-const props = defineProps<Props>()
+const props = defineProps<Props>();
 
 const kpiCards = computed(() => [
   {
@@ -64,7 +53,7 @@ const kpiCards = computed(() => [
     bgColor: 'bg-orange-50',
     textColor: 'text-orange-700'
   }
-])
+]);
 
 const gaugeOption = computed(() => ({
   series: [
@@ -123,7 +112,7 @@ const gaugeOption = computed(() => ({
       data: [{ value: props.metrics.profitRate }]
     }
   ]
-}))
+}));
 
 const aiPredictions = computed(() => [
   {
@@ -147,7 +136,7 @@ const aiPredictions = computed(() => [
     icon: '🤖',
     color: 'border-l-4 border-green-500 bg-green-50'
   }
-])
+]);
 </script>
 
 <template>
@@ -177,7 +166,9 @@ const aiPredictions = computed(() => [
               d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
             />
           </svg>
-          <span :class="['text-sm font-semibold', card.isPositive ? 'text-green-600' : 'text-red-600']">
+          <span
+            :class="['text-sm font-semibold', card.isPositive ? 'text-green-600' : 'text-red-600']"
+          >
             {{ card.change }}
           </span>
           <span class="text-xs text-gray-500 ml-1">vs 上期</span>

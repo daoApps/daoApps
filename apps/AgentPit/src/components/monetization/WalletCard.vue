@@ -1,26 +1,26 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import type { WalletData, Currency } from '@/types/monetization'
+import { ref, computed } from 'vue';
+import type { WalletData, Currency } from '@/types/monetization';
 
 interface Props {
-  data: WalletData
+  data: WalletData;
 }
 
-const props = defineProps<Props>()
+const props = defineProps<Props>();
 
 const emit = defineEmits<{
-  recharge: []
-  withdraw: []
-}>()
+  recharge: [];
+  withdraw: [];
+}>();
 
-const selectedCurrency = ref<Currency>(props.data.currency)
-const isUpdating = ref(false)
+const selectedCurrency = ref<Currency>(props.data.currency);
+const isUpdating = ref(false);
 
 const currencies: { value: Currency; label: string }[] = [
   { value: 'CNY', label: 'CNY' },
   { value: 'USD', label: 'USD' },
   { value: 'EUR', label: 'EUR' }
-]
+];
 
 const formatCurrency = (amount: number, currency: Currency): string => {
   return new Intl.NumberFormat('zh-CN', {
@@ -28,28 +28,34 @@ const formatCurrency = (amount: number, currency: Currency): string => {
     currency,
     minimumFractionDigits: 2,
     maximumFractionDigits: 2
-  }).format(amount)
-}
+  }).format(amount);
+};
 
 const formattedTotalBalance = computed(() =>
   formatCurrency(props.data.totalBalance, selectedCurrency.value)
-)
+);
 const formattedAvailableBalance = computed(() =>
   formatCurrency(props.data.availableBalance, selectedCurrency.value)
-)
+);
 const formattedFrozenBalance = computed(() =>
   formatCurrency(props.data.frozenBalance, selectedCurrency.value)
-)
+);
 
 const switchCurrency = (currency: Currency) => {
-  selectedCurrency.value = currency
-}
+  selectedCurrency.value = currency;
+};
 </script>
 
 <template>
-  <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-400 via-teal-500 to-cyan-600 p-6 shadow-xl">
-    <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
-    <div class="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2" />
+  <div
+    class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-400 via-teal-500 to-cyan-600 p-6 shadow-xl"
+  >
+    <div
+      class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2"
+    />
+    <div
+      class="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2"
+    />
 
     <div class="relative z-10">
       <div class="flex items-center justify-between mb-6">
@@ -64,7 +70,9 @@ const switchCurrency = (currency: Currency) => {
             />
           </h2>
         </div>
-        <div class="w-14 h-14 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center">
+        <div
+          class="w-14 h-14 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center"
+        >
           <span class="text-3xl">💰</span>
         </div>
       </div>

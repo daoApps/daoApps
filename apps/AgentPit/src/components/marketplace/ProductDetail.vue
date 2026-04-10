@@ -1,81 +1,95 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
-import type { Product, ProductTag } from '@/types/marketplace'
-import { products, getReviewsByProductId } from '@/data/mockMarketplace'
-import ReviewSystem from './ReviewSystem.vue'
+import { ref, computed } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import type { Product, ProductTag } from '@/types/marketplace';
+import { products, getReviewsByProductId } from '@/data/mockMarketplace';
+import ReviewSystem from './ReviewSystem.vue';
 
 interface Props {
-  product?: Product
+  product?: Product;
 }
 
-const props = defineProps<Props>()
+const props = defineProps<Props>();
 
 const emit = defineEmits<{
-  addToCart: [product: Product, quantity: number]
-}>()
+  addToCart: [product: Product, quantity: number];
+}>();
 
-const router = useRouter()
-const route = useRoute()
-const product = computed(() => props.product || products.find(p => p.id === route.params.id))
+const router = useRouter();
+const route = useRoute();
+const product = computed(() => props.product || products.find((p) => p.id === route.params.id));
 
-const quantity = ref(1)
-const activeTab = ref<'detail' | 'reviews'>('detail')
-const isFavorite = ref(false)
-const reviews = computed(() => product.value ? getReviewsByProductId(product.value.id) : [])
+const quantity = ref(1);
+const activeTab = ref<'detail' | 'reviews'>('detail');
+const isFavorite = ref(false);
+const reviews = computed(() => (product.value ? getReviewsByProductId(product.value.id) : []));
 
 const discount = computed(() => {
-  if (!product.value?.originalPrice) return 0
-  return Math.round((1 - product.value.price / product.value.originalPrice) * 100)
-})
+  if (!product.value?.originalPrice) return 0;
+  return Math.round((1 - product.value.price / product.value.originalPrice) * 100);
+});
 
 const relatedProducts = computed(() => {
-  if (!product.value) return []
+  if (!product.value) return [];
   return products
-    .filter(p => p.id !== product.value!.id)
+    .filter((p) => p.id !== product.value!.id)
     .sort(() => Math.random() - 0.5)
-    .slice(0, 4)
-})
+    .slice(0, 4);
+});
 
 const tagConfig: Record<ProductTag, { text: string; className: string }> = {
-  new: { text: '🆕 新品', className: 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400' },
-  hot: { text: '🔥 热销', className: 'bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400' },
-  discount: { text: '💰 折扣', className: 'bg-pink-100 text-pink-600 dark:bg-pink-900/30 dark:text-pink-400' },
-  recommended: { text: '⭐ 推荐', className: 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' }
-}
+  new: {
+    text: '🆕 新品',
+    className: 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400'
+  },
+  hot: {
+    text: '🔥 热销',
+    className: 'bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400'
+  },
+  discount: {
+    text: '💰 折扣',
+    className: 'bg-pink-100 text-pink-600 dark:bg-pink-900/30 dark:text-pink-400'
+  },
+  recommended: {
+    text: '⭐ 推荐',
+    className: 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400'
+  }
+};
 
-const currentIndex = ref(0)
+const currentIndex = ref(0);
 
 const setCurrentIndex = (index: number) => {
-  currentIndex.value = index
-}
+  currentIndex.value = index;
+};
 
 const prevImage = () => {
-  if (!product.value) return
-  currentIndex.value = currentIndex.value === 0 ? product.value.images.length - 1 : currentIndex.value - 1
-}
+  if (!product.value) return;
+  currentIndex.value =
+    currentIndex.value === 0 ? product.value.images.length - 1 : currentIndex.value - 1;
+};
 
 const nextImage = () => {
-  if (!product.value) return
-  currentIndex.value = currentIndex.value === product.value.images.length - 1 ? 0 : currentIndex.value + 1
-}
+  if (!product.value) return;
+  currentIndex.value =
+    currentIndex.value === product.value.images.length - 1 ? 0 : currentIndex.value + 1;
+};
 
 const updateQuantity = (val: number) => {
   if (product.value) {
-    quantity.value = Math.min(Math.max(1, val), product.value.stock)
+    quantity.value = Math.min(Math.max(1, val), product.value.stock);
   }
-}
+};
 
 const handleAddToCart = () => {
   if (product.value) {
-    emit('addToCart', product.value, quantity.value)
+    emit('addToCart', product.value, quantity.value);
   }
-}
+};
 
 const handleBuyNow = () => {
-  handleAddToCart()
-  router.push('/marketplace?tab=cart')
-}
+  handleAddToCart();
+  router.push('/marketplace?tab=cart');
+};
 </script>
 
 <template>
@@ -91,7 +105,12 @@ const handleBuyNow = () => {
 
   <div v-else class="max-w-7xl mx-auto space-y-8 pb-12">
     <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
-      <button class="hover:text-primary-600 dark:hover:text-primary-400" @click="router.push('/marketplace')">市场首页</button>
+      <button
+        class="hover:text-primary-600 dark:hover:text-primary-400"
+        @click="router.push('/marketplace')"
+      >
+        市场首页
+      </button>
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
       </svg>
@@ -100,12 +119,10 @@ const handleBuyNow = () => {
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
       <div class="space-y-3">
-        <div class="relative aspect-square rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-700 group">
-          <img
-            :src="product.images[currentIndex]"
-            alt=""
-            class="w-full h-full object-cover"
-          />
+        <div
+          class="relative aspect-square rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-700 group"
+        >
+          <img :src="product.images[currentIndex]" alt="" class="w-full h-full object-cover" />
 
           <template v-if="product.images.length > 1">
             <button
@@ -113,7 +130,12 @@ const handleBuyNow = () => {
               @click="prevImage"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 19l-7-7 7-7"
+                />
               </svg>
             </button>
 
@@ -122,7 +144,12 @@ const handleBuyNow = () => {
               @click="nextImage"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 5l7 7-7 7"
+                />
               </svg>
             </button>
 
@@ -146,7 +173,9 @@ const handleBuyNow = () => {
             :key="idx"
             :class="[
               'flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all',
-              idx === currentIndex ? 'border-primary-500' : 'border-transparent hover:border-gray-300'
+              idx === currentIndex
+                ? 'border-primary-500'
+                : 'border-transparent hover:border-gray-300'
             ]"
             @click="setCurrentIndex(idx)"
           >
@@ -158,7 +187,9 @@ const handleBuyNow = () => {
       <div class="space-y-6">
         <div>
           <div class="flex items-start justify-between gap-4 mb-3">
-            <h1 class="text-2xl font-bold text-gray-900 dark:text-white leading-tight">{{ product.name }}</h1>
+            <h1 class="text-2xl font-bold text-gray-900 dark:text-white leading-tight">
+              {{ product.name }}
+            </h1>
             <button
               :class="[
                 'flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-all',
@@ -174,7 +205,12 @@ const handleBuyNow = () => {
                 stroke="currentColor"
                 viewBox="0 0 24 24"
               >
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                />
               </svg>
             </button>
           </div>
@@ -184,36 +220,56 @@ const handleBuyNow = () => {
               <template v-for="star in 5" :key="star">
                 <svg
                   class="w-5 h-5"
-                  :class="star <= Math.floor(product.rating) ? 'text-yellow-400' : star <= product.rating ? 'text-yellow-400' : 'text-gray-300'"
+                  :class="
+                    star <= Math.floor(product.rating)
+                      ? 'text-yellow-400'
+                      : star <= product.rating
+                        ? 'text-yellow-400'
+                        : 'text-gray-300'
+                  "
                   fill="currentColor"
                   viewBox="0 0 20 20"
                 >
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  />
                 </svg>
               </template>
             </div>
             <span class="text-sm text-gray-600 dark:text-gray-400">{{ product.rating }}</span>
             <span class="text-sm text-gray-400">|</span>
-            <span class="text-sm text-gray-600 dark:text-gray-400">{{ product.reviewCount }} 条评价</span>
+            <span class="text-sm text-gray-600 dark:text-gray-400"
+              >{{ product.reviewCount }} 条评价</span
+            >
             <span class="text-sm text-gray-400">|</span>
-            <span class="text-sm text-gray-600 dark:text-gray-400">已售 {{ product.salesCount.toLocaleString() }}</span>
+            <span class="text-sm text-gray-600 dark:text-gray-400"
+              >已售 {{ product.salesCount.toLocaleString() }}</span
+            >
           </div>
 
           <div class="flex flex-wrap gap-2 mb-4">
             <span
               v-for="tag in product.tags"
               :key="tag"
-              :class="['px-2.5 py-1 text-xs font-medium rounded-full', tagConfig[tag]?.className || 'bg-gray-100 text-gray-600']"
+              :class="[
+                'px-2.5 py-1 text-xs font-medium rounded-full',
+                tagConfig[tag]?.className || 'bg-gray-100 text-gray-600'
+              ]"
             >
               {{ tagConfig[tag]?.text || tag }}
             </span>
           </div>
 
-          <div class="flex items-baseline gap-3 mb-6 p-4 bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20 rounded-xl">
+          <div
+            class="flex items-baseline gap-3 mb-6 p-4 bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20 rounded-xl"
+          >
             <span class="text-3xl font-bold text-red-500">¥{{ product.price }}</span>
             <template v-if="product.originalPrice">
               <span class="text-lg text-gray-400 line-through">¥{{ product.originalPrice }}</span>
-              <span v-if="discount > 0" class="px-2 py-0.5 bg-red-500 text-white text-sm font-medium rounded">
+              <span
+                v-if="discount > 0"
+                class="px-2 py-0.5 bg-red-500 text-white text-sm font-medium rounded"
+              >
                 省 ¥{{ product.originalPrice - product.price }}
               </span>
             </template>
@@ -221,19 +277,28 @@ const handleBuyNow = () => {
         </div>
 
         <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-xl">
-          <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{{ product.description }}</p>
+          <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+            {{ product.description }}
+          </p>
         </div>
 
         <div class="space-y-3">
           <label class="text-sm font-medium text-gray-900 dark:text-white">数量</label>
-          <div class="inline-flex items-center border border-gray-200 dark:border-gray-600 rounded-lg overflow-hidden">
+          <div
+            class="inline-flex items-center border border-gray-200 dark:border-gray-600 rounded-lg overflow-hidden"
+          >
             <button
               :disabled="quantity <= 1"
               class="w-10 h-10 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
               @click="updateQuantity(quantity - 1)"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M20 12H4"
+                />
               </svg>
             </button>
             <input
@@ -248,7 +313,12 @@ const handleBuyNow = () => {
               @click="updateQuantity(quantity + 1)"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 4v16m8-8H4"
+                />
               </svg>
             </button>
           </div>
@@ -261,7 +331,12 @@ const handleBuyNow = () => {
             @click="handleAddToCart"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z" />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"
+              />
             </svg>
             加入购物车
           </button>
@@ -270,7 +345,12 @@ const handleBuyNow = () => {
             @click="handleBuyNow"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 10V3L4 14h7v7l9-11h-7z"
+              />
             </svg>
             立即购买
           </button>
@@ -281,14 +361,25 @@ const handleBuyNow = () => {
             <img :src="product.seller.avatar" alt="" class="w-12 h-12 rounded-full" />
             <div class="flex-1 min-w-0">
               <div class="flex items-center gap-2">
-                <span class="font-semibold text-gray-900 dark:text-white">{{ product.seller.storeName }}</span>
-                <span v-if="product.seller.isVerified" class="w-4 h-4 bg-primary-500 rounded-full flex items-center justify-center">
+                <span class="font-semibold text-gray-900 dark:text-white">{{
+                  product.seller.storeName
+                }}</span>
+                <span
+                  v-if="product.seller.isVerified"
+                  class="w-4 h-4 bg-primary-500 rounded-full flex items-center justify-center"
+                >
                   <svg class="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                    <path
+                      fill-rule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clip-rule="evenodd"
+                    />
                   </svg>
                 </span>
               </div>
-              <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5 line-clamp-1">{{ product.seller.description }}</p>
+              <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5 line-clamp-1">
+                {{ product.seller.description }}
+              </p>
             </div>
             <div class="text-right">
               <div class="flex items-center gap-1 justify-end">
@@ -296,24 +387,40 @@ const handleBuyNow = () => {
                   <template v-for="star in 5" :key="star">
                     <svg
                       class="w-3.5 h-3.5"
-                      :class="star <= Math.floor(product.seller.rating) ? 'text-yellow-400' : star <= product.seller.rating ? 'text-yellow-400' : 'text-gray-300'"
+                      :class="
+                        star <= Math.floor(product.seller.rating)
+                          ? 'text-yellow-400'
+                          : star <= product.seller.rating
+                            ? 'text-yellow-400'
+                            : 'text-gray-300'
+                      "
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                      <path
+                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                      />
                     </svg>
                   </template>
                 </div>
-                <span class="text-sm font-medium text-gray-900 dark:text-white">{{ product.seller.rating }}</span>
+                <span class="text-sm font-medium text-gray-900 dark:text-white">{{
+                  product.seller.rating
+                }}</span>
               </div>
-              <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ product.seller.followerCount.toLocaleString }} 关注者</p>
+              <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                {{ product.seller.followerCount.toLocaleString }} 关注者
+              </p>
             </div>
           </div>
           <div class="flex gap-2">
-            <button class="flex-1 py-2 border border-primary-500 text-primary-500 rounded-lg text-sm font-medium hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors">
+            <button
+              class="flex-1 py-2 border border-primary-500 text-primary-500 rounded-lg text-sm font-medium hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors"
+            >
               进店逛逛
             </button>
-            <button class="py-2 px-4 border border-pink-500 text-pink-500 rounded-lg text-sm font-medium hover:bg-pink-50 dark:hover:bg-pink-900/20 transition-colors">
+            <button
+              class="py-2 px-4 border border-pink-500 text-pink-500 rounded-lg text-sm font-medium hover:bg-pink-50 dark:hover:bg-pink-900/20 transition-colors"
+            >
               + 关注
             </button>
           </div>
@@ -326,38 +433,58 @@ const handleBuyNow = () => {
         <button
           :class="[
             'pb-4 text-sm font-medium relative transition-colors',
-            activeTab === 'detail' ? 'text-primary-600 dark:text-primary-400' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+            activeTab === 'detail'
+              ? 'text-primary-600 dark:text-primary-400'
+              : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
           ]"
           @click="activeTab = 'detail'"
         >
           商品详情
-          <span v-if="activeTab === 'detail'" class="absolute bottom-0 left-0 right-0 h-0.5 bg-primary-600 dark:bg-primary-400 rounded-full" />
+          <span
+            v-if="activeTab === 'detail'"
+            class="absolute bottom-0 left-0 right-0 h-0.5 bg-primary-600 dark:bg-primary-400 rounded-full"
+          />
         </button>
         <button
           :class="[
             'pb-4 text-sm font-medium relative transition-colors',
-            activeTab === 'reviews' ? 'text-primary-600 dark:text-primary-400' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+            activeTab === 'reviews'
+              ? 'text-primary-600 dark:text-primary-400'
+              : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
           ]"
           @click="activeTab = 'reviews'"
         >
           用户评价 ({{ reviews.length }})
-          <span v-if="activeTab === 'reviews'" class="absolute bottom-0 left-0 right-0 h-0.5 bg-primary-600 dark:bg-primary-400 rounded-full" />
+          <span
+            v-if="activeTab === 'reviews'"
+            class="absolute bottom-0 left-0 right-0 h-0.5 bg-primary-600 dark:bg-primary-400 rounded-full"
+          />
         </button>
       </div>
     </div>
 
     <div v-if="activeTab === 'detail'" class="space-y-6">
-      <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+      <div
+        class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6"
+      >
         <h3 class="font-semibold text-gray-900 dark:text-white mb-4">规格参数</h3>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div v-for="(spec, idx) in product.specs" :key="idx" class="flex py-2 border-b border-gray-100 dark:border-gray-700 last:border-0">
-            <span class="text-sm text-gray-500 dark:text-gray-400 w-28 flex-shrink-0">{{ spec.label }}</span>
+          <div
+            v-for="(spec, idx) in product.specs"
+            :key="idx"
+            class="flex py-2 border-b border-gray-100 dark:border-gray-700 last:border-0"
+          >
+            <span class="text-sm text-gray-500 dark:text-gray-400 w-28 flex-shrink-0">{{
+              spec.label
+            }}</span>
             <span class="text-sm text-gray-900 dark:text-white font-medium">{{ spec.value }}</span>
           </div>
         </div>
       </div>
 
-      <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+      <div
+        class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6"
+      >
         <h3 class="font-semibold text-gray-900 dark:text-white mb-4">商品介绍</h3>
         <div class="prose prose-sm max-w-none text-gray-700 dark:text-gray-300 leading-relaxed">
           <p>{{ product.description }}</p>
@@ -376,7 +503,10 @@ const handleBuyNow = () => {
 
     <ReviewSystem v-else :product-id="product.id" :reviews="reviews" />
 
-    <section v-if="relatedProducts.length > 0" class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
+    <section
+      v-if="relatedProducts.length > 0"
+      class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700"
+    >
       <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">相关推荐</h2>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div
@@ -393,7 +523,9 @@ const handleBuyNow = () => {
             />
           </div>
           <div class="p-3">
-            <h4 class="text-sm font-medium text-gray-900 dark:text-white line-clamp-2 mb-2">{{ relProduct.name }}</h4>
+            <h4 class="text-sm font-medium text-gray-900 dark:text-white line-clamp-2 mb-2">
+              {{ relProduct.name }}
+            </h4>
             <span class="text-base font-bold text-red-500">¥{{ relProduct.price }}</span>
           </div>
         </div>

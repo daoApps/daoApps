@@ -17,38 +17,51 @@ export type GradientDirection =
   | 'from-red-400 to-pink-600'
   | 'from-green-400 to-emerald-600'
   | 'from-lime-400 to-green-600'
-  | 'from-purple-400 to-violet-600'
+  | 'from-purple-400 to-violet-600';
 
 /** 功能模块数据接口 */
 export interface ModuleData {
   /** 模块标题 */
-  title: string
+  title: string;
   /** 副标题/描述 */
-  subtitle: string
+  subtitle: string;
   /** Emoji 图标 */
-  icon: string
+  icon: string;
   /** 路由路径 */
-  route: string
+  route: string;
   /** 渐变起始色 (Tailwind CSS class) */
-  gradientFrom: string
+  gradientFrom: string;
   /** 渐变结束色 (Tailwind CSS class) */
-  gradientTo: string
+  gradientTo: string;
 }
 
 /** 模块卡片组件 Props */
 export interface ModuleCardProps extends ModuleData {
   /** 动画延迟时间（毫秒） */
-  delay?: number
+  delay?: number;
 }
 
 /** 核心模块列表类型 */
-export type CoreModule = Extract<ModuleData, { route: '/monetization' | '/sphinx' | '/chat' | '/social' | '/marketplace' | '/collaboration' | '/memory' | '/customize' }>
+export type CoreModule = Extract<
+  ModuleData,
+  {
+    route:
+      | '/monetization'
+      | '/sphinx'
+      | '/chat'
+      | '/social'
+      | '/marketplace'
+      | '/collaboration'
+      | '/memory'
+      | '/customize';
+  }
+>;
 
 /** 扩展模块列表类型 */
-export type ExtraModule = Extract<ModuleData, { route: '/lifestyle' }>
+export type ExtraModule = Extract<ModuleData, { route: '/lifestyle' }>;
 
 /** 所有模块的联合类型 */
-export type AllModule = CoreModule | ExtraModule
+export type AllModule = CoreModule | ExtraModule;
 
 /** 模块分类 */
 export const ModuleCategory = {
@@ -56,9 +69,9 @@ export const ModuleCategory = {
   CORE: 'core',
   /** 扩展功能 */
   EXTRA: 'extra'
-} as const
+} as const;
 
-export type ModuleCategory = (typeof ModuleCategory)[keyof typeof ModuleCategory]
+export type ModuleCategory = (typeof ModuleCategory)[keyof typeof ModuleCategory];
 
 /** 模块配置映射表 */
 export const MODULE_CONFIG_MAP: Record<string, ModuleData> = {
@@ -126,4 +139,4 @@ export const MODULE_CONFIG_MAP: Record<string, ModuleData> = {
     gradientFrom: 'from-slate-400',
     gradientTo: 'to-gray-600'
   }
-}
+};

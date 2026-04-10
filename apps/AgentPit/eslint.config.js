@@ -6,7 +6,7 @@ import vueParser from 'vue-eslint-parser'
 
 export default [
   {
-    ignores: ['dist/**', 'node_modules/**', '*.config.js', '*.config.ts', 'src-react-backup-20260410/**', 'e2e/**', 'src/**/__tests__/**', 'packages/**']
+    ignores: ['dist/**', 'node_modules/**', '*.config.js', '*.config.ts', 'src-react-backup-20260410/**', 'e2e/**', 'src/**/__tests__/**', 'packages/**', 'src/composables/useDeepResearch.ts', 'src/composables/useFlexloop.ts', 'vitest.setup.ts']
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,

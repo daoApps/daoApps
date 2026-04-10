@@ -1,11 +1,11 @@
-import { defineStore } from 'pinia'
-import type { UserProfile, ThemeSettings } from '@/types/user'
+import { defineStore } from 'pinia';
+import type { UserProfile, ThemeSettings } from '@/types/user';
 
 interface UserState {
-  profile: UserProfile | null
-  isAuthenticated: boolean
-  themeSettings: ThemeSettings
-  notifications: number
+  profile: UserProfile | null;
+  isAuthenticated: boolean;
+  themeSettings: ThemeSettings;
+  notifications: number;
 }
 
 export const useUserStore = defineStore('user', {
@@ -30,36 +30,36 @@ export const useUserStore = defineStore('user', {
 
   actions: {
     login(profile: UserProfile) {
-      this.profile = profile
-      this.isAuthenticated = true
+      this.profile = profile;
+      this.isAuthenticated = true;
     },
 
     logout() {
-      this.profile = null
-      this.isAuthenticated = false
-      localStorage.removeItem('agentpit-user')
+      this.profile = null;
+      this.isAuthenticated = false;
+      localStorage.removeItem('agentpit-user');
     },
 
     updateProfile(updates: Partial<UserProfile>) {
       if (this.profile) {
-        Object.assign(this.profile, updates)
+        Object.assign(this.profile, updates);
       }
     },
 
     updateThemeSettings(settings: Partial<ThemeSettings>) {
-      Object.assign(this.themeSettings, settings)
+      Object.assign(this.themeSettings, settings);
     },
 
     setNotificationCount(count: number) {
-      this.notifications = count
+      this.notifications = count;
     },
 
     incrementNotification() {
-      this.notifications++
+      this.notifications++;
     },
 
     clearNotifications() {
-      this.notifications = 0
+      this.notifications = 0;
     }
   },
 
@@ -68,4 +68,4 @@ export const useUserStore = defineStore('user', {
     storage: localStorage,
     pick: ['themeSettings']
   }
-})
+});

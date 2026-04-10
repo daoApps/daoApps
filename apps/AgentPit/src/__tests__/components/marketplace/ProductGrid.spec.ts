@@ -1,18 +1,18 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { mount } from '@vue/test-utils'
-import ProductGrid from '@/components/marketplace/ProductGrid.vue'
-import type { Product } from '@/types/marketplace'
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { mount } from '@vue/test-utils';
+import ProductGrid from '@/components/marketplace/ProductGrid.vue';
+import type { Product } from '@/types/marketplace';
 
-const mockPush = vi.fn()
+const mockPush = vi.fn();
 vi.mock('vue-router', async () => {
-  const actual = await vi.importActual('vue-router')
+  const actual = await vi.importActual('vue-router');
   return {
     ...actual,
     useRouter: () => ({
       push: mockPush
     })
-  }
-})
+  };
+});
 
 const mockProducts: Product[] = [
   {
@@ -72,9 +72,7 @@ const mockProducts: Product[] = [
       description: '专业AI培训课程',
       isVerified: true
     },
-    specs: [
-      { label: '支持平台', value: 'SD / MJ / DALL-E' }
-    ],
+    specs: [{ label: '支持平台', value: 'SD / MJ / DALL-E' }],
     type: 'digital',
     createdAt: '2024-02-20'
   },
@@ -106,154 +104,178 @@ const mockProducts: Product[] = [
     type: 'physical',
     createdAt: '2024-01-10'
   }
-]
+];
 
 describe('ProductGrid', () => {
   beforeEach(() => {
-    vi.clearAllMocks()
-  })
+    vi.clearAllMocks();
+  });
 
   const createWrapper = (products: Product[] = mockProducts) => {
     return mount(ProductGrid, {
       props: {
         products
       }
-    })
-  }
+    });
+  };
 
   describe('空状态', () => {
     it('products 为空数组时应该显示空状态提示', () => {
-      const wrapper = createWrapper([])
-      expect(wrapper.text()).toContain('暂无相关商品')
-      expect(wrapper.text()).toContain('试试调整筛选条件或搜索其他关键词')
-    })
-  })
+      const wrapper = createWrapper([]);
+      expect(wrapper.text()).toContain('暂无相关商品');
+      expect(wrapper.text()).toContain('试试调整筛选条件或搜索其他关键词');
+    });
+  });
 
   describe('商品渲染', () => {
     it('应该正确渲染所有商品卡片', () => {
-      const wrapper = createWrapper()
-      const productCards = wrapper.findAll('[class*="group relative"]')
-      expect(productCards.length).toBe(mockProducts.length)
-    })
+      const wrapper = createWrapper();
+      const productCards = wrapper.findAll('[class*="group relative"]');
+      expect(productCards.length).toBe(mockProducts.length);
+    });
 
     it('每个商品卡片应该正确显示图片、名称、价格、评分、销量', () => {
-      const wrapper = createWrapper()
-      const firstProduct = mockProducts[0]!
-      const firstCard = wrapper.text()
+      const wrapper = createWrapper();
+      const firstProduct = mockProducts[0]!;
+      const firstCard = wrapper.text();
 
-      expect(firstCard).toContain(firstProduct.name)
-      expect(firstCard).toContain(`¥${firstProduct.price}`)
-      expect(firstCard).toContain(firstProduct.rating.toString())
-      expect(firstCard).toContain(firstProduct.salesCount.toLocaleString())
-    })
+      expect(firstCard).toContain(firstProduct.name);
+      expect(firstCard).toContain(`¥${firstProduct.price}`);
+      expect(firstCard).toContain(firstProduct.rating.toString());
+      expect(firstCard).toContain(firstProduct.salesCount.toLocaleString());
+    });
 
     it('应该正确显示商品子分类', () => {
-      const wrapper = createWrapper()
-      expect(wrapper.text()).toContain(mockProducts[0]!.subCategory)
-    })
-  })
+      const wrapper = createWrapper();
+      expect(wrapper.text()).toContain(mockProducts[0]!.subCategory);
+    });
+  });
 
   describe('商品标签显示', () => {
     it('应该正确显示新品标签', () => {
-      const wrapper = createWrapper()
-      expect(wrapper.text()).toContain('新品')
-    })
+      const wrapper = createWrapper();
+      expect(wrapper.text()).toContain('新品');
+    });
 
     it('应该正确显示热销标签', () => {
-      const wrapper = createWrapper()
-      expect(wrapper.text()).toContain('热销')
-    })
+      const wrapper = createWrapper();
+      expect(wrapper.text()).toContain('热销');
+    });
 
     it('应该正确显示折扣标签', () => {
-      const wrapper = createWrapper()
-      expect(wrapper.text()).toContain('折扣')
-    })
+      const wrapper = createWrapper();
+      expect(wrapper.text()).toContain('折扣');
+    });
 
     it('应该正确显示推荐标签', () => {
-      const wrapper = createWrapper()
-      expect(wrapper.text()).toContain('推荐')
-    })
-  })
+      const wrapper = createWrapper();
+      expect(wrapper.text()).toContain('推荐');
+    });
+  });
 
   describe('折扣显示', () => {
     it('有 originalPrice 的商品应该显示折扣百分比', () => {
-      const wrapper = createWrapper()
-      const firstProduct = mockProducts[0]!
-      const discount = Math.round((1 - firstProduct.price / firstProduct.originalPrice!) * 100)
-      expect(wrapper.text()).toContain(`-${discount}%`)
-    })
+      const wrapper = createWrapper();
+      const firstProduct = mockProducts[0]!;
+      const discount = Math.round((1 - firstProduct.price / firstProduct.originalPrice!) * 100);
+      expect(wrapper.text()).toContain(`-${discount}%`);
+    });
 
     it('没有 originalPrice 的商品不应该显示折扣', () => {
-      const wrapper = createWrapper([mockProducts[2]!])
-      expect(wrapper.text()).not.toContain('%')
-    })
-  })
+      const wrapper = createWrapper([mockProducts[2]!]);
+      expect(wrapper.text()).not.toContain('%');
+    });
+  });
 
   describe('收藏功能', () => {
     it('点击收藏按钮应该切换收藏状态并触发 toggleFavorite 事件', async () => {
-      const wrapper = createWrapper()
-      const productId = mockProducts[0]!.id
+      const wrapper = createWrapper();
+      const productId = mockProducts[0]!.id;
 
-      const favoriteButtons = wrapper.findAll('button').filter(btn =>
-        btn.html().includes('M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z')
-      )
+      const favoriteButtons = wrapper
+        .findAll('button')
+        .filter((btn) =>
+          btn
+            .html()
+            .includes(
+              'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z'
+            )
+        );
 
-      await favoriteButtons[0]!.trigger('click')
-      expect(wrapper.emitted('toggleFavorite')).toBeTruthy()
-      expect(wrapper.emitted('toggleFavorite')?.[0]).toEqual([productId])
+      await favoriteButtons[0]!.trigger('click');
+      expect(wrapper.emitted('toggleFavorite')).toBeTruthy();
+      expect(wrapper.emitted('toggleFavorite')?.[0]).toEqual([productId]);
 
-      await favoriteButtons[0]!.trigger('click')
-      expect(wrapper.emitted('toggleFavorite')?.[1]).toEqual([productId])
-    })
-  })
+      await favoriteButtons[0]!.trigger('click');
+      expect(wrapper.emitted('toggleFavorite')?.[1]).toEqual([productId]);
+    });
+  });
 
   describe('添加购物车', () => {
     it('点击购物车按钮应该触发 addToCart 事件且参数正确', async () => {
-      const wrapper = createWrapper()
-      const firstProduct = mockProducts[0]!
+      const wrapper = createWrapper();
+      const firstProduct = mockProducts[0]!;
 
-      const cartButtons = wrapper.findAll('button').filter(btn =>
-        btn.html().includes('M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z')
-      )
+      const cartButtons = wrapper
+        .findAll('button')
+        .filter((btn) =>
+          btn
+            .html()
+            .includes(
+              'M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z'
+            )
+        );
 
-      await cartButtons[0]!.trigger('click')
-      expect(wrapper.emitted('addToCart')).toBeTruthy()
-      expect(wrapper.emitted('addToCart')?.[0]?.[0]?.id).toBe(firstProduct.id)
-    })
-  })
+      await cartButtons[0]!.trigger('click');
+      expect(wrapper.emitted('addToCart')).toBeTruthy();
+      expect(wrapper.emitted('addToCart')?.[0]?.[0]?.id).toBe(firstProduct.id);
+    });
+  });
 
   describe('商品导航', () => {
     beforeEach(() => {
-      mockPush.mockClear()
-    })
+      mockPush.mockClear();
+    });
 
     it('点击商品卡片应该调用 router.push 导航到正确路径', async () => {
-      const wrapper = createWrapper()
-      const firstProduct = mockProducts[0]!
-      const productCards = wrapper.findAll('[class*="group relative"]')
+      const wrapper = createWrapper();
+      const firstProduct = mockProducts[0]!;
+      const productCards = wrapper.findAll('[class*="group relative"]');
 
-      await productCards[0]!.trigger('click')
-      expect(mockPush).toHaveBeenCalledWith(`/marketplace/product/${firstProduct.id}`)
-    })
-  })
+      await productCards[0]!.trigger('click');
+      expect(mockPush).toHaveBeenCalledWith(`/marketplace/product/${firstProduct.id}`);
+    });
+  });
 
   describe('星星评分', () => {
     it('评分 4.9 应该渲染 4 颗黄色星星（Math.floor(4.9) = 4）', () => {
-      const wrapper = createWrapper([mockProducts[0]!])
-      const stars = wrapper.findAll('svg').filter(svg =>
-        svg.html().includes('M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z')
-      )
-      const yellowStars = stars.filter(star => star.classes().includes('text-yellow-400'))
-      expect(yellowStars.length).toBe(4)
-    })
+      const wrapper = createWrapper([mockProducts[0]!]);
+      const stars = wrapper
+        .findAll('svg')
+        .filter((svg) =>
+          svg
+            .html()
+            .includes(
+              'M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z'
+            )
+        );
+      const yellowStars = stars.filter((star) => star.classes().includes('text-yellow-400'));
+      expect(yellowStars.length).toBe(4);
+    });
 
     it('评分 3.5 应该渲染至少 3 颗黄色星星', () => {
-      const wrapper = createWrapper([mockProducts[1]!])
-      const stars = wrapper.findAll('svg').filter(svg =>
-        svg.html().includes('M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z')
-      )
-      const yellowStars = stars.filter(star => star.classes().includes('text-yellow-400'))
-      expect(yellowStars.length).toBeGreaterThanOrEqual(3)
-    })
-  })
-})
+      const wrapper = createWrapper([mockProducts[1]!]);
+      const stars = wrapper
+        .findAll('svg')
+        .filter((svg) =>
+          svg
+            .html()
+            .includes(
+              'M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z'
+            )
+        );
+      const yellowStars = stars.filter((star) => star.classes().includes('text-yellow-400'));
+      expect(yellowStars.length).toBeGreaterThanOrEqual(3);
+    });
+  });
+});

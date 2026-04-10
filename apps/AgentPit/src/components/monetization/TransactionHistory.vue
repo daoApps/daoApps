@@ -1,23 +1,23 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import type { TransactionRecord } from '@/types/monetization'
+import { ref, computed } from 'vue';
+import type { TransactionRecord } from '@/types/monetization';
 
 interface Props {
-  transactions: TransactionRecord[]
+  transactions: TransactionRecord[];
 }
 
-const props = defineProps<Props>()
+const props = defineProps<Props>();
 
-type FilterType = 'all' | 'income' | 'expense'
-type FilterStatus = 'all' | 'success' | 'processing' | 'failed'
+type FilterType = 'all' | 'income' | 'expense';
+type FilterStatus = 'all' | 'success' | 'processing' | 'failed';
 
-const isExpanded = ref(false)
-const searchQuery = ref('')
-const filterType = ref<FilterType>('all')
-const filterStatus = ref<FilterStatus>('all')
-const currentPage = ref(1)
+const isExpanded = ref(false);
+const searchQuery = ref('');
+const filterType = ref<FilterType>('all');
+const filterStatus = ref<FilterStatus>('all');
+const currentPage = ref(1);
 
-const ITEMS_PER_PAGE = 5
+const ITEMS_PER_PAGE = 5;
 
 const statusConfig = {
   success: {
@@ -38,41 +38,38 @@ const statusConfig = {
     text: 'text-red-700',
     dot: 'bg-red-500'
   }
-}
+};
 
 const filteredTransactions = computed(() => {
   return props.transactions.filter((tx) => {
     const matchesSearch =
       searchQuery.value === '' ||
       tx.id.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      tx.description.toLowerCase().includes(searchQuery.value.toLowerCase())
+      tx.description.toLowerCase().includes(searchQuery.value.toLowerCase());
 
-    const matchesType = filterType.value === 'all' || tx.type === filterType.value
-    const matchesStatus =
-      filterStatus.value === 'all' || tx.status === filterStatus.value
+    const matchesType = filterType.value === 'all' || tx.type === filterType.value;
+    const matchesStatus = filterStatus.value === 'all' || tx.status === filterStatus.value;
 
-    return matchesSearch && matchesType && matchesStatus
-  })
-})
+    return matchesSearch && matchesType && matchesStatus;
+  });
+});
 
-const totalPages = computed(() =>
-  Math.ceil(filteredTransactions.value.length / ITEMS_PER_PAGE)
-)
+const totalPages = computed(() => Math.ceil(filteredTransactions.value.length / ITEMS_PER_PAGE));
 
 const paginatedTransactions = computed(() => {
-  const start = (currentPage.value - 1) * ITEMS_PER_PAGE
-  return filteredTransactions.value.slice(start, start + ITEMS_PER_PAGE)
-})
+  const start = (currentPage.value - 1) * ITEMS_PER_PAGE;
+  return filteredTransactions.value.slice(start, start + ITEMS_PER_PAGE);
+});
 
 const formatAmount = (amount: number, type: string) => {
-  const prefix = type === 'income' ? '+' : '-'
-  const colorClass = type === 'income' ? 'text-green-600' : 'text-red-600'
+  const prefix = type === 'income' ? '+' : '-';
+  const colorClass = type === 'income' ? 'text-green-600' : 'text-red-600';
   return {
     prefix,
     formatted: `${prefix}¥${amount.toLocaleString('zh-CN', { minimumFractionDigits: 2 })}`,
     colorClass
-  }
-}
+  };
+};
 </script>
 
 <template>
@@ -83,16 +80,22 @@ const formatAmount = (amount: number, type: string) => {
     >
       <h3 class="text-lg font-bold text-gray-900">交易历史</h3>
       <div class="flex items-center gap-2">
-        <span class="text-sm text-gray-500">
-          共 {{ filteredTransactions.length }} 条记录
-        </span>
+        <span class="text-sm text-gray-500"> 共 {{ filteredTransactions.length }} 条记录 </span>
         <svg
-          :class="['w-5 h-5 text-gray-400 transition-transform duration-200', { 'rotate-180': isExpanded }]"
+          :class="[
+            'w-5 h-5 text-gray-400 transition-transform duration-200',
+            { 'rotate-180': isExpanded }
+          ]"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
         >
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M19 9l-7 7-7-7"
+          />
         </svg>
       </div>
     </div>
@@ -136,22 +139,34 @@ const formatAmount = (amount: number, type: string) => {
           <table class="w-full">
             <thead>
               <tr class="border-b border-gray-200">
-                <th class="text-left py-3 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                <th
+                  class="text-left py-3 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider"
+                >
                   交易ID
                 </th>
-                <th class="text-left py-3 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                <th
+                  class="text-left py-3 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider"
+                >
                   描述
                 </th>
-                <th class="text-left py-3 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                <th
+                  class="text-left py-3 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider"
+                >
                   类型
                 </th>
-                <th class="text-left py-3 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                <th
+                  class="text-left py-3 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider"
+                >
                   金额
                 </th>
-                <th class="text-left py-3 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                <th
+                  class="text-left py-3 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider"
+                >
                   状态
                 </th>
-                <th class="text-left py-3 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                <th
+                  class="text-left py-3 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider"
+                >
                   时间
                 </th>
               </tr>
@@ -175,7 +190,9 @@ const formatAmount = (amount: number, type: string) => {
                   <span
                     :class="[
                       'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
-                      tx.type === 'income' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                      tx.type === 'income'
+                        ? 'bg-green-100 text-green-700'
+                        : 'bg-red-100 text-red-700'
                     ]"
                   >
                     {{ tx.type === 'income' ? '收入' : '支出' }}
@@ -210,7 +227,10 @@ const formatAmount = (amount: number, type: string) => {
           </div>
         </div>
 
-        <div v-if="totalPages > 1" class="flex items-center justify-between pt-4 border-t border-gray-200">
+        <div
+          v-if="totalPages > 1"
+          class="flex items-center justify-between pt-4 border-t border-gray-200"
+        >
           <p class="text-sm text-gray-500">
             显示 {{ (currentPage - 1) * ITEMS_PER_PAGE + 1 }} -
             {{ Math.min(currentPage * ITEMS_PER_PAGE, filteredTransactions.length) }} 条，共

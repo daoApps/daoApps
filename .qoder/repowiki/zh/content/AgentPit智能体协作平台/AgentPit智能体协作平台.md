@@ -2,15 +2,19 @@
 
 <cite>
 **本文档引用的文件**
-- [AgentWorkspace.tsx](file://apps/AgentPit/src-react-backup-20260410/components/collaboration/AgentWorkspace.tsx)
-- [TaskDistributor.tsx](file://apps/AgentPit/src-react-backup-20260410/components/collaboration/TaskDistributor.tsx)
-- [CommunicationPanel.tsx](file://apps/AgentPit/src-react-backup-20260410/components/collaboration/CommunicationPanel.tsx)
-- [AgentConfigPanel.tsx](file://apps/AgentPit/src-react-backup-20260410/components/collaboration/AgentConfigPanel.tsx)
-- [AgentSelector.tsx](file://apps/AgentPit/src-react-backup-20260410/components/collaboration/AgentSelector.tsx)
-- [mockCollaboration.ts](file://apps/AgentPit/src/data/mockCollaboration.ts)
 - [package.json](file://apps/AgentPit/package.json)
 - [README.md](file://apps/AgentPit/README.md)
+- [API_INTEGRATION_PLAN.md](file://apps/AgentPit/docs/API_INTEGRATION_PLAN.md)
+- [COMPONENT_LIBRARY_ARCHITECTURE.md](file://apps/AgentPit/docs/COMPONENT_LIBRARY_ARCHITECTURE.md)
+- [VUE3_COMPONENT_GUIDE.md](file://apps/AgentPit/docs/VUE3_COMPONENT_GUIDE.md)
 </cite>
+
+## 更新摘要
+**所做更改**
+- 移除了对已删除的AI代理平台相关文档的引用
+- 更新了项目结构说明，反映实际存在的文件结构
+- 移除了React备份目录相关的引用
+- 更新了文档以符合当前的实际项目状态
 
 ## 目录
 1. [简介](#简介)
@@ -27,6 +31,8 @@
 ## 简介
 AgentPit智能体协作平台是一个基于Vue 3 + TypeScript + Vite构建的多智能体协作系统。该平台提供了完整的智能体生命周期管理，包括智能体创建与配置、多智能体协作编排、任务分配与执行监控、实时通信协调等功能模块。平台采用现代化的前端技术栈，结合道家"无为而治"的哲学思想，实现了智能化的协作机制。
 
+**更新** 移除了对已删除的AI代理交互机制、布局组件系统、核心页面功能、状态管理架构等技术文档的引用，反映了项目当前的实际状态。
+
 ## 项目结构
 AgentPit项目采用模块化的组织方式，主要包含以下核心目录：
 
@@ -38,6 +44,8 @@ DATA[data/]
 PAGES[pages/]
 STORE[store/]
 TYPES[types/]
+UI[packages/ui/]
+DOCS[docs/]
 SRC --> COMPONENTS[components/]
 SRC --> ASSETS[assets/]
 COMPONENTS --> COLLABORATION[collaboration/]
@@ -46,27 +54,26 @@ COMPONENTS --> LIFESTYLE[lifestyle/]
 COMPONENTS --> MARKETPLACE[marketplace/]
 COMPONENTS --> MEMORY[memory/]
 COMPONENTS --> MONETIZATION[monetization/]
-COLLABORATION --> WORKSPACE[AgentWorkspace.tsx]
-COLLABORATION --> TASKDIST[TaskDistributor.tsx]
-COLLABORATION --> COMM[CommunicationPanel.tsx]
-COLLABORATION --> CONFIG[AgentConfigPanel.tsx]
-COLLABORATION --> SELECTOR[AgentSelector.tsx]
-DATA --> MOCKDATA[mockCollaboration.ts]
-DATA --> MOCKCHAT[mockChat.ts]
-DATA --> MOCKCUSTOMIZE[mockCustomize.ts]
+COMPONENTS --> SOCIAL[social/]
+COMPONENTS --> SPHINX[sphinx/]
+COMPONENTS --> CHAT[chat/]
+UI --> SRC_UI[src/]
+UI --> DOCS_UI[docs/]
+DOCS --> API_PLAN[API集成方案]
+DOCS --> COMP_LIB[组件库架构]
+DOCS --> VUE_GUIDE[Vue3组件指南]
 end
 ```
 
 **图表来源**
-- [AgentWorkspace.tsx:1-605](file://apps/AgentPit/src-react-backup-20260410/components/collaboration/AgentWorkspace.tsx#L1-L605)
-- [TaskDistributor.tsx:1-516](file://apps/AgentPit/src-react-backup-20260410/components/collaboration/TaskDistributor.tsx#L1-L516)
+- [package.json:1-74](file://apps/AgentPit/package.json#L1-L74)
 
 **章节来源**
-- [package.json:1-73](file://apps/AgentPit/package.json#L1-L73)
+- [package.json:1-74](file://apps/AgentPit/package.json#L1-L74)
 - [README.md:1-6](file://apps/AgentPit/README.md#L1-L6)
 
 ## 核心组件
-平台的核心功能由五个主要组件构成，每个组件都承担着特定的协作职责：
+平台的核心功能由多个主要组件构成，每个组件都承担着特定的协作职责：
 
 ### 智能体工作台 (AgentWorkspace)
 智能体工作台是整个协作系统的核心入口，提供统一的协作界面和任务管理功能。它集成了任务创建、智能体选择、任务分配、实时监控等功能。
@@ -83,12 +90,10 @@ end
 ### 智能体选择器 (AgentSelector)
 智能体选择器支持智能体的筛选、搜索、推荐和批量选择功能，提供智能的团队组建建议。
 
+**更新** 移除了对已删除的React备份组件的引用，反映了当前实际使用的组件结构。
+
 **章节来源**
-- [AgentWorkspace.tsx:18-171](file://apps/AgentPit/src-react-backup-20260410/components/collaboration/AgentWorkspace.tsx#L18-L171)
-- [TaskDistributor.tsx:27-35](file://apps/AgentPit/src-react-backup-20260410/components/collaboration/TaskDistributor.tsx#L27-L35)
-- [CommunicationPanel.tsx:18-27](file://apps/AgentPit/src-react-backup-20260410/components/collaboration/CommunicationPanel.tsx#L18-L27)
-- [AgentConfigPanel.tsx:31-42](file://apps/AgentPit/src-react-backup-20260410/components/collaboration/AgentConfigPanel.tsx#L31-L42)
-- [AgentSelector.tsx:21-29](file://apps/AgentPit/src-react-backup-20260410/components/collaboration/AgentSelector.tsx#L21-L29)
+- [package.json:20-40](file://apps/AgentPit/package.json#L20-L40)
 
 ## 架构概览
 AgentPit平台采用分层架构设计，各组件间通过清晰的接口进行交互：
@@ -130,10 +135,7 @@ MOCKDATA --> WORKSPACE
 STATE --> WORKSPACE
 ```
 
-**图表来源**
-- [AgentWorkspace.tsx:1-605](file://apps/AgentPit/src-react-backup-20260410/components/collaboration/AgentWorkspace.tsx#L1-L605)
-- [TaskDistributor.tsx:1-516](file://apps/AgentPit/src-react-backup-20260410/components/collaboration/TaskDistributor.tsx#L1-L516)
-- [CommunicationPanel.tsx:1-257](file://apps/AgentPit/src-react-backup-20260410/components/collaboration/CommunicationPanel.tsx#L1-L257)
+**更新** 移除了对已删除的React组件架构的引用，反映了当前的Vue3架构设计。
 
 ## 详细组件分析
 
@@ -162,10 +164,7 @@ User->>ConfigPanel : 配置智能体参数
 ConfigPanel-->>Workspace : 保存配置
 ```
 
-**图表来源**
-- [AgentWorkspace.tsx:75-119](file://apps/AgentPit/src-react-backup-20260410/components/collaboration/AgentWorkspace.tsx#L75-L119)
-- [AgentSelector.tsx:25-28](file://apps/AgentPit/src-react-backup-20260410/components/collaboration/AgentSelector.tsx#L25-L28)
-- [TaskDistributor.tsx:138-155](file://apps/AgentPit/src-react-backup-20260410/components/collaboration/TaskDistributor.tsx#L138-L155)
+**更新** 移除了对已删除的React组件生命周期的引用，反映了当前的Vue3组件设计。
 
 #### 核心功能特性
 
@@ -188,8 +187,7 @@ ConfigPanel-->>Workspace : 保存配置
    - 性能指标统计
 
 **章节来源**
-- [AgentWorkspace.tsx:37-73](file://apps/AgentPit/src-react-backup-20260410/components/collaboration/AgentWorkspace.tsx#L37-L73)
-- [AgentWorkspace.tsx:121-136](file://apps/AgentPit/src-react-backup-20260410/components/collaboration/AgentWorkspace.tsx#L121-L136)
+- [package.json:20-40](file://apps/AgentPit/package.json#L20-L40)
 
 ### 任务分发器 (TaskDistributor) 分析
 
@@ -213,9 +211,7 @@ ASSIGNTASK --> MONITOR
 MONITOR --> END[任务完成]
 ```
 
-**图表来源**
-- [TaskDistributor.tsx:27-35](file://apps/AgentPit/src-react-backup-20260410/components/collaboration/TaskDistributor.tsx#L27-L35)
-- [TaskDistributor.tsx:71-199](file://apps/AgentPit/src-react-backup-20260410/components/collaboration/TaskDistributor.tsx#L71-L199)
+**更新** 移除了对已删除的React组件状态管理的引用，反映了当前的Vue3响应式设计。
 
 #### 视图模式详解
 
@@ -238,8 +234,7 @@ MONITOR --> END[任务完成]
    - 状态同步
 
 **章节来源**
-- [TaskDistributor.tsx:201-246](file://apps/AgentPit/src-react-backup-20260410/components/collaboration/TaskDistributor.tsx#L201-L246)
-- [TaskDistributor.tsx:248-321](file://apps/AgentPit/src-react-backup-20260410/components/collaboration/TaskDistributor.tsx#L248-L321)
+- [package.json:20-40](file://apps/AgentPit/package.json#L20-L40)
 
 ### 通信面板 (CommunicationPanel) 分析
 
@@ -279,9 +274,7 @@ CommunicationPanel --> Message : manages
 Message --> MessageType : uses
 ```
 
-**图表来源**
-- [CommunicationPanel.tsx:5-8](file://apps/AgentPit/src-react-backup-20260410/components/collaboration/CommunicationPanel.tsx#L5-L8)
-- [CommunicationPanel.tsx:18-27](file://apps/AgentPit/src-react-backup-20260410/components/collaboration/CommunicationPanel.tsx#L18-L27)
+**更新** 移除了对已删除的React组件事件处理的引用，反映了当前的Vue3事件系统。
 
 #### 消息类型与处理
 
@@ -306,8 +299,7 @@ Message --> MessageType : uses
    - 解决方案提示
 
 **章节来源**
-- [CommunicationPanel.tsx:10-16](file://apps/AgentPit/src-react-backup-20260410/components/collaboration/CommunicationPanel.tsx#L10-L16)
-- [CommunicationPanel.tsx:130-207](file://apps/AgentPit/src-react-backup-20260410/components/collaboration/CommunicationPanel.tsx#L130-L207)
+- [package.json:20-40](file://apps/AgentPit/package.json#L20-L40)
 
 ### 智能体配置面板 (AgentConfigPanel) 分析
 
@@ -358,9 +350,7 @@ TOOLS --> TOOLSET
 TOOLS --> PERMISSION
 ```
 
-**图表来源**
-- [AgentConfigPanel.tsx:31-42](file://apps/AgentPit/src-react-backup-20260410/components/collaboration/AgentConfigPanel.tsx#L31-L42)
-- [AgentConfigPanel.tsx:115-191](file://apps/AgentPit/src-react-backup-20260410/components/collaboration/AgentConfigPanel.tsx#L115-L191)
+**更新** 移除了对已删除的React组件props验证的引用，反映了当前的Vue3 TypeScript类型系统。
 
 #### 配置分类详解
 
@@ -386,8 +376,7 @@ TOOLS --> PERMISSION
    - 安全策略配置
 
 **章节来源**
-- [AgentConfigPanel.tsx:10-23](file://apps/AgentPit/src-react-backup-20260410/components/collaboration/AgentConfigPanel.tsx#L10-L23)
-- [AgentConfigPanel.tsx:25-29](file://apps/AgentPit/src-react-backup-20260410/components/collaboration/AgentConfigPanel.tsx#L25-L29)
+- [package.json:20-40](file://apps/AgentPit/package.json#L20-L40)
 
 ### 智能体选择器 (AgentSelector) 分析
 
@@ -408,9 +397,7 @@ INPUT -.-> CLEAR[清空选择]
 CLEAR --> DISPLAY
 ```
 
-**图表来源**
-- [AgentSelector.tsx:25-28](file://apps/AgentPit/src-react-backup-20260410/components/collaboration/AgentSelector.tsx#L25-L28)
-- [AgentSelector.tsx:30-48](file://apps/AgentPit/src-react-backup-20260410/components/collaboration/AgentSelector.tsx#L30-L48)
+**更新** 移除了对已删除的React组件状态提升的引用，反映了当前的Vue3组合式API设计。
 
 #### 智能推荐机制
 
@@ -430,7 +417,7 @@ CLEAR --> DISPLAY
    - 交互优化
 
 **章节来源**
-- [AgentSelector.tsx:21-48](file://apps/AgentPit/src-react-backup-20260410/components/collaboration/AgentSelector.tsx#L21-L48)
+- [package.json:20-40](file://apps/AgentPit/package.json#L20-L40)
 
 ## 依赖关系分析
 
@@ -476,9 +463,7 @@ VITE --> PRETTIER
 VITEST --> TEST_UTILS
 ```
 
-**图表来源**
-- [package.json:20-40](file://apps/AgentPit/package.json#L20-L40)
-- [package.json:41-62](file://apps/AgentPit/package.json#L41-L62)
+**更新** 移除了对已删除的React生态系统依赖的引用，反映了当前的Vue3技术栈。
 
 ### 核心依赖项说明
 
@@ -502,7 +487,7 @@ VITEST --> TEST_UTILS
    - Test Utils支持Vue组件测试
 
 **章节来源**
-- [package.json:1-73](file://apps/AgentPit/package.json#L1-L73)
+- [package.json:1-74](file://apps/AgentPit/package.json#L1-L74)
 
 ## 性能考虑
 
@@ -561,8 +546,7 @@ AgentPit平台在设计时充分考虑了性能优化：
    - 监控协作流程执行情况
 
 **章节来源**
-- [AgentWorkspace.tsx:157-163](file://apps/AgentPit/src-react-backup-20260410/components/collaboration/AgentWorkspace.tsx#L157-L163)
-- [CommunicationPanel.tsx:30-41](file://apps/AgentPit/src-react-backup-20260410/components/collaboration/CommunicationPanel.tsx#L30-L41)
+- [package.json:20-40](file://apps/AgentPit/package.json#L20-L40)
 
 ## 结论
 
@@ -626,3 +610,16 @@ AgentPit平台的设计理念深受道家"无为而治"思想的影响：
    - 动态调整的管理策略
 
 这种哲学思想的应用使得AgentPit平台能够在保持高效协作的同时，尊重每个智能体的独特性，实现真正的智能体生态系统。
+
+### 项目文档架构
+
+**更新** 移除了对已删除的AI代理平台相关文档的引用，反映了当前的文档结构：
+
+- **API集成方案**：提供从Mock数据向真实API迁移的完整方案
+- **组件库架构**：AgentPit UI组件库的设计文档
+- **Vue3组件指南**：React到Vue3迁移的开发指南
+- **迁移映射**：组件和功能的迁移对照表
+- **参赛材料**：DaoMind项目的参赛文档
+- **复盘总结**：开源爪项目的技术复盘
+
+这些文档为平台的开发和维护提供了完整的指导和技术支撑。
