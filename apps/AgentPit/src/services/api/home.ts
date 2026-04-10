@@ -21,7 +21,15 @@ export const homeApi = {
   // 获取模块列表
   async getModules(): Promise<Module[]> {
     if (API_CONFIG.useMock) {
-      return Promise.resolve(mockHome.getHomeModules())
+      return Promise.resolve(mockHome.allModules.map(module => ({
+        id: module.id,
+        title: module.title,
+        description: module.description,
+        icon: module.icon,
+        route: module.routePath,
+        status: 'active' as const,
+        badge: typeof module.badge === 'string' ? parseInt(module.badge) : module.badge
+      })))
     }
     const response = await httpClient.get<Module[]>('/home/modules')
     return response.data

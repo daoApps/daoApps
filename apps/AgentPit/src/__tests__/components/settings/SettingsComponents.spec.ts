@@ -44,12 +44,31 @@ const mockElement = {
   setAttribute: vi.fn(),
   style: {}
 };
-vi.stubGlobal('document', { ...globalThis.document, documentElement: mockElement });
+
+// Mock document.createElement
+vi.stubGlobal('document', {
+  ...globalThis.document,
+  documentElement: mockElement,
+  createElement: vi.fn(() => ({
+    classList: {
+      add: vi.fn(),
+      remove: vi.fn(),
+      contains: vi.fn().mockReturnValue(false)
+    },
+    setAttribute: vi.fn(),
+    style: {},
+    appendChild: vi.fn(),
+    removeChild: vi.fn(),
+    getElementsByClassName: vi.fn(() => []),
+    querySelector: vi.fn(() => null),
+    querySelectorAll: vi.fn(() => [])
+  }))
+});
 
 // 测试 UserProfileSettings
 describe('UserProfileSettings.vue', () => {
   it('应该渲染个人资料设置表单', async () => {
-    const UserProfileModule = await import('../../src/components/settings/UserProfileSettings.vue');
+    const UserProfileModule = await import('../../../components/settings/UserProfileSettings.vue');
     const wrapper = mount(UserProfileModule.default);
 
     expect(wrapper.find('.user-profile-settings').exists()).toBe(true);
@@ -61,7 +80,7 @@ describe('UserProfileSettings.vue', () => {
   });
 
   it('应该有保存按钮', async () => {
-    const UserProfileModule = await import('../../src/components/settings/UserProfileSettings.vue');
+    const UserProfileModule = await import('../../../components/settings/UserProfileSettings.vue');
     const wrapper = mount(UserProfileModule.default);
 
     expect(wrapper.text()).toContain('保存修改');
@@ -75,7 +94,7 @@ describe('ThemePreferences.vue', () => {
   });
 
   it('应该渲染主题偏好设置面板', async () => {
-    const ThemeModule = await import('../../src/components/settings/ThemePreferences.vue');
+    const ThemeModule = await import('../../../components/settings/ThemePreferences.vue');
     const wrapper = mount(ThemeModule.default);
 
     expect(wrapper.find('.theme-preferences').exists()).toBe(true);
@@ -83,7 +102,7 @@ describe('ThemePreferences.vue', () => {
   });
 
   it('应该显示3种主题模式选项', async () => {
-    const ThemeModule = await import('../../src/components/settings/ThemePreferences.vue');
+    const ThemeModule = await import('../../../components/settings/ThemePreferences.vue');
     const wrapper = mount(ThemeModule.default);
 
     expect(wrapper.text()).toContain('亮色模式');
@@ -99,7 +118,7 @@ describe('ThemePreferences.vue', () => {
 // 测试 NotificationSettings
 describe('NotificationSettings.vue', () => {
   it('应该渲染通知设置面板', async () => {
-    const NotifModule = await import('../../src/components/settings/NotificationSettings.vue');
+    const NotifModule = await import('../../../components/settings/NotificationSettings.vue');
     const wrapper = mount(NotifModule.default);
 
     expect(wrapper.find('.notification-settings').exists()).toBe(true);
@@ -107,7 +126,7 @@ describe('NotificationSettings.vue', () => {
   });
 
   it('应该显示通知渠道矩阵表格', async () => {
-    const NotifModule = await import('../../src/components/settings/NotificationSettings.vue');
+    const NotifModule = await import('../../../components/settings/NotificationSettings.vue');
     const wrapper = mount(NotifModule.default);
 
     expect(wrapper.text()).toContain('系统公告');
@@ -118,7 +137,7 @@ describe('NotificationSettings.vue', () => {
 // 测试 PrivacySecurity
 describe('PrivacySecurity.vue', () => {
   it('应该渲染隐私安全设置页面', async () => {
-    const SecurityModule = await import('../../src/components/settings/PrivacySecurity.vue');
+    const SecurityModule = await import('../../../components/settings/PrivacySecurity.vue');
     const wrapper = mount(SecurityModule.default);
 
     expect(wrapper.find('.privacy-security').exists()).toBe(true);
@@ -130,7 +149,7 @@ describe('PrivacySecurity.vue', () => {
   });
 
   it('默认显示修改密码表单', async () => {
-    const SecurityModule = await import('../../src/components/settings/PrivacySecurity.vue');
+    const SecurityModule = await import('../../../components/settings/PrivacySecurity.vue');
     const wrapper = mount(SecurityModule.default);
 
     expect(wrapper.text()).toContain('修改密码');
@@ -140,7 +159,7 @@ describe('PrivacySecurity.vue', () => {
 // 测试 HelpCenter
 describe('HelpCenter.vue', () => {
   it('应该渲染帮助中心页面', async () => {
-    const HelpModule = await import('../../src/components/settings/HelpCenter.vue');
+    const HelpModule = await import('../../../components/settings/HelpCenter.vue');
     const wrapper = mount(HelpModule.default);
 
     expect(wrapper.find('.help-center').exists()).toBe(true);
@@ -148,7 +167,7 @@ describe('HelpCenter.vue', () => {
   });
 
   it('应该有搜索框', async () => {
-    const HelpModule = await import('../../src/components/settings/HelpCenter.vue');
+    const HelpModule = await import('../../../components/settings/HelpCenter.vue');
     const wrapper = mount(HelpModule.default);
 
     expect(
@@ -162,7 +181,7 @@ describe('HelpCenter.vue', () => {
   });
 
   it('应该显示版本信息', async () => {
-    const HelpModule = await import('../../src/components/settings/HelpCenter.vue');
+    const HelpModule = await import('../../../components/settings/HelpCenter.vue');
     const wrapper = mount(HelpModule.default);
 
     expect(wrapper.text()).toContain('v3.0.0');

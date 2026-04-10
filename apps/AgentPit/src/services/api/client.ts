@@ -1,6 +1,6 @@
 // src/services/api/client.ts
 import { API_CONFIG } from '../config'
-import { ApiError, NetworkError, ServerError, ValidationError } from '../errors'
+import { ApiError, NetworkError, ServerError } from '../errors'
 
 interface RequestConfig {
   method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'

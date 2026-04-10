@@ -33,7 +33,14 @@ export const sphinxApi = {
   // 获取模板列表
   async getTemplates(): Promise<Template[]> {
     if (API_CONFIG.useMock) {
-      return Promise.resolve(mockSphinx.getTemplates())
+      return Promise.resolve(mockSphinx.templates.map(template => ({
+        id: template.id,
+        name: template.name,
+        description: template.description,
+        preview: '',
+        category: template.category,
+        popularity: 0
+      })))
     }
     const response = await httpClient.get<Template[]>('/sphinx/templates')
     return response.data
@@ -42,7 +49,12 @@ export const sphinxApi = {
   // 预览网站
   async getSitePreview(siteId: string): Promise<SitePreview> {
     if (API_CONFIG.useMock) {
-      return Promise.resolve(mockSphinx.getSitePreview(siteId))
+      return Promise.resolve({
+        id: siteId,
+        url: `http://localhost:5173/preview/${siteId}`,
+        status: 'draft' as const,
+        lastUpdated: new Date().toISOString()
+      })
     }
     const response = await httpClient.get<SitePreview>(`/sphinx/preview/${siteId}`)
     return response.data
@@ -51,7 +63,12 @@ export const sphinxApi = {
   // 生成网站
   async generateSite(request: SiteGenerateRequest): Promise<SitePreview> {
     if (API_CONFIG.useMock) {
-      return Promise.resolve(mockSphinx.generateSite(request))
+      return Promise.resolve({
+        id: `site-${Date.now()}`,
+        url: `http://localhost:5173/preview/site-${Date.now()}`,
+        status: 'draft' as const,
+        lastUpdated: new Date().toISOString()
+      })
     }
     const response = await httpClient.post<SitePreview>('/sphinx/generate', request)
     return response.data
@@ -60,7 +77,12 @@ export const sphinxApi = {
   // 发布网站
   async publishSite(siteId: string): Promise<SitePreview> {
     if (API_CONFIG.useMock) {
-      return Promise.resolve(mockSphinx.publishSite(siteId))
+      return Promise.resolve({
+        id: siteId,
+        url: `http://localhost:5173/site/${siteId}`,
+        status: 'published' as const,
+        lastUpdated: new Date().toISOString()
+      })
     }
     const response = await httpClient.post<SitePreview>(`/sphinx/publish/${siteId}`)
     return response.data

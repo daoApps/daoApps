@@ -1,4 +1,4 @@
-import type { TransactionRecord, RevenueDataPoint, Currency } from '@/types/monetization';
+
 import { walletData, transactionHistory, generateRevenueData } from '@/data/mockMonetization';
 
 export const monetizationApi = {

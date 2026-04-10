@@ -11,7 +11,7 @@ export const chatApi = {
     const conversation = mockConversations.find(conv => conv.id === conversationId);
     return conversation?.messages || [];
   },
-  sendMessage: async (conversationId: string, content: string): Promise<void> => {
+  sendMessage: async (_conversationId: string, _content: string): Promise<void> => {
     // 模拟发送消息
   }
 };
