@@ -23,8 +23,7 @@ Object.defineProperty(window, 'localStorage', { value: localStorageMock });
 // 测试 MeetingCalendar
 describe('MeetingCalendar.vue', () => {
   it('应该渲染日历组件并显示当前月份', async () => {
-    const MeetingCalendarModule =
-      await import('../../../components/lifestyle/MeetingCalendar.vue');
+    const MeetingCalendarModule = await import('../../../components/lifestyle/MeetingCalendar.vue');
     const wrapper = mount(MeetingCalendarModule.default);
     const currentYear = new Date().getFullYear();
 

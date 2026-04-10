@@ -77,15 +77,24 @@ export const useMonetizationStore = defineStore('monetization', {
 
         // 从 API 获取交易历史
         const transactions = await monetizationApi.getTransactions();
-        this.transactions = transactions.map((t: { id: string; amount: number; type: string; description: string; timestamp: string; status: string }) => ({
-          id: t.id,
-          amount: t.amount,
-          type: t.type as TransactionType,
-          category: '智能体服务' as TransactionCategory,
-          description: t.description,
-          timestamp: t.timestamp,
-          status: t.status as TransactionStatus
-        }));
+        this.transactions = transactions.map(
+          (t: {
+            id: string;
+            amount: number;
+            type: string;
+            description: string;
+            timestamp: string;
+            status: string;
+          }) => ({
+            id: t.id,
+            amount: t.amount,
+            type: t.type as TransactionType,
+            category: '智能体服务' as TransactionCategory,
+            description: t.description,
+            timestamp: t.timestamp,
+            status: t.status as TransactionStatus
+          })
+        );
 
         // 从 API 获取收益数据
         const revenueData = await monetizationApi.getRevenue();
@@ -110,10 +119,10 @@ export const useMonetizationStore = defineStore('monetization', {
           method,
           account
         });
-        
+
         // 更新钱包余额
         this.wallet.availableBalance -= amount;
-        
+
         // 添加交易记录
         this.addTransaction({
           id: transaction.id,
@@ -124,7 +133,7 @@ export const useMonetizationStore = defineStore('monetization', {
           timestamp: transaction.timestamp,
           status: transaction.status as TransactionStatus
         });
-        
+
         return transaction;
       } catch (error) {
         console.error('Failed to withdraw:', error);

@@ -25,7 +25,10 @@ const handleToggleSidebar = () => {
     <!-- 主体内容区域 -->
     <div class="flex flex-1 pt-16 relative">
       <!-- 侧边栏（桌面端固定定位） -->
-      <div class="hidden lg:block fixed top-16 bottom-0 left-0 z-30 transition-all duration-300 ease-in-out" :class="sidebarWidth">
+      <div
+        class="hidden lg:block fixed top-16 bottom-0 left-0 z-30 transition-all duration-300 ease-in-out"
+        :class="sidebarWidth"
+      >
         <Sidebar />
       </div>
 

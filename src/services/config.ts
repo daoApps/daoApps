@@ -5,6 +5,6 @@ export const API_CONFIG = {
   useMock: import.meta.env.VITE_USE_MOCK_API === 'true',
   retry: {
     maxRetries: 3,
-    retryDelay: 1000,
+    retryDelay: 1000
   }
-}
+};

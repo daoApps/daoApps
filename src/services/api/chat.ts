@@ -1,25 +1,25 @@
 // src/services/api/chat.ts
-import { httpClient } from './client'
-import { API_CONFIG } from '../config'
+import { httpClient } from './client';
+import { API_CONFIG } from '../config';
 
 // Mock 数据导入
-import * as mockChat from '../../data/mockChat'
+import * as mockChat from '../../data/mockChat';
 
 // 类型定义
 export interface Conversation {
-  id: string
-  title: string
-  lastMessage: string
-  lastMessageTime: string
-  unreadCount: number
+  id: string;
+  title: string;
+  lastMessage: string;
+  lastMessageTime: string;
+  unreadCount: number;
 }
 
 export interface Message {
-  id: string
-  content: string
-  sender: 'user' | 'agent'
-  timestamp: string
-  status: 'sending' | 'sent' | 'failed'
+  id: string;
+  content: string;
+  sender: 'user' | 'agent';
+  timestamp: string;
+  status: 'sending' | 'sent' | 'failed';
 }
 
 // API 服务
@@ -27,31 +27,31 @@ export const chatApi = {
   // 获取对话列表
   async getConversations(): Promise<Conversation[]> {
     if (API_CONFIG.useMock) {
-      return Promise.resolve(mockChat.getConversations())
+      return Promise.resolve(mockChat.getConversations());
     }
-    const response = await httpClient.get<Conversation[]>('/chat/conversations')
-    return response.data
+    const response = await httpClient.get<Conversation[]>('/chat/conversations');
+    return response.data;
   },
 
   // 获取消息历史
   async getMessages(conversationId: string): Promise<Message[]> {
     if (API_CONFIG.useMock) {
-      return Promise.resolve(mockChat.getMessages(conversationId))
+      return Promise.resolve(mockChat.getMessages(conversationId));
     }
-    const response = await httpClient.get<Message[]>(`/chat/conversations/${conversationId}`)
-    return response.data
+    const response = await httpClient.get<Message[]>(`/chat/conversations/${conversationId}`);
+    return response.data;
   },
 
   // 发送消息
   async sendMessage(conversationId: string, content: string): Promise<Message> {
     if (API_CONFIG.useMock) {
-      return Promise.resolve(mockChat.sendMessage(conversationId, content))
+      return Promise.resolve(mockChat.sendMessage(conversationId, content));
     }
     const response = await httpClient.post<Message>(
       `/chat/conversations/${conversationId}/messages`,
       { content }
-    )
-    return response.data
+    );
+    return response.data;
   },
 
   // 流式接收消息（SSE）
@@ -65,20 +65,22 @@ export const chatApi = {
           sender: 'agent',
           timestamp: new Date().toISOString(),
           status: 'sent'
-        })
-      }, 1000)
-      return {} as EventSource
+        });
+      }, 1000);
+      return {} as EventSource;
     }
-    
-    const eventSource = new EventSource(`${API_CONFIG.baseURL}/chat/conversations/${conversationId}/stream`)
+
+    const eventSource = new EventSource(
+      `${API_CONFIG.baseURL}/chat/conversations/${conversationId}/stream`
+    );
     eventSource.onmessage = (event) => {
       try {
-        const message = JSON.parse(event.data)
-        callback(message)
+        const message = JSON.parse(event.data);
+        callback(message);
       } catch (error) {
-        console.error('Failed to parse SSE message:', error)
+        console.error('Failed to parse SSE message:', error);
       }
-    }
-    return eventSource
+    };
+    return eventSource;
   }
-}
+};
