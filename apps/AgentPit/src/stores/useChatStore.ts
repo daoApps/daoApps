@@ -141,11 +141,15 @@ export const useChatStore = defineStore('chat', {
     },
 
     deleteConversation(id: string) {
-      this.conversations = this.conversations.filter((c) => c.id !== id);
-      if (this.activeConversationId === id) {
-        this.activeConversationId = this.conversations[0]?.id || null;
+      const index = this.conversations.findIndex((c) => c.id === id);
+      if (index > -1) {
+        this.conversations.splice(index, 1);
+        if (this.activeConversationId === id) {
+          this.activeConversationId =
+            this.conversations.length > 0 ? this.conversations[0].id : null;
+        }
+        this.persistConversations();
       }
-      this.persistConversations();
     },
 
     clearAllConversations() {

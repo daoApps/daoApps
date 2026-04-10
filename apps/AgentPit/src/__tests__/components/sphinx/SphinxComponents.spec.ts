@@ -88,7 +88,7 @@ describe('SphinxPage 组件测试', () => {
       expect(wrapper.find('textarea').exists()).toBe(true);
       // 查找所有按钮并找到包含"发送"文本的按钮
       const buttons = wrapper.findAll('button');
-      const sendButton = buttons.find(btn => btn.text().includes('发送'));
+      const sendButton = buttons.find((btn) => btn.text().includes('发送'));
       expect(sendButton).toBeTruthy();
       expect(sendButton?.text()).toContain('发送');
       wrapper.unmount();
