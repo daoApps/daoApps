@@ -68,12 +68,12 @@ const toggleSidebar = () => {
   <header
     class="fixed top-0 left-0 right-0 z-50 h-16 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm transition-colors duration-200"
   >
-    <div class="h-full px-4 flex items-center justify-between">
+    <div class="h-full px-3 sm:px-4 flex items-center justify-between">
       <!-- 左侧：Logo + 移动端菜单按钮 -->
       <div class="flex items-center gap-3">
         <!-- 汉堡菜单按钮（移动端显示） -->
         <button
-          class="lg:hidden p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+          class="lg:hidden p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200 active:scale-95"
           aria-label="切换侧边栏"
           @click="toggleSidebar"
         >
@@ -104,7 +104,7 @@ const toggleSidebar = () => {
       </div>
 
       <!-- 中间：导航菜单（桌面端） -->
-      <nav class="hidden lg:flex items-center gap-1">
+      <nav class="hidden lg:flex items-center gap-2">
         <RouterLink
           v-for="item in navItems"
           :key="item.path"
@@ -149,7 +149,7 @@ const toggleSidebar = () => {
         <!-- 通知图标 -->
         <button
           v-if="showNotifications"
-          class="relative p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+          class="relative p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200 active:scale-95"
           aria-label="通知"
         >
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -165,7 +165,7 @@ const toggleSidebar = () => {
 
         <!-- 主题切换按钮 -->
         <button
-          class="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+          class="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200 active:scale-95"
           aria-label="切换主题"
           @click="appStore.toggleDarkMode()"
         >
@@ -196,7 +196,7 @@ const toggleSidebar = () => {
         <!-- 用户头像和下拉菜单 -->
         <div class="relative">
           <button
-            class="flex items-center gap-2 p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            class="flex items-center gap-2 p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200 active:scale-95"
             @click="isUserMenuOpen = !isUserMenuOpen"
           >
             <div

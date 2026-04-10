@@ -83,7 +83,7 @@ const getIconPath = (iconName: string): string => {
         <li v-for="item in navItems" :key="item.path">
           <RouterLink
             :to="item.path"
-            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group relative"
+            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group relative w-full active:scale-98"
             :class="[
               route.path === item.path
                 ? 'bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300'
@@ -138,7 +138,7 @@ const getIconPath = (iconName: string): string => {
     <!-- 底部折叠按钮 -->
     <div class="p-2 border-t border-gray-200 dark:border-gray-700">
       <button
-        class="w-full flex items-center justify-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+        class="w-full flex items-center justify-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200 active:scale-98"
         @click="appStore.toggleSidebar()"
       >
         <svg
@@ -174,7 +174,7 @@ const getIconPath = (iconName: string): string => {
 
         <!-- 侧边栏内容 -->
         <aside
-          class="absolute left-0 top-0 bottom-0 w-64 bg-white dark:bg-gray-800 shadow-xl overflow-y-auto"
+          class="absolute left-0 top-0 bottom-0 w-64 bg-white dark:bg-gray-800 shadow-2xl overflow-y-auto z-50"
         >
           <div
             class="p-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between"

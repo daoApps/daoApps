@@ -195,6 +195,7 @@ const statistics = ref([
   max-width: 1280px;
   margin: 0 auto;
   padding: 48px 24px;
+  box-sizing: border-box;
 }
 
 /* Hero Section */
@@ -222,7 +223,7 @@ const statistics = ref([
 
 .title-char {
   display: inline-block;
-  background: linear-gradient(135deg, #fbbf24 0%, #f472b6 50%, #22d3ee 100%);
+  background: linear-gradient(135deg, #fbbf24 0%, #f472b6 50%, #0ea5e9 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -236,6 +237,7 @@ const statistics = ref([
   font-weight: 500;
   letter-spacing: 0.5px;
   margin-bottom: 24px;
+  line-height: 1.4;
 }
 
 .divider-line {
@@ -328,7 +330,7 @@ const statistics = ref([
 }
 
 .stat-value {
-  font-size: 36px;
+  font-size: clamp(24px, 3vw, 36px);
   font-weight: 800;
   margin-bottom: 8px;
   line-height: 1;
@@ -338,6 +340,7 @@ const statistics = ref([
   font-size: 14px;
   color: rgba(255, 255, 255, 0.75);
   font-weight: 500;
+  line-height: 1.2;
 }
 
 /* 底部提示 */

@@ -23,9 +23,9 @@ const handleToggleSidebar = () => {
     <Header @toggle-sidebar="handleToggleSidebar" />
 
     <!-- 主体内容区域 -->
-    <div class="flex flex-1 pt-16">
+    <div class="flex flex-1 pt-16 relative">
       <!-- 侧边栏（桌面端固定定位） -->
-      <div class="hidden lg:block transition-all duration-300 ease-in-out" :class="sidebarWidth">
+      <div class="hidden lg:block fixed top-16 bottom-0 left-0 z-30 transition-all duration-300 ease-in-out" :class="sidebarWidth">
         <Sidebar />
       </div>
 
@@ -56,6 +56,20 @@ main {
 @media (max-width: 1024px) {
   main {
     margin-left: 0 !important;
+  }
+}
+
+/* 平板设备优化 */
+@media (max-width: 1024px) and (min-width: 768px) {
+  .main-content {
+    padding: 32px 20px;
+  }
+}
+
+/* 移动设备优化 */
+@media (max-width: 767px) {
+  .main-content {
+    padding: 24px 16px;
   }
 }
 </style>
