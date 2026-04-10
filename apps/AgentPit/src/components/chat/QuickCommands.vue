@@ -1,21 +1,21 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { quickCommands } from '@/data/mockChat'
-import type { QuickCommandCategory } from '@/types/chat'
+import { ref, computed } from 'vue';
+import { quickCommands } from '@/data/mockChat';
+import type { QuickCommandCategory } from '@/types/chat';
 
 interface Props {
-  visible?: boolean
+  visible?: boolean;
 }
 
 withDefaults(defineProps<Props>(), {
   visible: true
-})
+});
 
 const emit = defineEmits<{
-  select: [command: string]
-}>()
+  select: [command: string];
+}>();
 
-const selectedCategory = ref<QuickCommandCategory | 'all'>('all')
+const selectedCategory = ref<QuickCommandCategory | 'all'>('all');
 
 const categories: { value: QuickCommandCategory | 'all'; label: string; icon: string }[] = [
   { value: 'all', label: '全部', icon: '📋' },
@@ -23,22 +23,25 @@ const categories: { value: QuickCommandCategory | 'all'; label: string; icon: st
   { value: 'creative', label: '创意', icon: '✨' },
   { value: 'analysis', label: '分析', icon: '📊' },
   { value: 'coding', label: '编程', icon: '💻' }
-]
+];
 
 const filteredCommands = computed(() => {
   if (selectedCategory.value === 'all') {
-    return quickCommands
+    return quickCommands;
   }
-  return quickCommands.filter(cmd => cmd.category === selectedCategory.value)
-})
+  return quickCommands.filter((cmd) => cmd.category === selectedCategory.value);
+});
 
 const handleSelectCommand = (prompt: string) => {
-  emit('select', prompt)
-}
+  emit('select', prompt);
+};
 </script>
 
 <template>
-  <div v-if="visible" class="bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 border-t border-gray-200 dark:border-gray-700 p-4">
+  <div
+    v-if="visible"
+    class="bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 border-t border-gray-200 dark:border-gray-700 p-4"
+  >
     <div class="max-w-4xl mx-auto">
       <!-- 分类标签 -->
       <div class="flex items-center gap-2 mb-3 overflow-x-auto pb-1">
@@ -67,9 +70,13 @@ const handleSelectCommand = (prompt: string) => {
           @click="handleSelectCommand(command.prompt)"
         >
           <div class="flex items-start gap-2">
-            <span class="text-xl group-hover:scale-110 transition-transform">{{ command.icon }}</span>
+            <span class="text-xl group-hover:scale-110 transition-transform">{{
+              command.icon
+            }}</span>
             <div class="flex-1 min-w-0">
-              <div class="text-sm font-medium text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 truncate transition-colors">
+              <div
+                class="text-sm font-medium text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 truncate transition-colors"
+              >
                 {{ command.label }}
               </div>
               <div class="text-xs text-gray-500 mt-0.5 line-clamp-2">

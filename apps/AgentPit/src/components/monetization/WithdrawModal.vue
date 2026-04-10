@@ -1,72 +1,70 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch } from 'vue';
 
 interface Props {
-  isOpen: boolean
-  availableBalance: number
+  isOpen: boolean;
+  availableBalance: number;
 }
 
-const props = defineProps<Props>()
+const props = defineProps<Props>();
 
 const emit = defineEmits<{
-  close: []
-  success: [amount: number, method: string]
-}>()
+  close: [];
+  success: [amount: number, method: string];
+}>();
 
-type WithdrawMethod = 'bank' | 'alipay' | 'wechat'
+type WithdrawMethod = 'bank' | 'alipay' | 'wechat';
 
-const MIN_WITHDRAW = 100
-const FEE_RATE = 0.005
+const MIN_WITHDRAW = 100;
+const FEE_RATE = 0.005;
 
-const amount = ref('')
-const selectedMethod = ref<WithdrawMethod>('bank')
-const showConfirm = ref(false)
-const isProcessing = ref(false)
+const amount = ref('');
+const selectedMethod = ref<WithdrawMethod>('bank');
+const showConfirm = ref(false);
+const isProcessing = ref(false);
 
 const withdrawMethods = [
   { value: 'bank' as WithdrawMethod, label: '银行卡', icon: '🏦' },
   { value: 'alipay' as WithdrawMethod, label: '支付宝', icon: '💳' },
   { value: 'wechat' as WithdrawMethod, label: '微信支付', icon: '💬' }
-]
+];
 
-const withdrawAmount = computed(() => parseFloat(amount.value) || 0)
-const fee = computed(() => withdrawAmount.value * FEE_RATE)
-const actualAmount = computed(() => withdrawAmount.value - fee.value)
+const withdrawAmount = computed(() => parseFloat(amount.value) || 0);
+const fee = computed(() => withdrawAmount.value * FEE_RATE);
+const actualAmount = computed(() => withdrawAmount.value - fee.value);
 
 const isValidAmount = computed(
-  () =>
-    withdrawAmount.value >= MIN_WITHDRAW &&
-    withdrawAmount.value <= props.availableBalance
-)
+  () => withdrawAmount.value >= MIN_WITHDRAW && withdrawAmount.value <= props.availableBalance
+);
 
 watch(
   () => props.isOpen,
   (newVal) => {
     if (!newVal) {
-      amount.value = ''
-      selectedMethod.value = 'bank'
-      showConfirm.value = false
-      isProcessing.value = false
+      amount.value = '';
+      selectedMethod.value = 'bank';
+      showConfirm.value = false;
+      isProcessing.value = false;
     }
   }
-)
+);
 
 const handleSubmit = () => {
   if (isValidAmount.value && !showConfirm.value) {
-    showConfirm.value = true
+    showConfirm.value = true;
   } else if (showConfirm.value && !isProcessing.value) {
-    isProcessing.value = true
+    isProcessing.value = true;
     setTimeout(() => {
-      emit('success', withdrawAmount.value, selectedMethod.value)
-      isProcessing.value = false
-      emit('close')
-    }, 2000)
+      emit('success', withdrawAmount.value, selectedMethod.value);
+      isProcessing.value = false;
+      emit('close');
+    }, 2000);
   }
-}
+};
 
 const setMaxAmount = () => {
-  amount.value = props.availableBalance.toString()
-}
+  amount.value = props.availableBalance.toString();
+};
 </script>
 
 <template>
@@ -74,7 +72,9 @@ const setMaxAmount = () => {
     <div v-if="isOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" @click="emit('close')" />
 
-      <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
+      <div
+        class="relative bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto"
+      >
         <div class="sticky top-0 bg-white border-b border-gray-100 p-6 rounded-t-2xl z-10">
           <div class="flex items-center justify-between">
             <h2 class="text-xl font-bold text-gray-900">提现</h2>
@@ -82,8 +82,18 @@ const setMaxAmount = () => {
               class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 transition-colors"
               @click="emit('close')"
             >
-              <svg class="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              <svg
+                class="w-5 h-5 text-gray-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
           </div>
@@ -134,9 +144,25 @@ const setMaxAmount = () => {
                 class="flex-1 px-6 py-3 bg-teal-500 hover:bg-teal-600 text-white font-semibold rounded-xl transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
                 @click="handleSubmit"
               >
-                <svg v-if="isProcessing" class="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
-                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
-                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                <svg
+                  v-if="isProcessing"
+                  class="animate-spin w-5 h-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    class="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    stroke-width="4"
+                  />
+                  <path
+                    class="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  />
                 </svg>
                 {{ isProcessing ? '处理中...' : '确认提现' }}
               </button>
@@ -146,7 +172,9 @@ const setMaxAmount = () => {
           <div v-else class="space-y-6">
             <div class="bg-blue-50 rounded-xl p-4 mb-4">
               <p class="text-sm text-blue-700">
-                可用余额：¥{{ availableBalance.toLocaleString('zh-CN', { minimumFractionDigits: 2 }) }}
+                可用余额：¥{{
+                  availableBalance.toLocaleString('zh-CN', { minimumFractionDigits: 2 })
+                }}
               </p>
               <p class="text-xs text-blue-600 mt-1">
                 最低提现额度：¥{{ MIN_WITHDRAW }}，手续费率：{{ (FEE_RATE * 100).toFixed(1) }}%
@@ -156,7 +184,9 @@ const setMaxAmount = () => {
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">提现金额</label>
               <div class="relative">
-                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-semibold">¥</span>
+                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-semibold"
+                  >¥</span
+                >
                 <input
                   v-model.number="amount"
                   type="number"

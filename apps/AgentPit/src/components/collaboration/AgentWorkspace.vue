@@ -1,137 +1,143 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
-import type { Agent, Task, Message } from '../../data/mockCollaboration'
-import AgentSelector from './AgentSelector.vue'
-import AgentConfigPanel from './AgentConfigPanel.vue'
-import TaskDistributor from './TaskDistributor.vue'
-import CommunicationPanel from './CommunicationPanel.vue'
-import CollaborationResult from './CollaborationResult.vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue';
+import type { Agent, Task, Message } from '../../data/mockCollaboration';
+import AgentSelector from './AgentSelector.vue';
+import AgentConfigPanel from './AgentConfigPanel.vue';
+import TaskDistributor from './TaskDistributor.vue';
+import CommunicationPanel from './CommunicationPanel.vue';
+import CollaborationResult from './CollaborationResult.vue';
 
-const isRunning = ref(false)
-const selectedAgents = ref<Agent[]>([])
-const selectedAgentForConfig = ref<Agent | null>(null)
-const activeRightPanel = ref<'config' | 'result'>('config')
-const showShortcuts = ref(false)
-const currentSession = ref<string | null>(null)
+const isRunning = ref(false);
+const selectedAgents = ref<Agent[]>([]);
+const selectedAgentForConfig = ref<Agent | null>(null);
+const activeRightPanel = ref<'config' | 'result'>('config');
+const showShortcuts = ref(false);
+const currentSession = ref<string | null>(null);
 
 // Keyboard shortcuts
 const handleKeyDown = (event: KeyboardEvent) => {
   // Ctrl/Cmd + Enter: Run collaboration
   if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
-    event.preventDefault()
-    toggleRun()
+    event.preventDefault();
+    toggleRun();
   }
 
   // Ctrl/Cmd + S: Stop
   if ((event.ctrlKey || event.metaKey) && event.key === 's') {
-    event.preventDefault()
-    stopCollaboration()
+    event.preventDefault();
+    stopCollaboration();
   }
 
   // ?: Show shortcuts
   if (event.key === '?' && !(event.target as HTMLElement)?.closest('input, textarea')) {
-    showShortcuts.value = !showShortcuts.value
+    showShortcuts.value = !showShortcuts.value;
   }
 
   // Escape: Close modals
   if (event.key === 'Escape') {
-    showShortcuts.value = false
+    showShortcuts.value = false;
   }
-}
+};
 
 onMounted(() => {
-  window.addEventListener('keydown', handleKeyDown)
-})
+  window.addEventListener('keydown', handleKeyDown);
+});
 
 onUnmounted(() => {
-  window.removeEventListener('keydown', handleKeyDown)
-})
+  window.removeEventListener('keydown', handleKeyDown);
+});
 
 // Collaboration control functions
 const toggleRun = () => {
   if (isRunning.value) {
-    stopCollaboration()
+    stopCollaboration();
   } else {
-    startCollaboration()
+    startCollaboration();
   }
-}
+};
 
 const startCollaboration = () => {
   if (selectedAgents.value.length < 2) {
-    alert('请至少选择 2 个智能体进行协作')
-    return
+    alert('请至少选择 2 个智能体进行协作');
+    return;
   }
 
-  isRunning.value = true
-  currentSession.value = `session-${Date.now()}`
+  isRunning.value = true;
+  currentSession.value = `session-${Date.now()}`;
 
   // Simulate running state
   setTimeout(() => {
     // Auto switch to result panel after some time
     if (isRunning.value) {
-      activeRightPanel.value = 'result'
+      activeRightPanel.value = 'result';
     }
-  }, 3000)
-}
+  }, 3000);
+};
 
 const stopCollaboration = () => {
-  isRunning.value = false
+  isRunning.value = false;
 
   setTimeout(() => {
     if (!isRunning.value && currentSession.value) {
-      alert('协作已停止')
-      currentSession.value = null
+      alert('协作已停止');
+      currentSession.value = null;
     }
-  }, 500)
-}
+  }, 500);
+};
 
 const resetWorkspace = () => {
   if (confirm('确定要重置工作台吗？这将清除所有当前配置和选择。')) {
-    selectedAgents.value = []
-    selectedAgentForConfig.value = null
-    isRunning.value = false
-    currentSession.value = null
-    activeRightPanel.value = 'config'
+    selectedAgents.value = [];
+    selectedAgentForConfig.value = null;
+    isRunning.value = false;
+    currentSession.value = null;
+    activeRightPanel.value = 'config';
   }
-}
+};
 
 // Event handlers
 const onAgentsSelected = (agents: Agent[]) => {
-  selectedAgents.value = agents
-}
+  selectedAgents.value = agents;
+};
 
 const onConfigureAgent = (agent: Agent) => {
-  selectedAgentForConfig.value = agent
-  activeRightPanel.value = 'config'
-}
+  selectedAgentForConfig.value = agent;
+  activeRightPanel.value = 'config';
+};
 
 const onTaskUpdate = (tasks: Task[]) => {
-  console.log('Tasks updated:', tasks)
-}
+  console.log('Tasks updated:', tasks);
+};
 
 const onTaskSelect = (task: Task) => {
-  console.log('Task selected:', task)
-}
+  console.log('Task selected:', task);
+};
 
 const onSendMessage = (message: Message) => {
-  console.log('Message sent:', message)
-}
+  console.log('Message sent:', message);
+};
 
 // Status bar info
 const statusInfo = computed(() => ({
   status: isRunning.value ? 'running' : 'idle',
   label: isRunning.value ? '运行中' : '就绪',
   agentsCount: selectedAgents.value.length,
-  sessionTime: currentSession.value ? formatDuration(Date.now() - parseInt(currentSession.value.split('-')[1])) : '00:00:00'
-}))
+  sessionTime: currentSession.value
+    ? formatDuration(Date.now() - parseInt(currentSession.value.split('-')[1]))
+    : '00:00:00'
+}));
 
 const formatDuration = (ms: number) => {
-  const seconds = Math.floor(ms / 1000)
-  const h = Math.floor(seconds / 3600).toString().padStart(2, '0')
-  const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0')
-  const s = (seconds % 60).toString().padStart(2, '0')
-  return `${h}:${m}:${s}`
-}
+  const seconds = Math.floor(ms / 1000);
+  const h = Math.floor(seconds / 3600)
+    .toString()
+    .padStart(2, '0');
+  const m = Math.floor((seconds % 3600) / 60)
+    .toString()
+    .padStart(2, '0');
+  const s = (seconds % 60).toString().padStart(2, '0');
+  return `${h}:${m}:${s}`;
+};
 </script>
 
 <template>
@@ -141,7 +147,10 @@ const formatDuration = (ms: number) => {
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-3">
           <h1 class="text-xl font-bold text-gray-900 dark:text-white">🤝 多智能体协作工作台</h1>
-          <span v-if="currentSession" class="px-2 py-1 text-xs font-medium bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 rounded">
+          <span
+            v-if="currentSession"
+            class="px-2 py-1 text-xs font-medium bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 rounded"
+          >
             会话: {{ currentSession.slice(-8) }}
           </span>
         </div>
@@ -184,7 +193,9 @@ const formatDuration = (ms: number) => {
     <!-- Main Content Area - Three Column Layout -->
     <div class="flex-1 overflow-hidden flex">
       <!-- Left Panel: Agent Selector -->
-      <div class="w-80 border-r border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 overflow-hidden">
+      <div
+        class="w-80 border-r border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 overflow-hidden"
+      >
         <AgentSelector
           mode="multiple"
           @update:selected="onAgentsSelected"
@@ -195,7 +206,9 @@ const formatDuration = (ms: number) => {
       <!-- Center Panel: Task Distributor & Communication -->
       <div class="flex-1 flex flex-col overflow-hidden">
         <!-- Tabs for Center Panel -->
-        <div class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 flex items-center gap-1">
+        <div
+          class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 flex items-center gap-1"
+        >
           <button
             class="px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-t-lg transition-colors"
           >
@@ -205,7 +218,11 @@ const formatDuration = (ms: number) => {
 
         <!-- Task Distributor -->
         <div class="flex-1 overflow-hidden">
-          <TaskDistributor :agents="selectedAgents" @task-update="onTaskUpdate" @task-select="onTaskSelect" />
+          <TaskDistributor
+            :agents="selectedAgents"
+            @task-update="onTaskUpdate"
+            @task-select="onTaskSelect"
+          />
         </div>
 
         <!-- Communication Panel (Bottom Section) -->
@@ -215,7 +232,9 @@ const formatDuration = (ms: number) => {
       </div>
 
       <!-- Right Panel: Config or Results -->
-      <div class="w-96 border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 overflow-hidden flex flex-col">
+      <div
+        class="w-96 border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 overflow-hidden flex flex-col"
+      >
         <!-- Panel Tabs -->
         <div class="border-b border-gray-200 dark:border-gray-700 px-4 flex items-center gap-1">
           <button
@@ -244,29 +263,34 @@ const formatDuration = (ms: number) => {
 
         <!-- Panel Content -->
         <div class="flex-1 overflow-hidden">
-          <AgentConfigPanel
-            v-if="activeRightPanel === 'config'"
-            :agent="selectedAgentForConfig"
-          />
-          <CollaborationResult
-            v-else-if="activeRightPanel === 'result'"
-            :is-running="isRunning"
-          />
+          <AgentConfigPanel v-if="activeRightPanel === 'config'" :agent="selectedAgentForConfig" />
+          <CollaborationResult v-else-if="activeRightPanel === 'result'" :is-running="isRunning" />
         </div>
       </div>
     </div>
 
     <!-- Status Bar -->
-    <div class="bg-gray-800 dark:bg-gray-950 text-white px-4 py-2 flex items-center justify-between text-xs">
+    <div
+      class="bg-gray-800 dark:bg-gray-950 text-white px-4 py-2 flex items-center justify-between text-xs"
+    >
       <div class="flex items-center gap-4">
-        <span :class="['flex items-center gap-1.5', statusInfo.status === 'running' ? 'text-green-400' : 'text-gray-400']">
+        <span
+          :class="[
+            'flex items-center gap-1.5',
+            statusInfo.status === 'running' ? 'text-green-400' : 'text-gray-400'
+          ]"
+        >
           <span :class="statusInfo.status === 'running' ? 'animate-pulse' : ''">●</span>
           {{ statusInfo.label }}
         </span>
         <span class="text-gray-400">|</span>
-        <span>🤖 已选智能体: <strong>{{ statusInfo.agentsCount }}</strong></span>
+        <span
+          >🤖 已选智能体: <strong>{{ statusInfo.agentsCount }}</strong></span
+        >
         <span class="text-gray-400">|</span>
-        <span v-if="currentSession">⏱️ 运行时间: <strong>{{ statusInfo.sessionTime }}</strong></span>
+        <span v-if="currentSession"
+          >⏱️ 运行时间: <strong>{{ statusInfo.sessionTime }}</strong></span
+        >
       </div>
 
       <div class="flex items-center gap-4 text-gray-400">
@@ -295,12 +319,16 @@ const formatDuration = (ms: number) => {
         <div class="space-y-3">
           <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-750 rounded-lg">
             <span class="font-medium text-gray-900 dark:text-white">运行/停止协作</span>
-            <kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-600 rounded text-sm font-mono">Ctrl + Enter</kbd>
+            <kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-600 rounded text-sm font-mono"
+              >Ctrl + Enter</kbd
+            >
           </div>
 
           <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-750 rounded-lg">
             <span class="font-medium text-gray-900 dark:text-white">停止协作</span>
-            <kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-600 rounded text-sm font-mono">Ctrl + S</kbd>
+            <kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-600 rounded text-sm font-mono"
+              >Ctrl + S</kbd
+            >
           </div>
 
           <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-750 rounded-lg">

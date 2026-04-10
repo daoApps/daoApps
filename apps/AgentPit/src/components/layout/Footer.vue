@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed } from 'vue';
 
-const currentYear = computed(() => new Date().getFullYear())
+const currentYear = computed(() => new Date().getFullYear());
 
 const footerLinks = {
   about: [
@@ -15,7 +15,7 @@ const footerLinks = {
     { label: '服务条款', href: '#' },
     { label: 'Cookie 政策', href: '#' }
   ]
-}
+};
 
 const socialLinks = [
   {
@@ -28,18 +28,22 @@ const socialLinks = [
     href: '#',
     icon: 'M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z'
   }
-]
+];
 </script>
 
 <template>
-  <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-auto transition-colors duration-200">
+  <footer
+    class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-auto transition-colors duration-200"
+  >
     <div class="px-4 sm:px-6 lg:px-8 py-6">
       <!-- 主要内容区域 -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-6">
         <!-- 左侧：品牌信息 -->
         <div>
           <div class="flex items-center gap-2 mb-3">
-            <div class="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white font-bold text-sm">
+            <div
+              class="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white font-bold text-sm"
+            >
               AP
             </div>
             <h3 class="text-lg font-semibold text-gray-900 dark:text-white">AgentPit</h3>
@@ -51,7 +55,11 @@ const socialLinks = [
 
         <!-- 中间：快速链接 -->
         <div>
-          <h3 class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider mb-3">快速链接</h3>
+          <h3
+            class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider mb-3"
+          >
+            快速链接
+          </h3>
           <ul class="space-y-2">
             <li v-for="link in footerLinks.about" :key="link.label">
               <a
@@ -66,7 +74,11 @@ const socialLinks = [
 
         <!-- 右侧：法律信息 + 社交媒体 -->
         <div>
-          <h3 class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider mb-3">法律信息</h3>
+          <h3
+            class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider mb-3"
+          >
+            法律信息
+          </h3>
           <ul class="space-y-2 mb-4">
             <li v-for="link in footerLinks.legal" :key="link.label">
               <a
@@ -87,7 +99,12 @@ const socialLinks = [
               :aria-label="social.name"
               class="p-2 rounded-lg text-gray-500 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200"
             >
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <svg
+                class="w-5 h-5"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
                 <path :d="social.icon" />
               </svg>
             </a>

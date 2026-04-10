@@ -1,50 +1,53 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import type { SocialProfile } from '../../types/social'
+import { ref } from 'vue';
+import type { SocialProfile } from '../../types/social';
 
 const props = defineProps<{
-  user: SocialProfile
-}>()
+  user: SocialProfile;
+}>();
 
 const emit = defineEmits<{
-  follow: [userId: string]
-  message: [userId: string]
-}>()
+  follow: [userId: string];
+  message: [userId: string];
+}>();
 
-const showDetail = ref(false)
-const isFollowing = ref(false)
+const showDetail = ref(false);
+const isFollowing = ref(false);
 
 const formatNumber = (num: number): string => {
   if (num >= 10000) {
-    return (num / 10000).toFixed(1) + 'w'
+    return (num / 10000).toFixed(1) + 'w';
   }
   if (num >= 1000) {
-    return (num / 1000).toFixed(1) + 'k'
+    return (num / 1000).toFixed(1) + 'k';
   }
-  return num.toString()
-}
+  return num.toString();
+};
 
 const handleFollow = () => {
-  isFollowing.value = !isFollowing.value
-  emit('follow', props.user.id)
-}
+  isFollowing.value = !isFollowing.value;
+  emit('follow', props.user.id);
+};
 
 const handleMessage = () => {
-  emit('message', props.user.id)
-}
+  emit('message', props.user.id);
+};
 
 const openDetail = () => {
-  showDetail.value = true
-}
+  showDetail.value = true;
+};
 
 const closeDetail = () => {
-  showDetail.value = false
-}
+  showDetail.value = false;
+};
 </script>
 
 <template>
   <div>
-    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden cursor-pointer group" @click="openDetail">
+    <div
+      class="bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden cursor-pointer group"
+      @click="openDetail"
+    >
       <div class="relative">
         <div class="h-24 bg-gradient-to-r from-blue-500 to-purple-600"></div>
         <div class="absolute -bottom-10 left-4">
@@ -61,13 +64,25 @@ const closeDetail = () => {
       </div>
 
       <div class="pt-12 pb-4 px-4">
-        <h3 class="text-lg font-bold text-gray-900 dark:text-white group-hover:text-blue-600 transition-colors">
+        <h3
+          class="text-lg font-bold text-gray-900 dark:text-white group-hover:text-blue-600 transition-colors"
+        >
           {{ user.name }}
         </h3>
         <p class="text-sm text-gray-500 dark:text-gray-400 flex items-center mt-1">
           <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+            />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+            />
           </svg>
           {{ user.location }}
         </p>
@@ -84,10 +99,20 @@ const closeDetail = () => {
           </span>
         </div>
 
-        <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+        <div
+          class="flex items-center justify-between mt-4 pt-4 border-t border-gray-200 dark:border-gray-700"
+        >
           <div class="flex space-x-4 text-xs text-gray-500 dark:text-gray-400">
-            <span><strong class="text-gray-900 dark:text-white">{{ formatNumber(user.followers) }}</strong> 粉丝</span>
-            <span><strong class="text-gray-900 dark:text-white">{{ user.mutualFriends }}</strong> 共同好友</span>
+            <span
+              ><strong class="text-gray-900 dark:text-white">{{
+                formatNumber(user.followers)
+              }}</strong>
+              粉丝</span
+            >
+            <span
+              ><strong class="text-gray-900 dark:text-white">{{ user.mutualFriends }}</strong>
+              共同好友</span
+            >
           </div>
         </div>
 
@@ -115,7 +140,11 @@ const closeDetail = () => {
 
     <Teleport to="body">
       <Transition name="modal">
-        <div v-if="showDetail" class="fixed inset-0 z-50 flex items-center justify-center p-4" @click="closeDetail">
+        <div
+          v-if="showDetail"
+          class="fixed inset-0 z-50 flex items-center justify-center p-4"
+          @click="closeDetail"
+        >
           <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
           <div
             class="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto"
@@ -142,8 +171,18 @@ const closeDetail = () => {
               <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ user.name }}</h2>
               <p class="text-gray-500 dark:text-gray-400 mt-1 flex items-center">
                 <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
                 </svg>
                 {{ user.location }}
                 <span
@@ -165,17 +204,25 @@ const closeDetail = () => {
                 </span>
               </div>
 
-              <div class="grid grid-cols-3 gap-4 mt-6 py-4 border-y border-gray-200 dark:border-gray-700">
+              <div
+                class="grid grid-cols-3 gap-4 mt-6 py-4 border-y border-gray-200 dark:border-gray-700"
+              >
                 <div class="text-center">
-                  <div class="text-xl font-bold text-gray-900 dark:text-white">{{ formatNumber(user.followers) }}</div>
+                  <div class="text-xl font-bold text-gray-900 dark:text-white">
+                    {{ formatNumber(user.followers) }}
+                  </div>
                   <div class="text-sm text-gray-500 dark:text-gray-400">粉丝</div>
                 </div>
                 <div class="text-center">
-                  <div class="text-xl font-bold text-gray-900 dark:text-white">{{ formatNumber(user.following) }}</div>
+                  <div class="text-xl font-bold text-gray-900 dark:text-white">
+                    {{ formatNumber(user.following) }}
+                  </div>
                   <div class="text-sm text-gray-500 dark:text-gray-400">关注</div>
                 </div>
                 <div class="text-center">
-                  <div class="text-xl font-bold text-gray-900 dark:text-white">{{ user.mutualFriends }}</div>
+                  <div class="text-xl font-bold text-gray-900 dark:text-white">
+                    {{ user.mutualFriends }}
+                  </div>
                   <div class="text-sm text-gray-500 dark:text-gray-400">共同好友</div>
                 </div>
               </div>
@@ -188,13 +235,19 @@ const closeDetail = () => {
                       ? 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
                       : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700'
                   "
-                  @click="handleFollow(); closeDetail()"
+                  @click="
+                    handleFollow();
+                    closeDetail();
+                  "
                 >
                   {{ isFollowing ? '已关注' : '关注' }}
                 </button>
                 <button
                   class="flex-1 py-3 px-6 rounded-xl text-base font-semibold border-2 border-blue-600 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all duration-200"
-                  @click="handleMessage(); closeDetail()"
+                  @click="
+                    handleMessage();
+                    closeDetail();
+                  "
                 >
                   发送消息
                 </button>

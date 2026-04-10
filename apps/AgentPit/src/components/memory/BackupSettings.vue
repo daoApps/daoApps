@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue'
-import type { BackupConfig, BackupRecord } from '@/types/memory'
+import { ref, reactive, computed } from 'vue';
+import type { BackupConfig, BackupRecord } from '@/types/memory';
 
 interface Props {
-  config?: BackupConfig
-  history?: BackupRecord[]
-  estimatedSize?: number
+  config?: BackupConfig;
+  history?: BackupRecord[];
+  estimatedSize?: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -18,19 +18,19 @@ const props = withDefaults(defineProps<Props>(), {
   }),
   history: () => [],
   estimatedSize: () => 0
-})
+});
 
 const emit = defineEmits<{
-  configChange: [config: BackupConfig]
-  manualBackup: []
-  restore: [recordId: string]
-}>()
+  configChange: [config: BackupConfig];
+  manualBackup: [];
+  restore: [recordId: string];
+}>();
 
-const localConfig = reactive<BackupConfig>({ ...props.config })
-const isBackingUp = ref(false)
-const backupProgress = ref(0)
-const showRestoreDialog = ref(false)
-const selectedRestoreRecord = ref<BackupRecord | null>(null)
+const localConfig = reactive<BackupConfig>({ ...props.config });
+const isBackingUp = ref(false);
+const backupProgress = ref(0);
+const showRestoreDialog = ref(false);
+const selectedRestoreRecord = ref<BackupRecord | null>(null);
 
 const isModified = computed(() => {
   return (
@@ -39,13 +39,13 @@ const isModified = computed(() => {
     localConfig.backupType !== props.config.backupType ||
     localConfig.retentionCount !== props.config.retentionCount ||
     localConfig.location !== props.config.location
-  )
-})
+  );
+});
 
 const formatFileSize = (bytes: number): string => {
-  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' MB'
-  return (bytes / (1024 * 1024)).toFixed(2) + ' GB'
-}
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' MB';
+  return (bytes / (1024 * 1024)).toFixed(2) + ' GB';
+};
 
 const formatTimestamp = (timestamp: string): string => {
   return new Date(timestamp).toLocaleString('zh-CN', {
@@ -54,58 +54,63 @@ const formatTimestamp = (timestamp: string): string => {
     day: '2-digit',
     hour: '2-digit',
     minute: '2-digit'
-  })
-}
+  });
+};
 
-const getStatus = (status: BackupRecord['status']): { color: string; label: string; icon: string } => {
-  const statusMap: Record<BackupRecord['status'], { color: string; label: string; icon: string }> = {
-    success: { color: '#10b981', label: '成功', icon: '✓' },
-    failed: { color: '#ef4444', label: '失败', icon: '✗' },
-    in_progress: { color: '#3b82f6', label: '进行中', icon: '⟳' }
-  }
-  return statusMap[status]
-}
+const getStatus = (
+  status: BackupRecord['status']
+): { color: string; label: string; icon: string } => {
+  const statusMap: Record<BackupRecord['status'], { color: string; label: string; icon: string }> =
+    {
+      success: { color: '#10b981', label: '成功', icon: '✓' },
+      failed: { color: '#ef4444', label: '失败', icon: '✗' },
+      in_progress: { color: '#3b82f6', label: '进行中', icon: '⟳' }
+    };
+  return statusMap[status];
+};
 
 const handleManualBackup = async () => {
-  isBackingUp.value = true
-  backupProgress.value = 0
+  isBackingUp.value = true;
+  backupProgress.value = 0;
 
   // 模拟备份进度
   const interval = setInterval(() => {
-    backupProgress.value += Math.random() * 15
+    backupProgress.value += Math.random() * 15;
     if (backupProgress.value >= 100) {
-      backupProgress.value = 100
-      clearInterval(interval)
+      backupProgress.value = 100;
+      clearInterval(interval);
 
       setTimeout(() => {
-        isBackingUp.value = false
-        backupProgress.value = 0
-        emit('manualBackup')
-      }, 500)
+        isBackingUp.value = false;
+        backupProgress.value = 0;
+        emit('manualBackup');
+      }, 500);
     }
-  }, 200)
-}
+  }, 200);
+};
 
 const handleRestoreClick = (record: BackupRecord) => {
-  selectedRestoreRecord.value = record
-  showRestoreDialog.value = true
-}
+  selectedRestoreRecord.value = record;
+  showRestoreDialog.value = true;
+};
 
 const confirmRestore = () => {
   if (selectedRestoreRecord.value) {
-    emit('restore', selectedRestoreRecord.value.id)
+    emit('restore', selectedRestoreRecord.value.id);
   }
-  showRestoreDialog.value = false
-  selectedRestoreRecord.value = null
-}
+  showRestoreDialog.value = false;
+  selectedRestoreRecord.value = null;
+};
 
 const saveConfig = () => {
-  emit('configChange', { ...localConfig })
-}
+  emit('configChange', { ...localConfig });
+};
 </script>
 
 <template>
-  <div class="backup-settings__container bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+  <div
+    class="backup-settings__container bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden"
+  >
     <!-- 标题 -->
     <div class="p-6 border-b border-gray-200 dark:border-gray-700">
       <div class="flex items-center justify-between">
@@ -113,11 +118,15 @@ const saveConfig = () => {
           <h2 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
             💾 备份设置
           </h2>
-          <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">配置自动备份策略和管理备份记录</p>
+          <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+            配置自动备份策略和管理备份记录
+          </p>
         </div>
         <div class="text-right">
           <div class="text-xs text-gray-500 dark:text-gray-400">预计存储空间</div>
-          <div class="text-lg font-semibold text-gray-900 dark:text-white">{{ formatFileSize(estimatedSize) }}</div>
+          <div class="text-lg font-semibold text-gray-900 dark:text-white">
+            {{ formatFileSize(estimatedSize) }}
+          </div>
         </div>
       </div>
     </div>
@@ -128,7 +137,9 @@ const saveConfig = () => {
       <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
         <div>
           <h3 class="font-medium text-gray-900 dark:text-white">自动备份</h3>
-          <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">开启后将按照设定的频率自动创建备份</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+            开启后将按照设定的频率自动创建备份
+          </p>
         </div>
         <button
           class="relative w-14 h-7 rounded-full transition-colors duration-200"
@@ -161,7 +172,14 @@ const saveConfig = () => {
             "
             @click="localConfig.frequency = option.value as BackupConfig['frequency']"
           >
-            <div class="font-medium text-sm" :class="localConfig.frequency === option.value ? 'text-blue-600 dark:text-blue-400' : 'text-gray-900 dark:text-white'">
+            <div
+              class="font-medium text-sm"
+              :class="
+                localConfig.frequency === option.value
+                  ? 'text-blue-600 dark:text-blue-400'
+                  : 'text-gray-900 dark:text-white'
+              "
+            >
               {{ option.label }}
             </div>
             <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ option.desc }}</div>
@@ -182,10 +200,19 @@ const saveConfig = () => {
             "
             @click="localConfig.backupType = 'incremental'"
           >
-            <div class="font-medium" :class="localConfig.backupType === 'incremental' ? 'text-green-600 dark:text-green-400' : 'text-gray-900 dark:text-white'">
+            <div
+              class="font-medium"
+              :class="
+                localConfig.backupType === 'incremental'
+                  ? 'text-green-600 dark:text-green-400'
+                  : 'text-gray-900 dark:text-white'
+              "
+            >
               📦 增量备份
             </div>
-            <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">仅备份变更部分，速度快，空间占用小</div>
+            <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+              仅备份变更部分，速度快，空间占用小
+            </div>
           </button>
 
           <button
@@ -197,10 +224,19 @@ const saveConfig = () => {
             "
             @click="localConfig.backupType = 'full'"
           >
-            <div class="font-medium" :class="localConfig.backupType === 'full' ? 'text-purple-600 dark:text-purple-400' : 'text-gray-900 dark:text-white'">
+            <div
+              class="font-medium"
+              :class="
+                localConfig.backupType === 'full'
+                  ? 'text-purple-600 dark:text-purple-400'
+                  : 'text-gray-900 dark:text-white'
+              "
+            >
               🔄 完整备份
             </div>
-            <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">完整复制所有数据，恢复更可靠</div>
+            <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+              完整复制所有数据，恢复更可靠
+            </div>
           </button>
         </div>
       </div>
@@ -210,7 +246,11 @@ const saveConfig = () => {
         <!-- 保留数量 -->
         <div class="space-y-2">
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-            保留备份数量: <span class="font-bold text-blue-600 dark:text-blue-400">{{ localConfig.retentionCount }}</span> 个
+            保留备份数量:
+            <span class="font-bold text-blue-600 dark:text-blue-400">{{
+              localConfig.retentionCount
+            }}</span>
+            个
           </label>
           <input
             v-model.number="localConfig.retentionCount"
@@ -240,7 +280,10 @@ const saveConfig = () => {
       </div>
 
       <!-- 保存配置按钮 -->
-      <div v-if="isModified" class="flex justify-end pt-4 border-t border-gray-200 dark:border-gray-700">
+      <div
+        v-if="isModified"
+        class="flex justify-end pt-4 border-t border-gray-200 dark:border-gray-700"
+      >
         <button
           class="px-6 py-2.5 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition-colors shadow-md hover:shadow-lg"
           @click="saveConfig"
@@ -251,7 +294,9 @@ const saveConfig = () => {
     </div>
 
     <!-- 手动备份区域 -->
-    <div class="px-6 py-4 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 border-t border-b border-gray-200 dark:border-gray-700">
+    <div
+      class="px-6 py-4 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 border-t border-b border-gray-200 dark:border-gray-700"
+    >
       <div class="flex items-center justify-between">
         <div>
           <h3 class="font-semibold text-gray-900 dark:text-white">手动备份</h3>
@@ -316,7 +361,10 @@ const saveConfig = () => {
                 <div class="flex items-center gap-2">
                   <span
                     class="px-2 py-0.5 text-xs font-medium rounded-full"
-                    :style="{ backgroundColor: getStatus(record.status).color + '20', color: getStatus(record.status).color }"
+                    :style="{
+                      backgroundColor: getStatus(record.status).color + '20',
+                      color: getStatus(record.status).color
+                    }"
                   >
                     {{ getStatus(record.status).label }}
                   </span>
@@ -331,7 +379,9 @@ const saveConfig = () => {
 
               <!-- 大小 -->
               <div class="text-right flex-shrink-0">
-                <div class="text-sm font-semibold text-gray-900 dark:text-white">{{ formatFileSize(record.size) }}</div>
+                <div class="text-sm font-semibold text-gray-900 dark:text-white">
+                  {{ formatFileSize(record.size) }}
+                </div>
               </div>
             </div>
 
@@ -353,10 +403,19 @@ const saveConfig = () => {
     <!-- 恢复确认对话框 -->
     <Teleport to="body">
       <Transition name="fade">
-        <div v-if="showRestoreDialog && selectedRestoreRecord" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50" @click="showRestoreDialog = false">
-          <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl p-6 max-w-md w-full mx-4" @click.stop>
+        <div
+          v-if="showRestoreDialog && selectedRestoreRecord"
+          class="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+          @click="showRestoreDialog = false"
+        >
+          <div
+            class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl p-6 max-w-md w-full mx-4"
+            @click.stop
+          >
             <div class="text-center mb-6">
-              <div class="w-16 h-16 mx-auto mb-4 bg-yellow-100 dark:bg-yellow-900/30 rounded-full flex items-center justify-center text-4xl">
+              <div
+                class="w-16 h-16 mx-auto mb-4 bg-yellow-100 dark:bg-yellow-900/30 rounded-full flex items-center justify-center text-4xl"
+              >
                 ⚠️
               </div>
               <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">确认恢复备份？</h3>
@@ -364,11 +423,20 @@ const saveConfig = () => {
                 此操作将使用以下备份数据覆盖当前数据：
               </p>
               <div class="mt-4 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg text-left space-y-1">
-                <div class="text-sm"><strong>时间:</strong> {{ formatTimestamp(selectedRestoreRecord.timestamp) }}</div>
-                <div class="text-sm"><strong>大小:</strong> {{ formatFileSize(selectedRestoreRecord.size) }}</div>
-                <div class="text-sm"><strong>类型:</strong> {{ selectedRestoreRecord.type === 'full' ? '完整' : '增量' }}备份</div>
+                <div class="text-sm">
+                  <strong>时间:</strong> {{ formatTimestamp(selectedRestoreRecord.timestamp) }}
+                </div>
+                <div class="text-sm">
+                  <strong>大小:</strong> {{ formatFileSize(selectedRestoreRecord.size) }}
+                </div>
+                <div class="text-sm">
+                  <strong>类型:</strong>
+                  {{ selectedRestoreRecord.type === 'full' ? '完整' : '增量' }}备份
+                </div>
               </div>
-              <p class="mt-4 text-xs text-red-500 font-medium">⚠️ 恢复操作不可撤销，请确保已做好当前数据的备份！</p>
+              <p class="mt-4 text-xs text-red-500 font-medium">
+                ⚠️ 恢复操作不可撤销，请确保已做好当前数据的备份！
+              </p>
             </div>
 
             <div class="flex gap-3">

@@ -1,36 +1,36 @@
 export interface Template {
-  id: string
-  name: string
-  description: string
-  category: 'ecommerce' | 'blog' | 'corporate' | 'portfolio' | 'landing'
-  thumbnail: string
-  features: string[]
-  suitableFor: string
+  id: string;
+  name: string;
+  description: string;
+  category: 'ecommerce' | 'blog' | 'corporate' | 'portfolio' | 'landing';
+  thumbnail: string;
+  features: string[];
+  suitableFor: string;
 }
 
 export interface ChatMessage {
-  id: number
-  type: 'user' | 'ai'
-  content: string
-  timestamp: Date
+  id: number;
+  type: 'user' | 'ai';
+  content: string;
+  timestamp: Date;
 }
 
 export interface SiteConfig {
-  templateId: string | null
-  siteName: string
-  description: string
-  domain: string
-  seoTitle: string
-  seoDescription: string
-  seoKeywords: string
+  templateId: string | null;
+  siteName: string;
+  description: string;
+  domain: string;
+  seoTitle: string;
+  seoDescription: string;
+  seoKeywords: string;
 }
 
 export interface PublishHistory {
-  id: string
-  version: string
-  status: 'pending' | 'publishing' | 'published' | 'failed'
-  publishTime: Date
-  url?: string
+  id: string;
+  version: string;
+  status: 'pending' | 'publishing' | 'published' | 'failed';
+  publishTime: Date;
+  url?: string;
 }
 
 export const templates: Template[] = [
@@ -79,7 +79,7 @@ export const templates: Template[] = [
     features: ['英雄区域', '特性对比', '用户评价', 'CTA按钮', 'FAQ问答'],
     suitableFor: '新产品发布、活动推广、App下载'
   }
-]
+];
 
 export const templateCategories = [
   { id: 'all', label: '全部', icon: '📋' },
@@ -88,7 +88,7 @@ export const templateCategories = [
   { id: 'corporate', label: '企业', icon: '🏢' },
   { id: 'portfolio', label: '作品集', icon: '🎨' },
   { id: 'landing', label: '着陆页', icon: '🚀' }
-] as const
+] as const;
 
 export const presetQuestions = [
   '我想做一个电商网站',
@@ -96,22 +96,24 @@ export const presetQuestions = [
   '需要企业官网展示',
   '创建一个作品集网站',
   '做一个产品着陆页'
-]
+];
 
 export const sampleChatHistory: ChatMessage[] = [
   {
     id: 1,
     type: 'ai',
-    content: '您好！我是 Sphinx AI 建站助手。请告诉我您想创建什么类型的网站？我可以帮您快速搭建专业的网站。',
+    content:
+      '您好！我是 Sphinx AI 建站助手。请告诉我您想创建什么类型的网站？我可以帮您快速搭建专业的网站。',
     timestamp: new Date()
   }
-]
+];
 
 export const aiResponses: Record<string, string> = {
-  'default': '根据您的需求，我为您推荐以下建站方案：\n\n**推荐模板**: 现代化响应式设计\n**核心功能**: 自定义页面布局、SEO优化、移动端适配\n**预计耗时**: 2-3小时\n\n您想要调整哪些方面？',
-  '电商': '太棒了！电商网站是很好的选择。我建议：\n\n**推荐方案**: 现代电商商城模板\n**主要特点**:\n- 商品分类与管理\n- 购物车与结算流程\n- 支付接口集成\n- 订单管理系统\n\n请问您的商品类型是什么？这样我可以进一步优化配置。',
-  '博客': '个人博客是分享知识的好方式！我的建议：\n\n**推荐方案**: 个人博客模板\n**核心优势**:\n- 清爽的阅读体验\n- 完善的分类标签系统\n- SEO 友好的结构\n- 社交媒体分享功能\n\n您希望博客主要关注哪个领域？'
-}
+  default:
+    '根据您的需求，我为您推荐以下建站方案：\n\n**推荐模板**: 现代化响应式设计\n**核心功能**: 自定义页面布局、SEO优化、移动端适配\n**预计耗时**: 2-3小时\n\n您想要调整哪些方面？',
+  电商: '太棒了！电商网站是很好的选择。我建议：\n\n**推荐方案**: 现代电商商城模板\n**主要特点**:\n- 商品分类与管理\n- 购物车与结算流程\n- 支付接口集成\n- 订单管理系统\n\n请问您的商品类型是什么？这样我可以进一步优化配置。',
+  博客: '个人博客是分享知识的好方式！我的建议：\n\n**推荐方案**: 个人博客模板\n**核心优势**:\n- 清爽的阅读体验\n- 完善的分类标签系统\n- SEO 友好的结构\n- 社交媒体分享功能\n\n您希望博客主要关注哪个领域？'
+};
 
 export const defaultSiteConfig: SiteConfig = {
   templateId: null,
@@ -121,4 +123,4 @@ export const defaultSiteConfig: SiteConfig = {
   seoTitle: '',
   seoDescription: '',
   seoKeywords: ''
-}
+};

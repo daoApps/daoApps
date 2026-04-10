@@ -1,20 +1,16 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import VChart from 'vue-echarts'
-import { use } from 'echarts/core'
-import { CanvasRenderer } from 'echarts/renderers'
-import { PieChart } from 'echarts/charts'
-import {
-  TitleComponent,
-  TooltipComponent,
-  LegendComponent
-} from 'echarts/components'
-import type { StorageStats } from '@/types/memory'
+import { ref, computed } from 'vue';
+import VChart from 'vue-echarts';
+import { use } from 'echarts/core';
+import { CanvasRenderer } from 'echarts/renderers';
+import { PieChart } from 'echarts/charts';
+import { TitleComponent, TooltipComponent, LegendComponent } from 'echarts/components';
+import type { StorageStats } from '@/types/memory';
 
-use([CanvasRenderer, PieChart, TitleComponent, TooltipComponent, LegendComponent])
+use([CanvasRenderer, PieChart, TitleComponent, TooltipComponent, LegendComponent]);
 
 interface Props {
-  stats?: StorageStats
+  stats?: StorageStats;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -30,29 +26,33 @@ const props = withDefaults(defineProps<Props>(), {
     },
     largeFiles: []
   })
-})
+});
 
 const emit = defineEmits<{
-  cleanup: []
-  upgrade: [plan: string]
-}>()
+  cleanup: [];
+  upgrade: [plan: string];
+}>();
 
-const showUpgradeModal = ref(false)
-const isCleaningUp = ref(false)
-const usagePercentage = computed(() => Math.round((props.stats.usedSpace / props.stats.totalSpace) * 100))
+const showUpgradeModal = ref(false);
+const isCleaningUp = ref(false);
+const usagePercentage = computed(() =>
+  Math.round((props.stats.usedSpace / props.stats.totalSpace) * 100)
+);
 
 const usageLevel = computed(() => {
-  if (usagePercentage.value >= 95) return { color: '#ef4444', label: '严重', bg: 'bg-red-50 dark:bg-red-900/20' }
-  if (usagePercentage.value >= 80) return { color: '#f59e0b', label: '警告', bg: 'bg-yellow-50 dark:bg-yellow-900/20' }
-  return { color: '#10b981', label: '正常', bg: 'bg-green-50 dark:bg-green-900/20' }
-})
+  if (usagePercentage.value >= 95)
+    return { color: '#ef4444', label: '严重', bg: 'bg-red-50 dark:bg-red-900/20' };
+  if (usagePercentage.value >= 80)
+    return { color: '#f59e0b', label: '警告', bg: 'bg-yellow-50 dark:bg-yellow-900/20' };
+  return { color: '#10b981', label: '正常', bg: 'bg-green-50 dark:bg-green-900/20' };
+});
 
 const formatBytes = (bytes: number): string => {
-  if (bytes < 1024) return bytes + ' B'
-  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB'
-  if (bytes < 1024 * 1024 * 1024) return (bytes / (1024 * 1024)).toFixed(1) + ' MB'
-  return (bytes / (1024 * 1024 * 1024)).toFixed(2) + ' GB'
-}
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+  if (bytes < 1024 * 1024 * 1024) return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+  return (bytes / (1024 * 1024 * 1024)).toFixed(2) + ' GB';
+};
 
 const formatTimestamp = (timestamp: string): string => {
   return new Date(timestamp).toLocaleDateString('zh-CN', {
@@ -61,8 +61,8 @@ const formatTimestamp = (timestamp: string): string => {
     day: '2-digit',
     hour: '2-digit',
     minute: '2-digit'
-  })
-}
+  });
+};
 
 const pieChartData = computed(() => [
   { value: props.stats.categories.documents, name: '文档', itemStyle: { color: '#3b82f6' } },
@@ -70,7 +70,7 @@ const pieChartData = computed(() => [
   { value: props.stats.categories.videos, name: '视频', itemStyle: { color: '#f59e0b' } },
   { value: props.stats.categories.code, name: '代码', itemStyle: { color: '#8b5cf6' } },
   { value: props.stats.categories.other, name: '其他', itemStyle: { color: '#6b7280' } }
-])
+]);
 
 const pieOption = computed(() => ({
   tooltip: {
@@ -107,26 +107,28 @@ const pieOption = computed(() => ({
       data: pieChartData.value
     }
   ]
-}))
+}));
 
 const handleCleanup = async () => {
-  isCleaningUp.value = true
+  isCleaningUp.value = true;
 
   // 模拟清理过程
-  await new Promise(resolve => setTimeout(resolve, 2000))
+  await new Promise((resolve) => setTimeout(resolve, 2000));
 
-  isCleaningUp.value = false
-  emit('cleanup')
-}
+  isCleaningUp.value = false;
+  emit('cleanup');
+};
 
-const circumference = 2 * Math.PI * 54
+const circumference = 2 * Math.PI * 54;
 const strokeDashoffset = computed(() => {
-  return circumference - (circumference * usagePercentage.value) / 100
-})
+  return circumference - (circumference * usagePercentage.value) / 100;
+});
 </script>
 
 <template>
-  <div class="storage-quota__container bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+  <div
+    class="storage-quota__container bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden"
+  >
     <!-- 标题栏 -->
     <div class="p-6 border-b border-gray-200 dark:border-gray-700">
       <div class="flex items-center justify-between">
@@ -138,9 +140,7 @@ const strokeDashoffset = computed(() => {
         </div>
 
         <!-- 预警状态 -->
-        <div
-          :class="[usageLevel.bg, 'px-4 py-2 rounded-lg flex items-center gap-2']"
-        >
+        <div :class="[usageLevel.bg, 'px-4 py-2 rounded-lg flex items-center gap-2']">
           <span
             class="w-2 h-2 rounded-full animate-pulse"
             :style="{ backgroundColor: usageLevel.color }"
@@ -187,7 +187,9 @@ const strokeDashoffset = computed(() => {
 
             <!-- 中心文字 -->
             <div class="absolute inset-0 flex flex-col items-center justify-center">
-              <span class="text-3xl font-bold text-gray-900 dark:text-white">{{ usagePercentage.toFixed(1) }}%</span>
+              <span class="text-3xl font-bold text-gray-900 dark:text-white"
+                >{{ usagePercentage.toFixed(1) }}%</span
+              >
               <span class="text-xs text-gray-500 dark:text-gray-400 mt-1">已使用</span>
             </div>
           </div>
@@ -196,11 +198,15 @@ const strokeDashoffset = computed(() => {
         <!-- 存储数据 -->
         <div class="grid grid-cols-2 gap-4">
           <div class="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg text-center">
-            <div class="text-2xl font-bold text-gray-900 dark:text-white">{{ formatBytes(stats.usedSpace) }}</div>
+            <div class="text-2xl font-bold text-gray-900 dark:text-white">
+              {{ formatBytes(stats.usedSpace) }}
+            </div>
             <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">已用空间</div>
           </div>
           <div class="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg text-center">
-            <div class="text-2xl font-bold text-blue-600 dark:text-blue-400">{{ formatBytes(stats.totalSpace - stats.usedSpace) }}</div>
+            <div class="text-2xl font-bold text-blue-600 dark:text-blue-400">
+              {{ formatBytes(stats.totalSpace - stats.usedSpace) }}
+            </div>
             <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">剩余空间</div>
           </div>
         </div>
@@ -232,7 +238,7 @@ const strokeDashoffset = computed(() => {
       <!-- 右侧：分类饼图 -->
       <div class="space-y-4">
         <h3 class="font-semibold text-gray-900 dark:text-white">📊 存储分类统计</h3>
-        <div class="bg-gray-50 dark:bg-gray-700/30 rounded-xl p-4" style="height: 320px;">
+        <div class="bg-gray-50 dark:bg-gray-700/30 rounded-xl p-4" style="height: 320px">
           <VChart ref="chartRef" :option="pieOption" autoresize class="w-full h-full" />
         </div>
 
@@ -245,13 +251,31 @@ const strokeDashoffset = computed(() => {
           >
             <span
               class="w-3 h-3 rounded-full flex-shrink-0"
-              :style="{ backgroundColor: { documents: '#3b82f6', images: '#10b981', videos: '#f59e0b', code: '#8b5cf6', other: '#6b7280' }[key] }"
+              :style="{
+                backgroundColor: {
+                  documents: '#3b82f6',
+                  images: '#10b981',
+                  videos: '#f59e0b',
+                  code: '#8b5cf6',
+                  other: '#6b7280'
+                }[key]
+              }"
             ></span>
             <div class="flex-1 min-w-0">
               <div class="text-xs font-medium text-gray-900 dark:text-white truncate">
-                {{ { documents: '📄 文档', images: '🖼️ 图片', videos: '🎬 视频', code: '💻 代码', other: '📦 其他' }[key] }}
+                {{
+                  {
+                    documents: '📄 文档',
+                    images: '🖼️ 图片',
+                    videos: '🎬 视频',
+                    code: '💻 代码',
+                    other: '📦 其他'
+                  }[key]
+                }}
               </div>
-              <div class="text-xs text-gray-500 dark:text-gray-400">{{ formatBytes(category) }}</div>
+              <div class="text-xs text-gray-500 dark:text-gray-400">
+                {{ formatBytes(category) }}
+              </div>
             </div>
           </div>
         </div>
@@ -291,7 +315,9 @@ const strokeDashoffset = computed(() => {
 
             <!-- 文件信息 -->
             <div class="flex-1 min-w-0">
-              <div class="text-sm font-medium text-gray-900 dark:text-white truncate">{{ file.name }}</div>
+              <div class="text-sm font-medium text-gray-900 dark:text-white truncate">
+                {{ file.name }}
+              </div>
               <div class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
                 修改于 {{ formatTimestamp(file.modifiedAt) }}
               </div>
@@ -299,7 +325,9 @@ const strokeDashoffset = computed(() => {
 
             <!-- 大小 -->
             <div class="text-right flex-shrink-0">
-              <div class="text-sm font-semibold text-gray-900 dark:text-white">{{ formatBytes(file.size) }}</div>
+              <div class="text-sm font-semibold text-gray-900 dark:text-white">
+                {{ formatBytes(file.size) }}
+              </div>
             </div>
           </div>
         </TransitionGroup>
@@ -309,10 +337,19 @@ const strokeDashoffset = computed(() => {
     <!-- 升级配额模态框 -->
     <Teleport to="body">
       <Transition name="fade">
-        <div v-if="showUpgradeModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50" @click="showUpgradeModal = false">
-          <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl p-8 max-w-2xl w-full mx-4" @click.stop>
+        <div
+          v-if="showUpgradeModal"
+          class="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+          @click="showUpgradeModal = false"
+        >
+          <div
+            class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl p-8 max-w-2xl w-full mx-4"
+            @click.stop
+          >
             <div class="text-center mb-8">
-              <div class="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-4xl">
+              <div
+                class="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-4xl"
+              >
                 ⚡
               </div>
               <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">升级存储配额</h3>
@@ -323,9 +360,33 @@ const strokeDashoffset = computed(() => {
             <div class="grid grid-cols-3 gap-4 mb-8">
               <div
                 v-for="plan in [
-                  { name: '基础版', space: '50 GB', price: '¥29/月', features: ['50GB 存储空间', '基础备份功能', '邮件支持'], popular: false },
-                  { name: '专业版', space: '200 GB', price: '¥79/月', features: ['200GB 存储空间', '自动增量备份', '优先技术支持', '高级搜索功能'], popular: true },
-                  { name: '企业版', space: '1 TB', price: '¥199/月', features: ['1TB 存储空间', '无限备份历史', '专属客户经理', 'API 接口访问', '定制化方案'], popular: false }
+                  {
+                    name: '基础版',
+                    space: '50 GB',
+                    price: '¥29/月',
+                    features: ['50GB 存储空间', '基础备份功能', '邮件支持'],
+                    popular: false
+                  },
+                  {
+                    name: '专业版',
+                    space: '200 GB',
+                    price: '¥79/月',
+                    features: ['200GB 存储空间', '自动增量备份', '优先技术支持', '高级搜索功能'],
+                    popular: true
+                  },
+                  {
+                    name: '企业版',
+                    space: '1 TB',
+                    price: '¥199/月',
+                    features: [
+                      '1TB 存储空间',
+                      '无限备份历史',
+                      '专属客户经理',
+                      'API 接口访问',
+                      '定制化方案'
+                    ],
+                    popular: false
+                  }
                 ]"
                 :key="plan.name"
                 class="relative p-5 rounded-xl border-2 cursor-pointer transition-all hover:shadow-lg"
@@ -336,18 +397,29 @@ const strokeDashoffset = computed(() => {
                 "
                 @click="emit('upgrade', plan.name)"
               >
-                <div v-if="plan.popular" class="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-blue-500 text-white text-xs font-medium rounded-full">
+                <div
+                  v-if="plan.popular"
+                  class="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-blue-500 text-white text-xs font-medium rounded-full"
+                >
                   推荐
                 </div>
 
                 <div class="text-center mb-4">
-                  <div class="text-2xl font-bold text-gray-900 dark:text-white">{{ plan.name }}</div>
-                  <div class="text-3xl font-bold text-blue-600 dark:text-blue-400 my-2">{{ plan.price }}</div>
+                  <div class="text-2xl font-bold text-gray-900 dark:text-white">
+                    {{ plan.name }}
+                  </div>
+                  <div class="text-3xl font-bold text-blue-600 dark:text-blue-400 my-2">
+                    {{ plan.price }}
+                  </div>
                   <div class="text-sm text-gray-500 dark:text-gray-400">{{ plan.space }}</div>
                 </div>
 
                 <ul class="space-y-2">
-                  <li v-for="feature in plan.features" :key="feature" class="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
+                  <li
+                    v-for="feature in plan.features"
+                    :key="feature"
+                    class="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400"
+                  >
                     <span class="text-green-500 mt-0.5">✓</span>
                     {{ feature }}
                   </li>

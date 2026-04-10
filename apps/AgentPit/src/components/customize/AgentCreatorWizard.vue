@@ -1,25 +1,30 @@
 <script setup lang="ts">
-import { ref, reactive, computed, provide, watch } from 'vue'
-import BasicInfoForm from './BasicInfoForm.vue'
-import AppearanceCustomizer from './AppearanceCustomizer.vue'
-import AbilityConfigurator from './AbilityConfigurator.vue'
-import BusinessModelSetup from './BusinessModelSetup.vue'
-import AgentPreview from './AgentPreview.vue'
-import { abilities, agentTemplates, defaultAgentConfig, type AgentConfig } from '../../data/mockCustomize'
+import { ref, reactive, computed, provide, watch } from 'vue';
+import BasicInfoForm from './BasicInfoForm.vue';
+import AppearanceCustomizer from './AppearanceCustomizer.vue';
+import AbilityConfigurator from './AbilityConfigurator.vue';
+import BusinessModelSetup from './BusinessModelSetup.vue';
+import AgentPreview from './AgentPreview.vue';
+import {
+  abilities,
+  agentTemplates,
+  defaultAgentConfig,
+  type AgentConfig
+} from '../../data/mockCustomize';
 
 interface Props {
-  editAgent?: AgentConfig | null
+  editAgent?: AgentConfig | null;
 }
 
-const props = defineProps<Props>()
+const props = defineProps<Props>();
 const emit = defineEmits<{
-  complete: [config: AgentConfig]
-  cancel: []
-}>()
+  complete: [config: AgentConfig];
+  cancel: [];
+}>();
 
-const currentStep = ref(1)
-const totalSteps = 5
-const isSubmitting = ref(false)
+const currentStep = ref(1);
+const totalSteps = 5;
+const isSubmitting = ref(false);
 
 const steps = [
   { id: 1, title: '选择模板', icon: '📋', description: '从预设模板开始' },
@@ -27,85 +32,90 @@ const steps = [
   { id: 3, title: '外观定制', icon: '🎨', description: '颜色、字体和布局' },
   { id: 4, title: '能力配置', icon: '⚙️', description: '技能和参数设置' },
   { id: 5, title: '商业模式', icon: '💰', description: '定价和服务范围' }
-]
+];
 
 const agentConfig = reactive<AgentConfig>(
-  props.editAgent ? JSON.parse(JSON.stringify(props.editAgent)) : JSON.parse(JSON.stringify(defaultAgentConfig))
-)
-const selectedTemplateId = ref<string>('')
+  props.editAgent
+    ? JSON.parse(JSON.stringify(props.editAgent))
+    : JSON.parse(JSON.stringify(defaultAgentConfig))
+);
+const selectedTemplateId = ref<string>('');
 
-provide('agentConfig', agentConfig)
+provide('agentConfig', agentConfig);
 
-const progressPercent = computed(() => Math.round((currentStep.value / totalSteps) * 100))
+const progressPercent = computed(() => Math.round((currentStep.value / totalSteps) * 100));
 const canGoNext = computed(() => {
   switch (currentStep.value) {
-    case 1: return selectedTemplateId.value !== ''
-    case 2: return agentConfig.basicInfo.name.length >= 2 && agentConfig.basicInfo.category !== ''
-    default: return true
+    case 1:
+      return selectedTemplateId.value !== '';
+    case 2:
+      return agentConfig.basicInfo.name.length >= 2 && agentConfig.basicInfo.category !== '';
+    default:
+      return true;
   }
-})
-const isLastStep = computed(() => currentStep.value === totalSteps)
-const isFirstStep = computed(() => currentStep.value === 1)
+});
+const isLastStep = computed(() => currentStep.value === totalSteps);
+const isFirstStep = computed(() => currentStep.value === 1);
 
 const completedSteps = computed(() => {
-  const completed: number[] = []
-  if (selectedTemplateId.value) completed.push(1)
-  if (agentConfig.basicInfo.name.length >= 2) completed.push(2)
-  if (currentStep.value > 3) completed.push(3)
-  if (currentStep.value > 4) completed.push(4)
-  return completed
-})
+  const completed: number[] = [];
+  if (selectedTemplateId.value) completed.push(1);
+  if (agentConfig.basicInfo.name.length >= 2) completed.push(2);
+  if (currentStep.value > 3) completed.push(3);
+  if (currentStep.value > 4) completed.push(4);
+  return completed;
+});
 
 const applyTemplate = (templateId: string) => {
-  selectedTemplateId.value = templateId
-  const template = agentTemplates.find(t => t.id === templateId)
+  selectedTemplateId.value = templateId;
+  const template = agentTemplates.find((t) => t.id === templateId);
   if (template) {
-    agentConfig.basicInfo.category = template.category
-    template.recommendedAbilities.forEach(abilityId => {
+    agentConfig.basicInfo.category = template.category;
+    template.recommendedAbilities.forEach((abilityId) => {
       if (!agentConfig.abilities.enabledAbilities[abilityId]) {
-        const ability = abilities.find((a: any) => a.id === abilityId)
+        const ability = abilities.find((a: any) => a.id === abilityId);
         agentConfig.abilities.enabledAbilities[abilityId] = {
           enabled: true,
           proficiency: 75,
           params: ability ? { ...ability.defaultParams } : {}
-        }
+        };
       }
-    })
+    });
   }
-}
+};
 
 const goNext = () => {
   if (canGoNext.value && currentStep.value < totalSteps) {
-    currentStep.value++
+    currentStep.value++;
   }
-}
+};
 
 const goPrev = () => {
   if (currentStep.value > 1) {
-    currentStep.value--
+    currentStep.value--;
   }
-}
+};
 
 const handleSubmit = async () => {
-  isSubmitting.value = true
-  await new Promise(resolve => setTimeout(resolve, 800))
-  emit('complete', { ...agentConfig })
-  isSubmitting.value = false
-}
+  isSubmitting.value = true;
+  await new Promise((resolve) => setTimeout(resolve, 800));
+  emit('complete', { ...agentConfig });
+  isSubmitting.value = false;
+};
 
 const handleCancel = () => {
-  emit('cancel')
-}
+  emit('cancel');
+};
 
 watch(currentStep, (_newVal) => {
-  window.scrollTo({ top: 0, behavior: 'smooth' })
-})
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
 
 watch(selectedTemplateId, (val) => {
   if (val && currentStep.value === 1) {
-    applyTemplate(val)
+    applyTemplate(val);
   }
-})
+});
 </script>
 
 <template>
@@ -113,7 +123,9 @@ watch(selectedTemplateId, (val) => {
     <div class="mb-8">
       <div class="flex items-center justify-between mb-3">
         <h2 class="text-xl font-bold text-gray-900 dark:text-white">创建智能体</h2>
-        <span class="text-sm font-medium px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400">
+        <span
+          class="text-sm font-medium px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
+        >
           {{ progressPercent }}% 完成
         </span>
       </div>
@@ -140,9 +152,12 @@ watch(selectedTemplateId, (val) => {
             <div
               class="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300 border-2 relative z-10"
               :class="{
-                'bg-blue-500 border-blue-500 text-white shadow-lg shadow-blue-200 dark:shadow-blue-900/50 scale-110': currentStep === step.id,
-                'bg-green-500 border-green-500 text-white': completedSteps.includes(step.id) && currentStep !== step.id,
-                'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-400 hover:border-gray-400': !completedSteps.includes(step.id) && currentStep !== step.id,
+                'bg-blue-500 border-blue-500 text-white shadow-lg shadow-blue-200 dark:shadow-blue-900/50 scale-110':
+                  currentStep === step.id,
+                'bg-green-500 border-green-500 text-white':
+                  completedSteps.includes(step.id) && currentStep !== step.id,
+                'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-400 hover:border-gray-400':
+                  !completedSteps.includes(step.id) && currentStep !== step.id,
                 'cursor-pointer hover:border-blue-300': currentStep >= step.id,
                 'cursor-not-allowed opacity-50': currentStep + 1 < step.id
               }"
@@ -154,10 +169,13 @@ watch(selectedTemplateId, (val) => {
               class="mt-1.5 text-[11px] font-medium whitespace-nowrap transition-colors hidden sm:block"
               :class="{
                 'text-blue-600 dark:text-blue-400': currentStep === step.id,
-                'text-green-600 dark:text-green-400': completedSteps.includes(step.id) && currentStep !== step.id,
-                'text-gray-400 dark:text-gray-500': !completedSteps.includes(step.id) && currentStep !== step.id
+                'text-green-600 dark:text-green-400':
+                  completedSteps.includes(step.id) && currentStep !== step.id,
+                'text-gray-400 dark:text-gray-500':
+                  !completedSteps.includes(step.id) && currentStep !== step.id
               }"
-            >{{ step.title }}</span>
+              >{{ step.title }}</span
+            >
           </button>
         </div>
       </div>
@@ -167,8 +185,12 @@ watch(selectedTemplateId, (val) => {
       <div class="lg:col-span-2">
         <TransitionGroup name="step" tag="div" class="relative min-h-[420px]">
           <div v-if="currentStep === 1" key="step-1" class="w-full">
-            <div class="mb-4 p-4 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
-              <p class="text-sm text-gray-600 dark:text-gray-400">选择一个基础模板，我们将为您预填充推荐配置，您可以在后续步骤中自由调整。</p>
+            <div
+              class="mb-4 p-4 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700"
+            >
+              <p class="text-sm text-gray-600 dark:text-gray-400">
+                选择一个基础模板，我们将为您预填充推荐配置，您可以在后续步骤中自由调整。
+              </p>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <button
@@ -186,21 +208,40 @@ watch(selectedTemplateId, (val) => {
                 <div class="flex items-start gap-3">
                   <span class="text-3xl">{{ template.icon }}</span>
                   <div class="flex-1 min-w-0">
-                    <h4 class="font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{{ template.name }}</h4>
-                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">{{ template.description }}</p>
+                    <h4
+                      class="font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors"
+                    >
+                      {{ template.name }}
+                    </h4>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">
+                      {{ template.description }}
+                    </p>
                     <div class="flex flex-wrap gap-1 mt-2">
                       <span
                         v-for="(abilityId, idx) in template.recommendedAbilities.slice(0, 3)"
                         :key="idx"
                         class="text-[10px] px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 rounded"
-                      >{{ abilityId.split('-')[0] }}</span>
+                        >{{ abilityId.split('-')[0] }}</span
+                      >
                     </div>
                   </div>
                   <div
                     v-if="selectedTemplateId === template.id"
                     class="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center shrink-0 mt-0.5"
                   >
-                    <svg class="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>
+                    <svg
+                      class="w-3 h-3 text-white"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="3"
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
                   </div>
                 </div>
               </button>
@@ -255,7 +296,21 @@ watch(selectedTemplateId, (val) => {
               @click="handleSubmit"
             >
               <span v-if="isSubmitting" class="inline-flex items-center gap-1.5">
-                <svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                <svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+                  <circle
+                    class="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    stroke-width="4"
+                  ></circle>
+                  <path
+                    class="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                  ></path>
+                </svg>
                 创建中...
               </span>
               <span v-else>完成创建 ✓</span>

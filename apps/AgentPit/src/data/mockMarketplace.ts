@@ -1,100 +1,106 @@
 export interface Product {
-  id: string
-  name: string
-  description: string
-  price: number
-  originalPrice?: number
-  category: string
-  subCategory: string
-  images: string[]
-  rating: number
-  reviewCount: number
-  salesCount: number
-  stock: number
-  tags: ('new' | 'hot' | 'discount' | 'recommended')[]
-  seller: Seller
-  specs: { label: string; value: string }[]
-  type: 'digital' | 'physical' | 'service'
-  createdAt: string
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  originalPrice?: number;
+  category: string;
+  subCategory: string;
+  images: string[];
+  rating: number;
+  reviewCount: number;
+  salesCount: number;
+  stock: number;
+  tags: ('new' | 'hot' | 'discount' | 'recommended')[];
+  seller: Seller;
+  specs: { label: string; value: string }[];
+  type: 'digital' | 'physical' | 'service';
+  createdAt: string;
 }
 
 export interface Seller {
-  id: string
-  name: string
-  avatar: string
-  storeName: string
-  rating: number
-  followerCount: number
-  productCount: number
-  description: string
-  isVerified: boolean
+  id: string;
+  name: string;
+  avatar: string;
+  storeName: string;
+  rating: number;
+  followerCount: number;
+  productCount: number;
+  description: string;
+  isVerified: boolean;
 }
 
 export interface Category {
-  id: string
-  name: string
-  icon: string
-  children?: SubCategory[]
+  id: string;
+  name: string;
+  icon: string;
+  children?: SubCategory[];
 }
 
 export interface SubCategory {
-  id: string
-  name: string
-  count: number
+  id: string;
+  name: string;
+  count: number;
 }
 
 export interface Review {
-  id: string
-  productId: string
-  userId: string
-  userName: string
-  userAvatar: string
-  rating: number
-  content: string
-  images?: string[]
-  likes: number
-  createdAt: string
-  isVerifiedPurchase: boolean
+  id: string;
+  productId: string;
+  userId: string;
+  userName: string;
+  userAvatar: string;
+  rating: number;
+  content: string;
+  images?: string[];
+  likes: number;
+  createdAt: string;
+  isVerifiedPurchase: boolean;
 }
 
 export interface LogisticsStep {
-  time: string
-  description: string
-  status: 'in_transit' | 'delivered' | 'picked_up' | 'out_for_delivery'
+  time: string;
+  description: string;
+  status: 'in_transit' | 'delivered' | 'picked_up' | 'out_for_delivery';
 }
 
 export interface Order {
-  id: string
-  orderNumber: string
-  items: OrderItem[]
-  totalAmount: number
-  status: 'pending_payment' | 'pending_shipment' | 'pending_receipt' | 'completed' | 'cancelled' | 'refunding'
-  createdAt: string
-  paymentMethod: string
-  shippingAddress: ShippingAddress
-  trackingNumber?: string
-  logisticsInfo?: LogisticsStep[]
+  id: string;
+  orderNumber: string;
+  items: OrderItem[];
+  totalAmount: number;
+  status:
+    | 'pending_payment'
+    | 'pending_shipment'
+    | 'pending_receipt'
+    | 'completed'
+    | 'cancelled'
+    | 'refunding';
+  createdAt: string;
+  paymentMethod: string;
+  shippingAddress: ShippingAddress;
+  trackingNumber?: string;
+  logisticsInfo?: LogisticsStep[];
 }
 
 export interface OrderItem {
-  product: Product
-  quantity: number
-  price: number
+  product: Product;
+  quantity: number;
+  price: number;
 }
 
 export interface ShippingAddress {
-  recipient: string
-  phone: string
-  province: string
-  city: string
-  district: string
-  detail: string
+  recipient: string;
+  phone: string;
+  province: string;
+  city: string;
+  district: string;
+  detail: string;
 }
 
 export interface CartItem {
-  product: Product
-  quantity: number
-  selected: boolean
+  product: Product;
+  quantity: number;
+  selected: boolean;
 }
 
 export const sellers: Seller[] = [
@@ -119,8 +125,8 @@ export const sellers: Seller[] = [
     productCount: 32,
     description: '专业AI培训课程，从入门到精通全覆盖',
     isVerified: true
-  },
-]
+  }
+];
 
 export const categories: Category[] = [
   {
@@ -130,7 +136,7 @@ export const categories: Category[] = [
     children: [
       { id: 'c1-1', name: '智能体模板', count: 156 },
       { id: 'c1-2', name: 'API接口', count: 89 },
-      { id: 'c1-3', name: '数据集', count: 67 },
+      { id: 'c1-3', name: '数据集', count: 67 }
     ]
   },
   {
@@ -139,10 +145,10 @@ export const categories: Category[] = [
     icon: '📚',
     children: [
       { id: 'c2-1', name: 'AI入门', count: 78 },
-      { id: 'c2-2', name: '进阶实战', count: 65 },
+      { id: 'c2-2', name: '进阶实战', count: 65 }
     ]
-  },
-]
+  }
+];
 
 export const products: Product[] = [
   {
@@ -162,7 +168,7 @@ export const products: Product[] = [
     seller: sellers[0]!,
     specs: [
       { label: '适用场景', value: '电商客服、在线咨询' },
-      { label: '技术栈', value: 'React + Node.js + OpenAI API' },
+      { label: '技术栈', value: 'React + Node.js + OpenAI API' }
     ],
     type: 'digital',
     createdAt: '2024-03-15'
@@ -182,13 +188,11 @@ export const products: Product[] = [
     stock: 999,
     tags: ['hot', 'discount'],
     seller: sellers[0]!,
-    specs: [
-      { label: '支持平台', value: 'SD / MJ / DALL-E' },
-    ],
+    specs: [{ label: '支持平台', value: 'SD / MJ / DALL-E' }],
     type: 'digital',
     createdAt: '2024-02-20'
-  },
-]
+  }
+];
 
 export const reviews: Review[] = [
   {
@@ -202,8 +206,8 @@ export const reviews: Review[] = [
     likes: 45,
     createdAt: '2024-04-01',
     isVerifiedPurchase: true
-  },
-]
+  }
+];
 
 export const orders: Order[] = [
   {
@@ -221,23 +225,23 @@ export const orders: Order[] = [
       city: '北京市',
       district: '海淀区',
       detail: '中关村大街1号'
-    },
-  },
-]
+    }
+  }
+];
 
 export const getProductById = (id: string): Product | undefined => {
-  return products.find(p => p.id === id)
-}
+  return products.find((p) => p.id === id);
+};
 
 export const getProductsByCategory = (category: string): Product[] => {
-  return products.filter(p => p.category === category)
-}
+  return products.filter((p) => p.category === category);
+};
 
 export const getReviewsByProductId = (productId: string): Review[] => {
-  return reviews.filter(r => r.productId === productId)
-}
+  return reviews.filter((r) => r.productId === productId);
+};
 
 export const getOrdersByStatus = (status: string): Order[] => {
-  if (status === 'all') return orders
-  return orders.filter(o => o.status === status)
-}
+  if (status === 'all') return orders;
+  return orders.filter((o) => o.status === status);
+};

@@ -1,11 +1,11 @@
 export interface ModuleConfig {
-  id: string
-  title: string
-  description: string
-  icon: string
-  routePath: string
-  color: string
-  badge?: string | number
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  routePath: string;
+  color: string;
+  badge?: string | number;
 }
 
 export const coreModules: ModuleConfig[] = [
@@ -81,7 +81,7 @@ export const coreModules: ModuleConfig[] = [
     routePath: '/collaboration#core',
     color: '#6366f1'
   }
-]
+];
 
 export const extraModules: ModuleConfig[] = [
   {
@@ -100,8 +100,8 @@ export const extraModules: ModuleConfig[] = [
     routePath: '/settings',
     color: '#64748b'
   }
-]
+];
 
-export const allModules: ModuleConfig[] = [...coreModules, ...extraModules]
+export const allModules: ModuleConfig[] = [...coreModules, ...extraModules];
 
-export default allModules
+export default allModules;

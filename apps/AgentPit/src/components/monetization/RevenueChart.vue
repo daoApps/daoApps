@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import VChart from 'vue-echarts'
-import { use } from 'echarts/core'
-import { CanvasRenderer } from 'echarts/renderers'
-import { LineChart, BarChart, PieChart } from 'echarts/charts'
+import { ref, computed } from 'vue';
+import VChart from 'vue-echarts';
+import { use } from 'echarts/core';
+import { CanvasRenderer } from 'echarts/renderers';
+import { LineChart, BarChart, PieChart } from 'echarts/charts';
 import {
   TitleComponent,
   TooltipComponent,
   LegendComponent,
   GridComponent
-} from 'echarts/components'
-import type { RevenueDataPoint, SourceDistribution } from '@/types/monetization'
+} from 'echarts/components';
+import type { RevenueDataPoint, SourceDistribution } from '@/types/monetization';
 
 use([
   CanvasRenderer,
@@ -21,27 +21,27 @@ use([
   TooltipComponent,
   LegendComponent,
   GridComponent
-])
+]);
 
 interface Props {
-  data: RevenueDataPoint[]
-  sourceData: SourceDistribution[]
+  data: RevenueDataPoint[];
+  sourceData: SourceDistribution[];
 }
 
-const props = defineProps<Props>()
+const props = defineProps<Props>();
 
-type TimeRange = '7' | '30' | '90' | '365'
-type ChartView = 'line' | 'bar'
+type TimeRange = '7' | '30' | '90' | '365';
+type ChartView = 'line' | 'bar';
 
-const selectedRange = ref<TimeRange>('30')
-const chartView = ref<ChartView>('line')
+const selectedRange = ref<TimeRange>('30');
+const chartView = ref<ChartView>('line');
 
 const timeRanges: { value: TimeRange; label: string }[] = [
   { value: '7', label: '7天' },
   { value: '30', label: '30天' },
   { value: '90', label: '90天' },
   { value: '365', label: '1年' }
-]
+];
 
 const lineChartOption = computed(() => ({
   tooltip: {
@@ -53,14 +53,14 @@ const lineChartOption = computed(() => ({
       color: '#333'
     },
     formatter: (params: any) => {
-      let result = `<div style="font-weight:600;margin-bottom:8px">${params[0].axisValue}</div>`
+      let result = `<div style="font-weight:600;margin-bottom:8px">${params[0].axisValue}</div>`;
       params.forEach((item: any) => {
         result += `<div style="display:flex;align-items:center;gap:6px;margin:4px 0">
           <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${item.color}"></span>
           <span>${item.seriesName}: ¥${item.value.toLocaleString()}</span>
-        </div>`
-      })
-      return result
+        </div>`;
+      });
+      return result;
     }
   },
   legend: {
@@ -76,7 +76,7 @@ const lineChartOption = computed(() => ({
   },
   xAxis: {
     type: 'category',
-    data: props.data.map(item => item.date),
+    data: props.data.map((item) => item.date),
     axisLine: { lineStyle: { color: '#e5e7eb' } },
     axisLabel: { color: '#6b7280', fontSize: 12 }
   },
@@ -94,7 +94,7 @@ const lineChartOption = computed(() => ({
     {
       name: '收入',
       type: 'line',
-      data: props.data.map(item => item.revenue),
+      data: props.data.map((item) => item.revenue),
       smooth: true,
       lineStyle: { width: 3, color: '#0ea5e9' },
       itemStyle: { color: '#0ea5e9' },
@@ -115,7 +115,7 @@ const lineChartOption = computed(() => ({
     {
       name: '净利润',
       type: 'line',
-      data: props.data.map(item => item.profit),
+      data: props.data.map((item) => item.profit),
       smooth: true,
       lineStyle: { width: 3, color: '#10b981' },
       itemStyle: { color: '#10b981' },
@@ -134,7 +134,7 @@ const lineChartOption = computed(() => ({
       }
     }
   ]
-}))
+}));
 
 const barChartOption = computed(() => ({
   tooltip: {
@@ -157,7 +157,7 @@ const barChartOption = computed(() => ({
   },
   xAxis: {
     type: 'category',
-    data: props.data.map(item => item.date),
+    data: props.data.map((item) => item.date),
     axisLine: { lineStyle: { color: '#e5e7eb' } },
     axisLabel: { color: '#6b7280', fontSize: 12 }
   },
@@ -175,7 +175,7 @@ const barChartOption = computed(() => ({
     {
       name: '收入',
       type: 'bar',
-      data: props.data.map(item => item.revenue),
+      data: props.data.map((item) => item.revenue),
       itemStyle: {
         color: {
           type: 'linear',
@@ -194,7 +194,7 @@ const barChartOption = computed(() => ({
     {
       name: '支出',
       type: 'bar',
-      data: props.data.map(item => item.expenses),
+      data: props.data.map((item) => item.expenses),
       itemStyle: {
         color: {
           type: 'linear',
@@ -211,7 +211,7 @@ const barChartOption = computed(() => ({
       }
     }
   ]
-}))
+}));
 
 const pieChartOption = computed(() => ({
   tooltip: {
@@ -239,18 +239,18 @@ const pieChartOption = computed(() => ({
       emphasis: {
         label: { show: true, fontSize: 14, fontWeight: 'bold' }
       },
-      data: props.sourceData.map(item => ({
+      data: props.sourceData.map((item) => ({
         name: item.name,
         value: item.value,
         itemStyle: { color: item.color }
       }))
     }
   ]
-}))
+}));
 
 const currentChartOption = computed(() =>
   chartView.value === 'line' ? lineChartOption.value : barChartOption.value
-)
+);
 </script>
 
 <template>
@@ -320,10 +320,7 @@ const currentChartOption = computed(() =>
             class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
           >
             <div class="flex items-center gap-3">
-              <div
-                class="w-3 h-3 rounded-full"
-                :style="{ backgroundColor: item.color }"
-              />
+              <div class="w-3 h-3 rounded-full" :style="{ backgroundColor: item.color }" />
               <span class="text-sm font-medium text-gray-700">{{ item.name }}</span>
             </div>
             <span class="text-sm font-bold text-gray-900">{{ item.value }}%</span>

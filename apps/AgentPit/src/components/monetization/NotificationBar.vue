@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import type { Notification } from '@/composables/useRealtimeData'
+import type { Notification } from '@/composables/useRealtimeData';
 
 interface Props {
-  notifications: Notification[]
+  notifications: Notification[];
 }
 
-defineProps<Props>()
+defineProps<Props>();
 
 const emit = defineEmits<{
-  remove: [id: string]
-}>()
+  remove: [id: string];
+}>();
 
 const notificationConfig = {
   success: {
@@ -36,7 +36,7 @@ const notificationConfig = {
     text: 'text-blue-800',
     icon: 'ℹ'
   }
-}
+};
 </script>
 
 <template>
@@ -70,7 +70,12 @@ const notificationConfig = {
           @click="emit('remove', notification.id)"
         >
           <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
         </button>
       </div>

@@ -1,31 +1,31 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { templates, templateCategories } from '@/data/mockSphinx'
-import type { Template } from '@/data/mockSphinx'
+import { ref, computed } from 'vue';
+import { templates, templateCategories } from '@/data/mockSphinx';
+import type { Template } from '@/data/mockSphinx';
 
 const props = defineProps<{
-  onSelectTemplate: (template: Template) => void
-  selectedTemplateId?: string
-}>()
+  onSelectTemplate: (template: Template) => void;
+  selectedTemplateId?: string;
+}>();
 
-const selectedCategory = ref<string>('all')
-const previewTemplate = ref<Template | null>(null)
+const selectedCategory = ref<string>('all');
+const previewTemplate = ref<Template | null>(null);
 
 const filteredTemplates = computed(() => {
   if (selectedCategory.value === 'all') {
-    return templates
+    return templates;
   }
-  return templates.filter((t) => t.category === selectedCategory.value)
-})
+  return templates.filter((t) => t.category === selectedCategory.value);
+});
 
 const handleSelectWithPreview = (template: Template) => {
-  props.onSelectTemplate(template)
-  previewTemplate.value = null
-}
+  props.onSelectTemplate(template);
+  previewTemplate.value = null;
+};
 
 const getCategoryInfo = (categoryId: string) => {
-  return templateCategories.find((c) => c.id === categoryId)
-}
+  return templateCategories.find((c) => c.id === categoryId);
+};
 </script>
 
 <template>
@@ -63,13 +63,17 @@ const getCategoryInfo = (categoryId: string) => {
         ]"
         @click="previewTemplate = template"
       >
-        <div class="aspect-video bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-600 flex items-center justify-center text-6xl group-hover:scale-105 transition-transform duration-300">
+        <div
+          class="aspect-video bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-600 flex items-center justify-center text-6xl group-hover:scale-105 transition-transform duration-300"
+        >
           {{ template.thumbnail }}
         </div>
 
         <div class="p-4">
           <h4 class="font-semibold text-gray-900 dark:text-white mb-1">{{ template.name }}</h4>
-          <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">{{ template.description }}</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
+            {{ template.description }}
+          </p>
 
           <div class="mt-3 flex flex-wrap gap-1">
             <span
@@ -111,9 +115,12 @@ const getCategoryInfo = (categoryId: string) => {
           <div class="p-6">
             <div class="flex items-start justify-between mb-4">
               <div>
-                <h3 class="text-2xl font-bold text-gray-900 dark:text-white">{{ previewTemplate.name }}</h3>
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white">
+                  {{ previewTemplate.name }}
+                </h3>
                 <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                  {{ getCategoryInfo(previewTemplate.category)?.icon }} {{ getCategoryInfo(previewTemplate.category)?.label }}
+                  {{ getCategoryInfo(previewTemplate.category)?.icon }}
+                  {{ getCategoryInfo(previewTemplate.category)?.label }}
                 </p>
               </div>
               <button
@@ -124,7 +131,9 @@ const getCategoryInfo = (categoryId: string) => {
               </button>
             </div>
 
-            <div class="aspect-video bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-600 rounded-xl flex items-center justify-center text-8xl mb-6">
+            <div
+              class="aspect-video bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-600 rounded-xl flex items-center justify-center text-8xl mb-6"
+            >
               {{ previewTemplate.thumbnail }}
             </div>
 
@@ -144,9 +153,13 @@ const getCategoryInfo = (categoryId: string) => {
               </div>
             </div>
 
-            <div class="mb-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+            <div
+              class="mb-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800"
+            >
               <h4 class="font-semibold text-blue-900 dark:text-blue-300 mb-1">适用场景</h4>
-              <p class="text-sm text-blue-700 dark:text-blue-400">{{ previewTemplate.suitableFor }}</p>
+              <p class="text-sm text-blue-700 dark:text-blue-400">
+                {{ previewTemplate.suitableFor }}
+              </p>
             </div>
 
             <div class="flex space-x-3">

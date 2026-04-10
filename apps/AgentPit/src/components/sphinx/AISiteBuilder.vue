@@ -1,70 +1,74 @@
 <script setup lang="ts">
-import { ref, nextTick, watch } from 'vue'
-import { marked } from 'marked'
-import DOMPurify from 'dompurify'
-import { presetQuestions, aiResponses, sampleChatHistory } from '@/data/mockSphinx'
-import type { ChatMessage } from '@/data/mockSphinx'
+import { ref, nextTick, watch } from 'vue';
+import { marked } from 'marked';
+import DOMPurify from 'dompurify';
+import { presetQuestions, aiResponses, sampleChatHistory } from '@/data/mockSphinx';
+import type { ChatMessage } from '@/data/mockSphinx';
 
 const props = defineProps<{
-  onSiteConfigGenerated?: (config: Partial<{ templateType: string; description: string }>) => void
-}>()
+  onSiteConfigGenerated?: (config: Partial<{ templateType: string; description: string }>) => void;
+}>();
 
-const messages = ref<ChatMessage[]>([...sampleChatHistory])
-const inputValue = ref('')
-const isTyping = ref(false)
-const messagesContainer = ref<HTMLDivElement | null>(null)
-const showCodePanel = ref(false)
-const generatedCode = ref('')
-const currentCodeLanguage = ref('html')
+const messages = ref<ChatMessage[]>([...sampleChatHistory]);
+const inputValue = ref('');
+const isTyping = ref(false);
+const messagesContainer = ref<HTMLDivElement | null>(null);
+const showCodePanel = ref(false);
+const generatedCode = ref('');
+const currentCodeLanguage = ref('html');
 
 const scrollToBottom = async () => {
-  await nextTick()
+  await nextTick();
   if (messagesContainer.value) {
-    messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight
+    messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight;
   }
-}
+};
 
-watch(messages, () => {
-  scrollToBottom()
-}, { deep: true })
+watch(
+  messages,
+  () => {
+    scrollToBottom();
+  },
+  { deep: true }
+);
 
 const renderMarkdown = (content: string): string => {
-  const rawHtml = marked(content) as string
-  return DOMPurify.sanitize(rawHtml)
-}
+  const rawHtml = marked(content) as string;
+  return DOMPurify.sanitize(rawHtml);
+};
 
 const getAIResponse = (userInput: string): { text: string; code?: string } => {
-  const input = userInput.toLowerCase()
+  const input = userInput.toLowerCase();
 
   if (input.includes('电商') || input.includes('购物') || input.includes('商城')) {
     return {
       text: aiResponses['电商'] || '好的，我来帮您创建电商网站...',
       code: generateEcommerceCode()
-    }
+    };
   }
   if (input.includes('博客') || input.includes('写作') || input.includes('文章')) {
     return {
       text: aiResponses['博客'] || '好的，我来帮您创建个人博客...',
       code: generateBlogCode()
-    }
+    };
   }
   if (input.includes('企业') || input.includes('公司') || input.includes('官网')) {
     return {
       text: aiResponses['企业'] || '好的，我来帮您创建企业官网...',
       code: generateCorporateCode()
-    }
+    };
   }
   if (input.includes('作品集') || input.includes('作品') || input.includes('展示')) {
     return {
       text: aiResponses['作品集'] || '好的，我来帮您创建作品集网站...',
       code: generatePortfolioCode()
-    }
+    };
   }
 
   return {
     text: aiResponses['default'] || '根据您的需求，我为您推荐建站方案...'
-  }
-}
+  };
+};
 
 const generateEcommerceCode = (): string => {
   return `<!DOCTYPE html>
@@ -108,8 +112,8 @@ const generateEcommerceCode = (): string => {
     </div>
   </main>
 </body>
-</html>`
-}
+</html>`;
+};
 
 const generateBlogCode = (): string => {
   return `<!DOCTYPE html>
@@ -141,8 +145,8 @@ const generateBlogCode = (): string => {
     </article>
   </main>
 </body>
-</html>`
-}
+</html>`;
+};
 
 const generateCorporateCode = (): string => {
   return `<!DOCTYPE html>
@@ -183,8 +187,8 @@ const generateCorporateCode = (): string => {
     </div>
   </section>
 </body>
-</html>`
-}
+</html>`;
+};
 
 const generatePortfolioCode = (): string => {
   return `<!DOCTYPE html>
@@ -215,73 +219,79 @@ const generatePortfolioCode = (): string => {
     <div class="work-item">🎨</div>
   </main>
 </body>
-</html>`
-}
+</html>`;
+};
 
 const handleSend = (text?: string) => {
-  const messageText = text || inputValue.value.trim()
-  if (!messageText) return
+  const messageText = text || inputValue.value.trim();
+  if (!messageText) return;
 
   const userMessage: ChatMessage = {
     id: Date.now(),
     type: 'user',
     content: messageText,
     timestamp: new Date()
-  }
+  };
 
-  messages.value.push(userMessage)
-  inputValue.value = ''
-  isTyping.value = true
+  messages.value.push(userMessage);
+  inputValue.value = '';
+  isTyping.value = true;
 
   setTimeout(() => {
-    const response = getAIResponse(messageText)
+    const response = getAIResponse(messageText);
     const aiMessage: ChatMessage = {
       id: Date.now() + 1,
       type: 'ai',
       content: response.text,
       timestamp: new Date()
-    }
+    };
 
-    messages.value.push(aiMessage)
-    isTyping.value = false
+    messages.value.push(aiMessage);
+    isTyping.value = false;
 
     if (response.code) {
-      generatedCode.value = response.code
-      currentCodeLanguage.value = 'html'
+      generatedCode.value = response.code;
+      currentCodeLanguage.value = 'html';
     }
 
     if (props.onSiteConfigGenerated) {
       props.onSiteConfigGenerated({
         templateType: messageText,
         description: messageText
-      })
+      });
     }
-  }, 1500)
-}
+  }, 1500);
+};
 
 const handleKeyPress = (e: KeyboardEvent) => {
   if (e.key === 'Enter' && !e.shiftKey) {
-    e.preventDefault()
-    handleSend()
+    e.preventDefault();
+    handleSend();
   }
-}
+};
 
 const copyCode = () => {
-  navigator.clipboard.writeText(generatedCode.value)
-  alert('代码已复制到剪贴板！')
-}
+  navigator.clipboard.writeText(generatedCode.value);
+  alert('代码已复制到剪贴板！');
+};
 
 const applyToPreview = () => {
-  window.dispatchEvent(new CustomEvent('apply-code', { detail: generatedCode.value }))
-}
+  window.dispatchEvent(new CustomEvent('apply-code', { detail: generatedCode.value }));
+};
 </script>
 
 <template>
-  <div class="flex flex-col h-full bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+  <div
+    class="flex flex-col h-full bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700"
+  >
     <!-- 头部 -->
-    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20">
+    <div
+      class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20"
+    >
       <div class="flex items-center space-x-3">
-        <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold">
+        <div
+          class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold"
+        >
           AI
         </div>
         <div>
@@ -292,7 +302,11 @@ const applyToPreview = () => {
     </div>
 
     <!-- 消息列表区域 -->
-    <div ref="messagesContainer" class="flex-1 overflow-y-auto p-6 space-y-4" style="max-height: calc(100vh - 350px); min-height: 400px;">
+    <div
+      ref="messagesContainer"
+      class="flex-1 overflow-y-auto p-6 space-y-4"
+      style="max-height: calc(100vh - 350px); min-height: 400px"
+    >
       <div
         v-for="message in messages"
         :key="message.id"
@@ -318,15 +332,21 @@ const applyToPreview = () => {
                 : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white'
             ]"
           >
-            <div v-if="message.type === 'ai'" class="prose prose-sm dark:prose-invert max-w-none" v-html="renderMarkdown(message.content)"></div>
+            <div
+              v-if="message.type === 'ai'"
+              class="prose prose-sm dark:prose-invert max-w-none"
+              v-html="renderMarkdown(message.content)"
+            ></div>
             <p v-else class="text-sm whitespace-pre-line">{{ message.content }}</p>
             <p
-              :class="[
-                'text-xs mt-1',
-                message.type === 'user' ? 'text-blue-100' : 'text-gray-400'
-              ]"
+              :class="['text-xs mt-1', message.type === 'user' ? 'text-blue-100' : 'text-gray-400']"
             >
-              {{ message.timestamp.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' }) }}
+              {{
+                message.timestamp.toLocaleTimeString('zh-CN', {
+                  hour: '2-digit',
+                  minute: '2-digit'
+                })
+              }}
             </p>
           </div>
           <div
@@ -341,14 +361,25 @@ const applyToPreview = () => {
       <!-- 打字中动画 -->
       <div v-if="isTyping" class="flex justify-start">
         <div class="flex items-center space-x-2">
-          <div class="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold">
+          <div
+            class="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold"
+          >
             AI
           </div>
           <div class="bg-gray-100 dark:bg-gray-700 px-4 py-3 rounded-2xl">
             <div class="flex space-x-1">
-              <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0ms;"></div>
-              <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 150ms;"></div>
-              <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 300ms;"></div>
+              <div
+                class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                style="animation-delay: 0ms"
+              ></div>
+              <div
+                class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                style="animation-delay: 150ms"
+              ></div>
+              <div
+                class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                style="animation-delay: 300ms"
+              ></div>
             </div>
           </div>
         </div>
@@ -356,21 +387,40 @@ const applyToPreview = () => {
     </div>
 
     <!-- 代码生成面板 -->
-    <div v-if="showCodePanel && generatedCode" class="border-t border-gray-200 dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-900">
+    <div
+      v-if="showCodePanel && generatedCode"
+      class="border-t border-gray-200 dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-900"
+    >
       <div class="flex items-center justify-between mb-3">
         <h4 class="font-medium text-gray-900 dark:text-white flex items-center">
           <span class="mr-2">💻</span>
           生成的代码
-          <span class="ml-2 px-2 py-0.5 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs rounded">{{ currentCodeLanguage.toUpperCase() }}</span>
+          <span
+            class="ml-2 px-2 py-0.5 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs rounded"
+            >{{ currentCodeLanguage.toUpperCase() }}</span
+          >
         </h4>
-        <button class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300" @click="showCodePanel = false">✕</button>
+        <button
+          class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+          @click="showCodePanel = false"
+        >
+          ✕
+        </button>
       </div>
-      <pre class="bg-gray-900 dark:bg-black text-green-400 p-4 rounded-lg overflow-x-auto text-sm max-h-48"><code>{{ generatedCode }}</code></pre>
+      <pre
+        class="bg-gray-900 dark:bg-black text-green-400 p-4 rounded-lg overflow-x-auto text-sm max-h-48"
+      ><code>{{ generatedCode }}</code></pre>
       <div class="mt-3 flex space-x-2">
-        <button class="px-4 py-2 bg-blue-500 text-white text-sm rounded-lg hover:bg-blue-600 transition-colors" @click="copyCode">
+        <button
+          class="px-4 py-2 bg-blue-500 text-white text-sm rounded-lg hover:bg-blue-600 transition-colors"
+          @click="copyCode"
+        >
           📋 复制代码
         </button>
-        <button class="px-4 py-2 bg-green-500 text-white text-sm rounded-lg hover:bg-green-600 transition-colors" @click="applyToPreview">
+        <button
+          class="px-4 py-2 bg-green-500 text-white text-sm rounded-lg hover:bg-green-600 transition-colors"
+          @click="applyToPreview"
+        >
           ✨ 应用到预览
         </button>
       </div>

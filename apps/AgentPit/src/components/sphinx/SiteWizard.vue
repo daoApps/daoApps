@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue'
-import TemplateGallery from './TemplateGallery.vue'
-import SitePreview from './SitePreview.vue'
-import PublishPanel from './PublishPanel.vue'
-import type { Template, SiteConfig } from '@/data/mockSphinx'
+import { ref, reactive, computed } from 'vue';
+import TemplateGallery from './TemplateGallery.vue';
+import SitePreview from './SitePreview.vue';
+import PublishPanel from './PublishPanel.vue';
+import type { Template, SiteConfig } from '@/data/mockSphinx';
 
-type WizardStep = 1 | 2 | 3 | 4 | 5
+type WizardStep = 1 | 2 | 3 | 4 | 5;
 
 const steps = [
   { id: 1, title: '选择类型', icon: '🎯', description: '选择网站类型' },
@@ -13,10 +13,10 @@ const steps = [
   { id: 3, title: '选择模板', icon: '🎨', description: '选择适合的模板' },
   { id: 4, title: '配置选项', icon: '⚙️', description: '配置网站细节' },
   { id: 5, title: '预览发布', icon: '🚀', description: '预览并发布网站' }
-] as const
+] as const;
 
-const currentStep = ref<WizardStep>(1)
-const selectedTemplate = ref<Template | null>(null)
+const currentStep = ref<WizardStep>(1);
+const selectedTemplate = ref<Template | null>(null);
 const siteConfig = reactive<Partial<SiteConfig>>({
   siteName: '',
   description: '',
@@ -25,52 +25,54 @@ const siteConfig = reactive<Partial<SiteConfig>>({
   seoTitle: '',
   seoDescription: '',
   seoKeywords: ''
-})
+});
 
-const siteType = ref<string>('')
-const colorScheme = ref<string>('blue')
-const layoutMode = ref<string>('standard')
+const siteType = ref<string>('');
+const colorScheme = ref<string>('blue');
+const layoutMode = ref<string>('standard');
 const enableModules = reactive({
   seo: true,
   responsive: true,
   analytics: false,
   ssl: true
-})
+});
 
-const canProceedToStep2 = computed(() => siteType.value !== '')
-const canProceedToStep3 = computed(() => siteConfig.siteName?.trim() && siteConfig.description?.trim())
-const canProceedToStep4 = computed(() => selectedTemplate.value !== null)
-const canProceedToStep5 = computed(() => canProceedToStep4.value)
+const canProceedToStep2 = computed(() => siteType.value !== '');
+const canProceedToStep3 = computed(
+  () => siteConfig.siteName?.trim() && siteConfig.description?.trim()
+);
+const canProceedToStep4 = computed(() => selectedTemplate.value !== null);
+const canProceedToStep5 = computed(() => canProceedToStep4.value);
 
 const handleNext = () => {
   if (currentStep.value < 5) {
-    currentStep.value = (currentStep.value + 1) as WizardStep
+    currentStep.value = (currentStep.value + 1) as WizardStep;
   }
-}
+};
 
 const handlePrev = () => {
   if (currentStep.value > 1) {
-    currentStep.value = (currentStep.value - 1) as WizardStep
+    currentStep.value = (currentStep.value - 1) as WizardStep;
   }
-}
+};
 
 const handleSelectTemplate = (template: Template) => {
-  selectedTemplate.value = template
-  siteConfig.templateId = template.id
-}
+  selectedTemplate.value = template;
+  siteConfig.templateId = template.id;
+};
 
 const handleSiteTypeSelect = (type: string) => {
-  siteType.value = type
-}
+  siteType.value = type;
+};
 
 const handleComplete = () => {
-  window.alert('🎉 恭喜！网站创建完成！')
-}
+  window.alert('🎉 恭喜！网站创建完成！');
+};
 
 defineExpose({
   siteConfig,
   selectedTemplate
-})
+});
 </script>
 
 <template>
@@ -80,15 +82,15 @@ defineExpose({
         <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
           🏛️ Sphinx 快速建站向导
         </h1>
-        <p class="text-gray-600 dark:text-gray-400">
-          跟随向导步骤，快速创建专业的网站
-        </p>
+        <p class="text-gray-600 dark:text-gray-400">跟随向导步骤，快速创建专业的网站</p>
       </div>
 
       <div class="flex flex-col lg:flex-row gap-8">
         <!-- 左侧步骤导航 -->
         <div class="lg:w-64 flex-shrink-0">
-          <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 sticky top-6">
+          <div
+            class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 sticky top-6"
+          >
             <nav class="space-y-2">
               <button
                 v-for="step in steps"
@@ -103,7 +105,10 @@ defineExpose({
                   'w-full flex items-center space-x-3 p-3 rounded-lg transition-all duration-200',
                   currentStep === step.id
                     ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-md'
-                    : step.id < currentStep || (step.id === 2 && canProceedToStep2) || (step.id === 3 && canProceedToStep3) || (step.id === 4 && canProceedToStep4)
+                    : step.id < currentStep ||
+                        (step.id === 2 && canProceedToStep2) ||
+                        (step.id === 3 && canProceedToStep3) ||
+                        (step.id === 4 && canProceedToStep4)
                       ? 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer'
                       : 'text-gray-400 dark:text-gray-500 cursor-not-allowed'
                 ]"
@@ -156,17 +161,39 @@ defineExpose({
 
         <!-- 右侧内容区域 -->
         <div class="flex-1 min-w-0">
-          <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 lg:p-8">
+          <div
+            class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 lg:p-8"
+          >
             <!-- Step 1: 选择网站类型 -->
             <div v-if="currentStep === 1" class="animate-fadeIn space-y-6">
               <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">选择网站类型</h3>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <button
                   v-for="type in [
-                    { id: 'blog', icon: '📝', name: '个人博客', desc: '分享文章、记录生活、技术博客' },
-                    { id: 'ecommerce', icon: '🛍️', name: '电商网站', desc: '在线商城、商品展示、购物车功能' },
-                    { id: 'corporate', icon: '🏢', name: '企业官网', desc: '公司介绍、产品展示、联系方式' },
-                    { id: 'portfolio', icon: '🎨', name: '作品集', desc: '展示设计作品、项目案例、个人简历' }
+                    {
+                      id: 'blog',
+                      icon: '📝',
+                      name: '个人博客',
+                      desc: '分享文章、记录生活、技术博客'
+                    },
+                    {
+                      id: 'ecommerce',
+                      icon: '🛍️',
+                      name: '电商网站',
+                      desc: '在线商城、商品展示、购物车功能'
+                    },
+                    {
+                      id: 'corporate',
+                      icon: '🏢',
+                      name: '企业官网',
+                      desc: '公司介绍、产品展示、联系方式'
+                    },
+                    {
+                      id: 'portfolio',
+                      icon: '🎨',
+                      name: '作品集',
+                      desc: '展示设计作品、项目案例、个人简历'
+                    }
                   ]"
                   :key="type.id"
                   :class="[
@@ -180,9 +207,16 @@ defineExpose({
                   <div class="text-4xl mb-3">{{ type.icon }}</div>
                   <h4 class="font-semibold text-gray-900 dark:text-white mb-1">{{ type.name }}</h4>
                   <p class="text-sm text-gray-600 dark:text-gray-400">{{ type.desc }}</p>
-                  <div v-if="siteType === type.id" class="mt-3 flex items-center text-blue-600 dark:text-blue-400 text-sm font-medium">
+                  <div
+                    v-if="siteType === type.id"
+                    class="mt-3 flex items-center text-blue-600 dark:text-blue-400 text-sm font-medium"
+                  >
                     <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                      <path
+                        fill-rule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clip-rule="evenodd"
+                      />
                     </svg>
                     已选择
                   </div>
@@ -192,12 +226,18 @@ defineExpose({
 
             <!-- Step 2: 基本信息 -->
             <div v-if="currentStep === 2" class="animate-fadeIn space-y-6">
-              <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-6">基本信息配置</h3>
+              <div
+                class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6"
+              >
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-6">
+                  基本信息配置
+                </h3>
 
                 <div class="space-y-6">
                   <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">网站名称 *</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                      >网站名称 *</label
+                    >
                     <input
                       v-model="siteConfig.siteName"
                       type="text"
@@ -207,7 +247,9 @@ defineExpose({
                   </div>
 
                   <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">网站描述 *</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                      >网站描述 *</label
+                    >
                     <textarea
                       v-model="siteConfig.description"
                       placeholder="简要描述您的网站内容和用途..."
@@ -217,9 +259,14 @@ defineExpose({
                   </div>
 
                   <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">域名（可选）</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                      >域名（可选）</label
+                    >
                     <div class="flex">
-                      <span class="inline-flex items-center px-3 rounded-l-lg border border-r-0 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-500 text-sm">https://</span>
+                      <span
+                        class="inline-flex items-center px-3 rounded-l-lg border border-r-0 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-500 text-sm"
+                        >https://</span
+                      >
                       <input
                         v-model="siteConfig.domain"
                         type="text"
@@ -229,9 +276,24 @@ defineExpose({
                     </div>
                   </div>
 
-                  <div v-if="siteType" class="p-4 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-                    <p class="text-sm font-medium text-blue-900 dark:text-blue-300 mb-1">已选类型</p>
-                    <p class="text-sm text-blue-700 dark:text-blue-400">{{ siteType === 'blog' ? '📝 个人博客' : siteType === 'ecommerce' ? '🛍️ 电商网站' : siteType === 'corporate' ? '🏢 企业官网' : '🎨 作品集' }}</p>
+                  <div
+                    v-if="siteType"
+                    class="p-4 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-lg border border-blue-200 dark:border-blue-800"
+                  >
+                    <p class="text-sm font-medium text-blue-900 dark:text-blue-300 mb-1">
+                      已选类型
+                    </p>
+                    <p class="text-sm text-blue-700 dark:text-blue-400">
+                      {{
+                        siteType === 'blog'
+                          ? '📝 个人博客'
+                          : siteType === 'ecommerce'
+                            ? '🛍️ 电商网站'
+                            : siteType === 'corporate'
+                              ? '🏢 企业官网'
+                              : '🎨 作品集'
+                      }}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -247,12 +309,16 @@ defineExpose({
 
             <!-- Step 4: 配置选项 -->
             <div v-if="currentStep === 4" class="animate-fadeIn space-y-6">
-              <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+              <div
+                class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6"
+              >
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-6">配置选项</h3>
 
                 <div class="space-y-6">
                   <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">颜色方案</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3"
+                      >颜色方案</label
+                    >
                     <div class="grid grid-cols-4 gap-3">
                       <button
                         v-for="scheme in [
@@ -278,13 +344,17 @@ defineExpose({
                             :style="{ backgroundColor: color }"
                           ></div>
                         </div>
-                        <span class="text-xs font-medium text-gray-700 dark:text-gray-300">{{ scheme.name }}</span>
+                        <span class="text-xs font-medium text-gray-700 dark:text-gray-300">{{
+                          scheme.name
+                        }}</span>
                       </button>
                     </div>
                   </div>
 
                   <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">布局方式</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3"
+                      >布局方式</label
+                    >
                     <div class="grid grid-cols-3 gap-3">
                       <button
                         v-for="layout in [
@@ -307,7 +377,9 @@ defineExpose({
                   </div>
 
                   <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">功能模块</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3"
+                      >功能模块</label
+                    >
                     <div class="space-y-3">
                       <label
                         v-for="(_enabled, key) in enableModules"
@@ -316,7 +388,15 @@ defineExpose({
                       >
                         <div>
                           <p class="font-medium text-gray-900 dark:text-white">
-                            {{ key === 'seo' ? 'SEO 优化' : key === 'responsive' ? '响应式设计' : key === 'analytics' ? '分析统计' : 'SSL 证书' }}
+                            {{
+                              key === 'seo'
+                                ? 'SEO 优化'
+                                : key === 'responsive'
+                                  ? '响应式设计'
+                                  : key === 'analytics'
+                                    ? '分析统计'
+                                    : 'SSL 证书'
+                            }}
                           </p>
                           <p class="text-sm text-gray-600 dark:text-gray-400">
                             {{
@@ -346,11 +426,13 @@ defineExpose({
             <div v-if="currentStep === 5" class="animate-fadeIn space-y-6">
               <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div>
-                  <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                  <h3
+                    class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center"
+                  >
                     <span class="mr-2">👁️</span>
                     网站预览
                   </h3>
-                  <div style="height: 500px;">
+                  <div style="height: 500px">
                     <SitePreview
                       :site-name="siteConfig.siteName"
                       :template-id="selectedTemplate?.id"
@@ -365,7 +447,9 @@ defineExpose({
             </div>
 
             <!-- 底部导航按钮 -->
-            <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
+            <div
+              class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between"
+            >
               <button
                 :disabled="currentStep === 1"
                 :class="[

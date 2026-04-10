@@ -1,11 +1,17 @@
-import { defineStore } from 'pinia'
-import type { WalletData, TransactionRecord, RevenueDataPoint, Currency, TransactionCategory } from '@/types/monetization'
+import { defineStore } from 'pinia';
+import type {
+  WalletData,
+  TransactionRecord,
+  RevenueDataPoint,
+  Currency,
+  TransactionCategory
+} from '@/types/monetization';
 
 interface MonetizationState {
-  wallet: WalletData
-  transactions: TransactionRecord[]
-  revenueData: RevenueDataPoint[]
-  isLoading: boolean
+  wallet: WalletData;
+  transactions: TransactionRecord[];
+  revenueData: RevenueDataPoint[];
+  isLoading: boolean;
 }
 
 export const useMonetizationStore = defineStore('monetization', {
@@ -26,55 +32,59 @@ export const useMonetizationStore = defineStore('monetization', {
       return new Intl.NumberFormat('zh-CN', {
         style: 'currency',
         currency: state.wallet.currency
-      }).format(state.wallet.totalBalance)
+      }).format(state.wallet.totalBalance);
     },
 
     formattedAvailableBalance: (state): string => {
       return new Intl.NumberFormat('zh-CN', {
         style: 'currency',
         currency: state.wallet.currency
-      }).format(state.wallet.availableBalance)
+      }).format(state.wallet.availableBalance);
     },
 
     recentTransactions: (state): TransactionRecord[] => {
-      return state.transactions.slice(0, 10)
+      return state.transactions.slice(0, 10);
     },
 
     totalIncome: (state): number => {
       return state.transactions
-        .filter(t => t.type === 'income')
-        .reduce((sum, t) => sum + t.amount, 0)
+        .filter((t) => t.type === 'income')
+        .reduce((sum, t) => sum + t.amount, 0);
     },
 
     totalExpense: (state): number => {
       return state.transactions
-        .filter(t => t.type === 'expense')
-        .reduce((sum, t) => sum + t.amount, 0)
+        .filter((t) => t.type === 'expense')
+        .reduce((sum, t) => sum + t.amount, 0);
     }
   },
 
   actions: {
     async fetchWalletData() {
-      this.isLoading = true
+      this.isLoading = true;
       try {
-        const { walletData, transactionHistory, monthlyRevenueData } = await import('@/data/mockMonetization')
+        const { walletData, transactionHistory, monthlyRevenueData } =
+          await import('@/data/mockMonetization');
 
-        this.wallet = { ...walletData, currency: walletData.currency as Currency }
-        this.transactions = transactionHistory.map(t => ({ ...t, category: t.category as TransactionCategory }))
-        this.revenueData = monthlyRevenueData
+        this.wallet = { ...walletData, currency: walletData.currency as Currency };
+        this.transactions = transactionHistory.map((t) => ({
+          ...t,
+          category: t.category as TransactionCategory
+        }));
+        this.revenueData = monthlyRevenueData;
       } catch (error) {
-        console.error('Failed to fetch wallet data:', error)
+        console.error('Failed to fetch wallet data:', error);
       } finally {
-        this.isLoading = false
+        this.isLoading = false;
       }
     },
 
     updateRealtimeBalance(newBalance: number) {
-      this.wallet.availableBalance = newBalance
+      this.wallet.availableBalance = newBalance;
     },
 
     addTransaction(transaction: TransactionRecord) {
-      this.transactions.unshift(transaction)
+      this.transactions.unshift(transaction);
     }
   }
-})
+});
