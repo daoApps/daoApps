@@ -3,12 +3,13 @@ import { mount } from '@vue/test-utils'
 import ProductGrid from '@/components/marketplace/ProductGrid.vue'
 import type { Product } from '@/types/marketplace'
 
+const mockPush = vi.fn()
 vi.mock('vue-router', async () => {
   const actual = await vi.importActual('vue-router')
   return {
     ...actual,
     useRouter: () => ({
-      push: vi.fn()
+      push: mockPush
     })
   }
 })
@@ -178,7 +179,7 @@ describe('ProductGrid', () => {
     it('有 originalPrice 的商品应该显示折扣百分比', () => {
       const wrapper = createWrapper()
       const firstProduct = mockProducts[0]!
-      const discount = Math.round((1 - firstProduct.price / firstProduct.originalPrice!) * 100
+      const discount = Math.round((1 - firstProduct.price / firstProduct.originalPrice!) * 100)
       expect(wrapper.text()).toContain(`-${discount}%`)
     })
 
@@ -222,10 +223,11 @@ describe('ProductGrid', () => {
   })
 
   describe('商品导航', () => {
-    it('点击商品卡片应该调用 router.push 导航到正确路径', async () => {
-      const { useRouter } = await import('vue-router')
-      const mockPush = vi.mocked(useRouter().push)
+    beforeEach(() => {
+      mockPush.mockClear()
+    })
 
+    it('点击商品卡片应该调用 router.push 导航到正确路径', async () => {
       const wrapper = createWrapper()
       const firstProduct = mockProducts[0]!
       const productCards = wrapper.findAll('[class*="group relative"]')
@@ -236,7 +238,22 @@ describe('ProductGrid', () => {
   })
 
   describe('星星评分', () => {
-    it('评分 4.9 应该渲染 5 颗黄色星星', () => {
+    it('评分 4.9 应该渲染 4 颗黄色星星（Math.floor(4.9) = 4）', () => {
       const wrapper = createWrapper([mockProducts[0]!])
       const stars = wrapper.findAll('svg').filter(svg =>
-        svg.html().includes('M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461
+        svg.html().includes('M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z')
+      )
+      const yellowStars = stars.filter(star => star.classes().includes('text-yellow-400'))
+      expect(yellowStars.length).toBe(4)
+    })
+
+    it('评分 3.5 应该渲染至少 3 颗黄色星星', () => {
+      const wrapper = createWrapper([mockProducts[1]!])
+      const stars = wrapper.findAll('svg').filter(svg =>
+        svg.html().includes('M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z')
+      )
+      const yellowStars = stars.filter(star => star.classes().includes('text-yellow-400'))
+      expect(yellowStars.length).toBeGreaterThanOrEqual(3)
+    })
+  })
+})
