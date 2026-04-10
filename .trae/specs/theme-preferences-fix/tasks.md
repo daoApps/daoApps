@@ -70,3 +70,17 @@
   - `programmatic` TR-5.2: 确认所有测试通过
 - **Notes**: 确保修复的长期稳定性
 - **Completed**: 代码格式检查通过，修复符合项目编码规范
+
+## [x] 任务 6: 修复 Pinia 初始化问题
+- **Priority**: P0
+- **Depends On**: 任务 5
+- **Description**:
+  - 分析新出现的 Pinia 错误：`getActivePinia() was called but there was no active Pinia`
+  - 在测试文件中正确初始化 Pinia
+  - 确保测试环境中能够正常使用 Pinia store
+- **Acceptance Criteria Addressed**: AC-1
+- **Test Requirements**:
+  - `programmatic` TR-6.1: 修复 Pinia 初始化问题
+  - `programmatic` TR-6.2: 验证测试能够正常运行
+- **Notes**: 需要在测试文件中设置 Pinia 测试环境
+- **Completed**: 已为所有测试组件添加了 Pinia 初始化，修复了 Pinia 错误

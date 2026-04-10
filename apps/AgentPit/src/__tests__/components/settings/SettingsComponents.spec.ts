@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { mount } from '@vue/test-utils';
+import { createPinia } from 'pinia';
 
 // Mock localStorage
 const localStorageMock = (() => {
@@ -70,7 +71,8 @@ vi.stubGlobal('document', {
 describe('UserProfileSettings.vue', () => {
   it('应该渲染个人资料设置表单', async () => {
     const UserProfileModule = await import('../../../components/settings/UserProfileSettings.vue');
-    const wrapper = mount(UserProfileModule.default);
+    const pinia = createPinia();
+    const wrapper = mount(UserProfileModule.default, { global: { plugins: [pinia] } });
 
     expect(wrapper.find('.user-profile-settings').exists()).toBe(true);
     expect(wrapper.text()).toContain('个人资料设置') || wrapper.text().contains('昵称');
@@ -96,7 +98,8 @@ describe('ThemePreferences.vue', () => {
 
   it('应该渲染主题偏好设置面板', async () => {
     const ThemeModule = await import('../../../components/settings/ThemePreferences.vue');
-    const wrapper = mount(ThemeModule.default);
+    const pinia = createPinia();
+    const wrapper = mount(ThemeModule.default, { global: { plugins: [pinia] } });
 
     expect(wrapper.find('.theme-preferences').exists()).toBe(true);
     expect(wrapper.text()).toContain('主题偏好设置');
@@ -104,7 +107,8 @@ describe('ThemePreferences.vue', () => {
 
   it('应该显示3种主题模式选项', async () => {
     const ThemeModule = await import('../../../components/settings/ThemePreferences.vue');
-    const wrapper = mount(ThemeModule.default);
+    const pinia = createPinia();
+    const wrapper = mount(ThemeModule.default, { global: { plugins: [pinia] } });
 
     expect(wrapper.text()).toContain('亮色模式');
     expect(wrapper.text()).toContain('暗色模式');
@@ -120,7 +124,8 @@ describe('ThemePreferences.vue', () => {
 describe('NotificationSettings.vue', () => {
   it('应该渲染通知设置面板', async () => {
     const NotifModule = await import('../../../components/settings/NotificationSettings.vue');
-    const wrapper = mount(NotifModule.default);
+    const pinia = createPinia();
+    const wrapper = mount(NotifModule.default, { global: { plugins: [pinia] } });
 
     expect(wrapper.find('.notification-settings').exists()).toBe(true);
     expect(wrapper.text()).toContain('通知设置');
@@ -128,7 +133,8 @@ describe('NotificationSettings.vue', () => {
 
   it('应该显示通知渠道矩阵表格', async () => {
     const NotifModule = await import('../../../components/settings/NotificationSettings.vue');
-    const wrapper = mount(NotifModule.default);
+    const pinia = createPinia();
+    const wrapper = mount(NotifModule.default, { global: { plugins: [pinia] } });
 
     expect(wrapper.text()).toContain('系统公告');
     expect(wrapper.text()).toContain('浏览器推送') || wrapper.text().toContain('应用内');
@@ -139,7 +145,8 @@ describe('NotificationSettings.vue', () => {
 describe('PrivacySecurity.vue', () => {
   it('应该渲染隐私安全设置页面', async () => {
     const SecurityModule = await import('../../../components/settings/PrivacySecurity.vue');
-    const wrapper = mount(SecurityModule.default);
+    const pinia = createPinia();
+    const wrapper = mount(SecurityModule.default, { global: { plugins: [pinia] } });
 
     expect(wrapper.find('.privacy-security').exists()).toBe(true);
     expect(wrapper.text()).toContain('隐私与安全');
@@ -151,7 +158,8 @@ describe('PrivacySecurity.vue', () => {
 
   it('默认显示修改密码表单', async () => {
     const SecurityModule = await import('../../../components/settings/PrivacySecurity.vue');
-    const wrapper = mount(SecurityModule.default);
+    const pinia = createPinia();
+    const wrapper = mount(SecurityModule.default, { global: { plugins: [pinia] } });
 
     expect(wrapper.text()).toContain('修改密码');
   });
@@ -161,7 +169,8 @@ describe('PrivacySecurity.vue', () => {
 describe('HelpCenter.vue', () => {
   it('应该渲染帮助中心页面', async () => {
     const HelpModule = await import('../../../components/settings/HelpCenter.vue');
-    const wrapper = mount(HelpModule.default);
+    const pinia = createPinia();
+    const wrapper = mount(HelpModule.default, { global: { plugins: [pinia] } });
 
     expect(wrapper.find('.help-center').exists()).toBe(true);
     expect(wrapper.text()).toContain('帮助中心');
@@ -169,7 +178,8 @@ describe('HelpCenter.vue', () => {
 
   it('应该有搜索框', async () => {
     const HelpModule = await import('../../../components/settings/HelpCenter.vue');
-    const wrapper = mount(HelpModule.default);
+    const pinia = createPinia();
+    const wrapper = mount(HelpModule.default, { global: { plugins: [pinia] } });
 
     expect(
       wrapper.find('input[type="text"]').exists() ||
@@ -183,7 +193,8 @@ describe('HelpCenter.vue', () => {
 
   it('应该显示版本信息', async () => {
     const HelpModule = await import('../../../components/settings/HelpCenter.vue');
-    const wrapper = mount(HelpModule.default);
+    const pinia = createPinia();
+    const wrapper = mount(HelpModule.default, { global: { plugins: [pinia] } });
 
     expect(wrapper.text()).toContain('v3.0.0');
   });
