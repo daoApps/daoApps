@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive } from 'vue';
+import { ref, reactive, watch, computed } from 'vue';
 import { defaultUserProfile, cities, type UserProfile } from '../../data/mockSettings';
 
 const profile = reactive<UserProfile>({ ...defaultUserProfile });
@@ -54,8 +54,6 @@ function resetForm() {
   Object.assign(profile, { ...defaultUserProfile });
   avatarPreview.value = '';
 }
-
-import { watch, computed } from 'vue';
 </script>
 
 <template>

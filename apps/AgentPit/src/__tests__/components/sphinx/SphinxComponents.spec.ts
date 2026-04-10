@@ -86,7 +86,11 @@ describe('SphinxPage 组件测试', () => {
     it('应该有输入框和发送按钮', () => {
       const wrapper = mount(AISiteBuilder);
       expect(wrapper.find('textarea').exists()).toBe(true);
-      expect(wrapper.find('button').text()).toContain('发送');
+      // 查找所有按钮并找到包含"发送"文本的按钮
+      const buttons = wrapper.findAll('button');
+      const sendButton = buttons.find(btn => btn.text().includes('发送'));
+      expect(sendButton).toBeTruthy();
+      expect(sendButton?.text()).toContain('发送');
       wrapper.unmount();
     });
   });

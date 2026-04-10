@@ -63,7 +63,7 @@ export const useChatStore = defineStore('chat', {
 
   actions: {
     createConversation(agent?: AgentInfo): string {
-      const id = `conv-${Date.now()}`;
+      const id = `conv-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
       const conversation: Conversation = {
         id,
         title: '新对话',

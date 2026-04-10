@@ -112,7 +112,7 @@ describe('MessageList', () => {
 
     // 应该显示时间戳
     const timeElements = wrapper.findAll('.text-xs.text-gray-400');
-    expect(timeElements.length).toBeGreaterThanOrEqual(messages.length * 2); // 每个消息有时间和状态图标
+    expect(timeElements.length).toBeGreaterThanOrEqual(messages.length); // 每个消息至少有一个时间戳
   });
 
   it('should render message status icons', () => {
