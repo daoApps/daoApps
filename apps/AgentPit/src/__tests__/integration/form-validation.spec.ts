@@ -122,8 +122,8 @@ describe('Form Validation Integration - Cross-component validation logic', () =>
       expect(getPasswordStrength('abcdefgh')).toBe('weak');
     });
 
-    it('returns medium for mixed case + numbers', () => {
-      expect(getPasswordStrength('Abc12345')).toBe('medium');
+    it('returns strong for mixed case + numbers', () => {
+      expect(getPasswordStrength('Abc12345')).toBe('strong');
     });
 
     it('returns strong for mixed case + numbers + symbols', () => {

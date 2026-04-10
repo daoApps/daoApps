@@ -14,7 +14,7 @@
   - `human-judgement` TR-1.3: 代码审查应验证 setupFiles 配置合理且有注释
 - **Notes**: 可以参考常见的 jsdom 测试环境配置方案
 
-## [/] Task 2: 升级 CI Node.js 版本至 24.x
+## [x] Task 2: 升级 CI Node.js 版本至 24.x
 - **Priority**: P0
 - **Depends On**: None
 - **Description**: 
@@ -28,7 +28,7 @@
   - `human-judgement` TR-2.3: 代码审查应验证版本配置正确
 - **Notes**: 可以先在当前测试分支上测试升级效果
 
-## [ ] Task 3: 审查并修复集成测试用例（shopping-cart.spec.ts）
+## [x] Task 3: 审查并修复集成测试用例（shopping-cart.spec.ts）
 - **Priority**: P1
 - **Depends On**: Task 1
 - **Description**: 
@@ -42,7 +42,7 @@
   - `human-judgement` TR-3.3: 代码审查应验证测试用例修改合理
 - **Notes**: 优先修复最简单且最明确的测试失败
 
-## [ ] Task 4: 审查并修复集成测试用例（router-integration.spec.ts）
+## [x] Task 4: 审查并修复集成测试用例（router-integration.spec.ts）
 - **Priority**: P1
 - **Depends On**: Task 1
 - **Description**: 
@@ -84,7 +84,7 @@
   - `human-judgement` TR-6.3: 代码审查应验证测试用例修改合理
 - **Notes**: 检查测试中的时间戳、ID 生成逻辑是否与当前实现匹配
 
-## [ ] Task 7: 验证所有测试用例 100% 通过
+## [/] Task 7: 验证所有测试用例 100% 通过
 - **Priority**: P0
 - **Depends On**: Task 1, Task 3, Task 4, Task 5, Task 6
 - **Description**: 
