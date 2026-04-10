@@ -151,18 +151,20 @@ const typeLabels: Record<string, string> = {
         </span>
       </div>
       <div class="flex items-center gap-2">
-        <button @click="viewMode = viewMode === 'month' ? 'week' : 'month'"
-          class="px-3 py-1.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-700 dark:text-gray-300">
+        <button
+class="px-3 py-1.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-700 dark:text-gray-300"
+          @click="viewMode = viewMode === 'month' ? 'week' : 'month'">
           {{ viewMode === 'month' ? '周视图' : '月视图' }}
         </button>
-        <button @click="goToToday"
-          class="px-3 py-1.5 text-sm rounded-lg bg-indigo-500 text-white hover:bg-indigo-600 transition-colors">
+        <button
+class="px-3 py-1.5 text-sm rounded-lg bg-indigo-500 text-white hover:bg-indigo-600 transition-colors"
+          @click="goToToday">
           今天
         </button>
-        <button @click="prevMonth" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+        <button class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" @click="prevMonth">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
         </button>
-        <button @click="nextMonth" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+        <button class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" @click="nextMonth">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
         </button>
       </div>
@@ -178,7 +180,8 @@ const typeLabels: Record<string, string> = {
 
     <!-- 星期标题 -->
     <div class="grid grid-cols-7 gap-1 mb-1">
-      <div v-for="day in weekDays" :key="day"
+      <div
+v-for="day in weekDays" :key="day"
         class="text-center text-sm font-medium py-2 text-gray-500 dark:text-gray-400">
         {{ day }}
       </div>
@@ -187,17 +190,19 @@ const typeLabels: Record<string, string> = {
     <!-- 日历网格 -->
     <Transition name="calendar-fade" mode="out-in">
       <div :key="`${currentYear}-${currentMonth}`" class="grid grid-cols-7 gap-1">
-        <div v-for="(day, index) in calendarDays" :key="index"
-          @click="day && openDayDetail(day)"
+        <div
+v-for="(day, index) in calendarDays" :key="index"
           :class="[
             'min-h-[80px] p-1.5 border border-gray-100 dark:border-gray-700 rounded-lg cursor-pointer transition-all duration-150',
             day ? 'hover:bg-indigo-50 dark:hover:bg-gray-700/50' : 'bg-gray-50/50 dark:bg-gray-800/30 cursor-default',
             day && isToday(day) ? 'ring-2 ring-indigo-400 ring-offset-1 dark:ring-offset-gray-800' : '',
             day && isSelected(day) ? 'bg-indigo-100 dark:bg-indigo-900/30' : '',
-          ]">
+          ]"
+          @click="day && openDayDetail(day)">
           <template v-if="day">
             <div class="flex justify-between items-start">
-              <span :class="[
+              <span
+:class="[
                 'text-sm font-medium w-6 h-6 flex items-center justify-center rounded-full',
                 isToday(day) ? 'bg-indigo-500 text-white' : 'text-gray-700 dark:text-gray-300'
               ]">{{ day.getDate() }}</span>
@@ -228,7 +233,7 @@ const typeLabels: Record<string, string> = {
                 <h3 class="text-lg font-bold text-gray-900 dark:text-white">
                   {{ selectedDate.getMonth() + 1 }}月{{ selectedDate.getDate() }}日 会议安排
                 </h3>
-                <button @click="closeDayModal" class="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                <button class="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700" @click="closeDayModal">
                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
               </div>
@@ -238,7 +243,8 @@ const typeLabels: Record<string, string> = {
                 暂无会议安排
               </div>
               <TransitionGroup name="list">
-                <div v-for="meeting in getMeetingsForDate(selectedDate)" :key="meeting.id"
+                <div
+v-for="meeting in getMeetingsForDate(selectedDate)" :key="meeting.id"
                   class="p-3 rounded-xl border-l-4 bg-gray-50 dark:bg-gray-700/50"
                   :style="{ borderColor: meetingTypeColors[meeting.type] }">
                   <div class="flex justify-between items-start">
@@ -247,7 +253,7 @@ const typeLabels: Record<string, string> = {
                       <p class="text-sm text-gray-500 mt-1">{{ meeting.startTime }} - {{ meeting.endTime }} · {{ meeting.location }}</p>
                       <p v-if="meeting.notes" class="text-xs text-gray-400 mt-1">{{ meeting.notes }}</p>
                     </div>
-                    <button @click="deleteMeeting(meeting.id)" class="p-1 text-red-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded">
+                    <button class="p-1 text-red-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded" @click="deleteMeeting(meeting.id)">
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                     </button>
                   </div>
@@ -255,8 +261,9 @@ const typeLabels: Record<string, string> = {
               </TransitionGroup>
             </div>
             <div class="p-4 border-t border-gray-200 dark:border-gray-700">
-              <button @click="openAddModal(); closeDayModal()"
-                class="w-full py-2.5 bg-indigo-500 text-white rounded-xl hover:bg-indigo-600 transition-colors font-medium">
+              <button
+class="w-full py-2.5 bg-indigo-500 text-white rounded-xl hover:bg-indigo-600 transition-colors font-medium"
+                @click="openAddModal(); closeDayModal()">
                 + 添加新会议
               </button>
             </div>
@@ -276,29 +283,34 @@ const typeLabels: Record<string, string> = {
             <div class="p-5 space-y-4">
               <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">会议标题 *</label>
-                <input v-model="newMeeting.title" type="text" placeholder="输入会议标题"
+                <input
+v-model="newMeeting.title" type="text" placeholder="输入会议标题"
                   class="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-400 outline-none" />
               </div>
               <div class="grid grid-cols-2 gap-3">
                 <div>
                   <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">开始时间</label>
-                  <input v-model="newMeeting.startTime" type="time"
+                  <input
+v-model="newMeeting.startTime" type="time"
                     class="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-400 outline-none" />
                 </div>
                 <div>
                   <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">结束时间</label>
-                  <input v-model="newMeeting.endTime" type="time"
+                  <input
+v-model="newMeeting.endTime" type="time"
                     class="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-400 outline-none" />
                 </div>
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">地点</label>
-                <input v-model="newMeeting.location" type="text" placeholder="会议地点"
+                <input
+v-model="newMeeting.location" type="text" placeholder="会议地点"
                   class="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-400 outline-none" />
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">会议类型</label>
-                <select v-model="newMeeting.type"
+                <select
+v-model="newMeeting.type"
                   class="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-400 outline-none">
                   <option value="work">工作</option>
                   <option value="personal">个人</option>
@@ -308,15 +320,16 @@ const typeLabels: Record<string, string> = {
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">备注</label>
-                <textarea v-model="newMeeting.notes" rows="2" placeholder="会议备注信息"
+                <textarea
+v-model="newMeeting.notes" rows="2" placeholder="会议备注信息"
                   class="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-400 outline-none resize-none"></textarea>
               </div>
             </div>
             <div class="p-4 border-t border-gray-200 dark:border-gray-700 flex gap-3">
-              <button @click="closeAddModal" class="flex-1 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+              <button class="flex-1 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors" @click="closeAddModal">
                 取消
               </button>
-              <button @click="addMeeting" class="flex-1 py-2.5 bg-indigo-500 text-white rounded-xl hover:bg-indigo-600 transition-colors font-medium">
+              <button class="flex-1 py-2.5 bg-indigo-500 text-white rounded-xl hover:bg-indigo-600 transition-colors font-medium" @click="addMeeting">
                 保存
               </button>
             </div>

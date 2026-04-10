@@ -51,7 +51,7 @@ export function useRealtimeData(store: ReturnType<typeof useMonetizationStore>) 
       ...notification,
       id: `notification-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
       timestamp: new Date(),
-      autoDismiss: true
+      autoDismiss: notification.autoDismiss !== false
     }
 
     notifications.value.unshift(newNotification)

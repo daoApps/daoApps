@@ -196,24 +196,24 @@ const stats = computed(() => ({
           <!-- View Mode Toggle -->
           <div class="flex items-center bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
             <button
-              @click="viewMode = 'kanban'"
               :class="[
                 'px-3 py-1.5 text-xs font-medium rounded transition-colors',
                 viewMode === 'kanban'
                   ? 'bg-white dark:bg-gray-600 text-gray-900 dark:text-white shadow-sm'
                   : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
               ]"
+              @click="viewMode = 'kanban'"
             >
               📋 看板
             </button>
             <button
-              @click="viewMode = 'list'"
               :class="[
                 'px-3 py-1.5 text-xs font-medium rounded transition-colors',
                 viewMode === 'list'
                   ? 'bg-white dark:bg-gray-600 text-gray-900 dark:text-white shadow-sm'
                   : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
               ]"
+              @click="viewMode = 'list'"
             >
               📝 列表
             </button>
@@ -221,8 +221,8 @@ const stats = computed(() => ({
 
           <!-- Actions -->
           <button
-            @click="addNewTask"
             class="px-3 py-1.5 text-xs font-medium text-white bg-blue-500 hover:bg-blue-600 rounded-lg transition-colors"
+            @click="addNewTask"
           >
             + 新建任务
           </button>
@@ -269,26 +269,26 @@ const stats = computed(() => ({
         </span>
         <div class="flex items-center gap-2">
           <button
-            @click="batchUpdateStatus('in_progress')"
             class="px-3 py-1 text-xs font-medium text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-800 hover:bg-blue-200 dark:hover:bg-blue-700 rounded transition-colors"
+            @click="batchUpdateStatus('in_progress')"
           >
             开始执行
           </button>
           <button
-            @click="batchUpdateStatus('completed')"
             class="px-3 py-1 text-xs font-medium text-green-600 dark:text-green-400 bg-green-100 dark:bg-green-800 hover:bg-green-200 dark:hover:bg-green-700 rounded transition-colors"
+            @click="batchUpdateStatus('completed')"
           >
             标记完成
           </button>
           <button
-            @click="deleteSelectedTasks"
             class="px-3 py-1 text-xs font-medium text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-800 hover:bg-red-200 dark:hover:bg-red-700 rounded transition-colors"
+            @click="deleteSelectedTasks"
           >
             删除选中
           </button>
           <button
-            @click="selectedTasks.clear()"
             class="px-3 py-1 text-xs font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 rounded transition-colors"
+            @click="selectedTasks.clear()"
           >
             取消选择
           </button>
@@ -323,8 +323,6 @@ const stats = computed(() => ({
               v-for="task in (tasksByStatus as any)[column.id]"
               :key="task.id"
               :draggable="true"
-              @dragstart="(e: DragEvent) => onDragStart(e, task)"
-              @dragend="onDragEnd"
               class="group relative p-3 bg-white dark:bg-gray-700 rounded-lg border shadow-sm cursor-move hover:shadow-md transition-all"
               :class="[
                 selectedTasks.has(task.id)
@@ -332,13 +330,15 @@ const stats = computed(() => ({
                   : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500',
                 (priorityConfig as any)[task.priority]?.color || ''
               ]"
+              @dragstart="(e: DragEvent) => onDragStart(e, task)"
+              @dragend="onDragEnd"
             >
               <!-- Selection Checkbox -->
               <input
                 type="checkbox"
                 :checked="selectedTasks.has(task.id)"
-                @change="toggleTaskSelection(task.id)"
                 class="absolute top-3 left-3 rounded text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                @change="toggleTaskSelection(task.id)"
               />
 
               <!-- Priority Badge -->
@@ -374,16 +374,16 @@ const stats = computed(() => ({
                 </div>
                 <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                   <button
-                    @click="$emit('taskSelect', task)"
                     class="p-1 text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded"
                     title="查看详情"
+                    @click="$emit('taskSelect', task)"
                   >
                     👁️
                   </button>
                   <button
-                    @click="deleteTask(task.id)"
                     class="p-1 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded"
                     title="删除任务"
+                    @click="deleteTask(task.id)"
                   >
                     🗑️
                   </button>
@@ -415,9 +415,10 @@ const stats = computed(() => ({
         <thead class="bg-gray-50 dark:bg-gray-750 sticky top-0">
           <tr>
             <th class="px-3 py-2 text-left text-xs font-semibold text-gray-700 dark:text-gray-300">
-              <input type="checkbox" @change="
+              <input
+type="checkbox" class="rounded" @change="
                 selectedTasks = new Set(selectedTasks.size === filteredTasks.length ? [] : filteredTasks.map(t => t.id))
-              " class="rounded" />
+              " />
             </th>
             <th class="px-3 py-2 text-left text-xs font-semibold text-gray-700 dark:text-gray-300">标题</th>
             <th class="px-3 py-2 text-left text-xs font-semibold text-gray-700 dark:text-gray-300">状态</th>
@@ -438,13 +439,14 @@ const stats = computed(() => ({
               <input
                 type="checkbox"
                 :checked="selectedTasks.has(task.id)"
-                @change="toggleTaskSelection(task.id)"
                 class="rounded"
+                @change="toggleTaskSelection(task.id)"
               />
             </td>
             <td class="px-3 py-2 font-medium text-gray-900 dark:text-white">{{ task.title }}</td>
             <td class="px-3 py-2">
-              <span :class="[
+              <span
+:class="[
                 'px-2 py-1 text-xs font-medium rounded-full',
                 task.status === 'completed' ? 'bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400' :
                 task.status === 'in_progress' ? 'bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400' :
@@ -454,7 +456,8 @@ const stats = computed(() => ({
               </span>
             </td>
             <td class="px-3 py-2">
-              <span :class="[
+              <span
+:class="[
                 'px-2 py-1 text-xs font-medium rounded',
                 priorityConfig[task.priority].color
               ]">
@@ -480,14 +483,14 @@ const stats = computed(() => ({
             <td class="px-3 py-2">
               <div class="flex items-center gap-1">
                 <button
-                  @click="$emit('taskSelect', task)"
                   class="p-1 text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded"
+                  @click="$emit('taskSelect', task)"
                 >
                   👁️
                 </button>
                 <button
-                  @click="deleteTask(task.id)"
                   class="p-1 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded"
+                  @click="deleteTask(task.id)"
                 >
                   🗑️
                 </button>
@@ -501,7 +504,7 @@ const stats = computed(() => ({
     <!-- Footer Actions -->
     <div class="p-3 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
       <label class="flex items-center gap-2 cursor-pointer text-xs text-gray-600 dark:text-gray-400">
-        <input type="checkbox" v-model="showDependencies" class="rounded" />
+        <input v-model="showDependencies" type="checkbox" class="rounded" />
         <span>显示依赖关系</span>
       </label>
       <span class="text-xs text-gray-500 dark:text-gray-400">

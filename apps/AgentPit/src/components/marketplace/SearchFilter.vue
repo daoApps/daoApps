@@ -119,8 +119,8 @@ const activeFilterCount = computed(() => {
         />
         <button
           v-if="searchInput"
-          @click="searchInput = ''"
           class="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+          @click="searchInput = ''"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -129,8 +129,8 @@ const activeFilterCount = computed(() => {
       </div>
 
       <button
-        @click="showMobileFilters = true"
         class="lg:hidden flex items-center gap-2 px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 hover:border-primary-500 transition-colors relative"
+        @click="showMobileFilters = true"
       >
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
@@ -148,13 +148,13 @@ const activeFilterCount = computed(() => {
           <h3 class="font-semibold text-gray-900 dark:text-white text-sm">全部分类</h3>
           <div class="space-y-1 max-h-[calc(100vh-200px)] overflow-y-auto">
             <button
-              @click="handleCategorySelect('')"
               :class="[
                 'w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm transition-colors',
                 !filters.category
                   ? 'bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 font-medium'
                   : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
               ]"
+              @click="handleCategorySelect('')"
             >
               <span>📦</span>
               <span>全部商品</span>
@@ -162,18 +162,18 @@ const activeFilterCount = computed(() => {
 
             <div v-for="category in categories" :key="category.id">
               <button
-                @click="
-                  category.children
-                    ? toggleCategoryExpand(category.id)
-                    : null;
-                  handleCategorySelect(category.id)
-                "
                 :class="[
                   'w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm transition-colors',
                   filters.category === category.id && !filters.subCategory
                     ? 'bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 font-medium'
                     : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
                 ]"
+                @click="
+                  category.children
+                    ? toggleCategoryExpand(category.id)
+                    : null;
+                  handleCategorySelect(category.id)
+                "
               >
                 <div class="flex items-center gap-2.5">
                   <span class="text-lg">{{ category.icon }}</span>
@@ -197,13 +197,13 @@ const activeFilterCount = computed(() => {
                 <button
                   v-for="sub in category.children"
                   :key="sub.id"
-                  @click="handleCategorySelect(category.id, sub.id)"
                   :class="[
                     'w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-colors',
                     filters.subCategory === sub.id
                       ? 'bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 font-medium'
                       : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700'
                   ]"
+                  @click="handleCategorySelect(category.id, sub.id)"
                 >
                   <span>{{ sub.name }}</span>
                   <span class="text-xs text-gray-400">{{ sub.count }}</span>
@@ -223,13 +223,13 @@ const activeFilterCount = computed(() => {
                 <button
                   v-for="option in sortOptions"
                   :key="option.value"
-                  @click="updateFilter('sortBy', option.value as FilterState['sortBy'])"
                   :class="[
                     'px-3 py-1.5 rounded-lg text-xs font-medium transition-all',
                     filters.sortBy === option.value
                       ? 'bg-primary-500 text-white shadow-sm'
                       : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
                   ]"
+                  @click="updateFilter('sortBy', option.value as FilterState['sortBy'])"
                 >
                   {{ option.label }}
                 </button>
@@ -248,16 +248,16 @@ const activeFilterCount = computed(() => {
                 type="number"
                 placeholder="最低"
                 :value="filters.priceRange[0] || ''"
-                @input="(e) => updateFilter('priceRange', [parseInt((e.target as HTMLInputElement).value) || 0, filters.priceRange[1]])"
                 class="w-20 px-2 py-1.5 text-xs border border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                @input="(e) => updateFilter('priceRange', [parseInt((e.target as HTMLInputElement).value) || 0, filters.priceRange[1]])"
               />
               <span class="text-gray-400">-</span>
               <input
                 type="number"
                 placeholder="最高"
                 :value="filters.priceRange[1] >= 100000 ? '' : filters.priceRange[1]"
-                @input="(e) => updateFilter('priceRange', [filters.priceRange[0], parseInt((e.target as HTMLInputElement).value) || 100000])"
                 class="w-20 px-2 py-1.5 text-xs border border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                @input="(e) => updateFilter('priceRange', [filters.priceRange[0], parseInt((e.target as HTMLInputElement).value) || 100000])"
               />
             </div>
 
@@ -265,8 +265,8 @@ const activeFilterCount = computed(() => {
               <label class="text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">评分</label>
               <select
                 :value="filters.minRating"
-                @change="(e) => updateFilter('minRating', Number((e.target as HTMLSelectElement).value))"
                 class="px-2 py-1.5 text-xs border border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                @change="(e) => updateFilter('minRating', Number((e.target as HTMLSelectElement).value))"
               >
                 <option :value="0">不限</option>
                 <option :value="4">4分以上</option>
@@ -279,6 +279,12 @@ const activeFilterCount = computed(() => {
               <label class="text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">类型</label>
               <template v-for="type in ['digital', 'physical', 'service']" :key="type">
                 <button
+                  :class="[
+                    'px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all',
+                    filters.deliveryType.includes(type)
+                      ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400'
+                      : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
+                  ]"
                   @click="
                     const types = [...filters.deliveryType];
                     const idx = types.indexOf(type);
@@ -289,12 +295,6 @@ const activeFilterCount = computed(() => {
                     }
                     updateFilter('deliveryType', types)
                   "
-                  :class="[
-                    'px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all',
-                    filters.deliveryType.includes(type)
-                      ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
-                  ]"
                 >
                   {{ type === 'digital' ? '数字产品' : type === 'physical' ? '实体商品' : '服务' }}
                 </button>
@@ -303,8 +303,8 @@ const activeFilterCount = computed(() => {
 
             <button
               v-if="activeFilterCount > 0"
-              @click="clearAllFilters"
               class="ml-auto text-xs text-red-500 hover:text-red-600 font-medium flex items-center gap-1"
+              @click="clearAllFilters"
             >
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -322,8 +322,8 @@ const activeFilterCount = computed(() => {
         <div class="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 py-4 flex items-center justify-between z-10">
           <h3 class="font-semibold text-gray-900 dark:text-white">筛选条件</h3>
           <button
-            @click="showMobileFilters = false"
             class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
+            @click="showMobileFilters = false"
           >
             <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -336,31 +336,31 @@ const activeFilterCount = computed(() => {
             <h4 class="text-sm font-semibold text-gray-900 dark:text-white mb-3">分类</h4>
             <div class="space-y-1">
               <button
-                @click="handleCategorySelect('')"
                 :class="[
                   'w-full text-left px-3 py-2 rounded-lg text-sm',
                   !filters.category
                     ? 'bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 font-medium'
                     : 'hover:bg-gray-50 dark:hover:bg-gray-700'
                 ]"
+                @click="handleCategorySelect('')"
               >
                 全部商品
               </button>
 
               <div v-for="category in categories" :key="category.id">
                 <button
-                  @click="
-                    category.children
-                      ? toggleCategoryExpand(category.id)
-                      : null;
-                    handleCategorySelect(category.id)
-                  "
                   :class="[
                     'w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm',
                     filters.category === category.id && !filters.subCategory
                       ? 'bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 font-medium'
                       : 'hover:bg-gray-50 dark:hover:bg-gray-700'
                   ]"
+                  @click="
+                    category.children
+                      ? toggleCategoryExpand(category.id)
+                      : null;
+                    handleCategorySelect(category.id)
+                  "
                 >
                   <div class="flex items-center gap-2.5">
                     <span>{{ category.icon }}</span>
@@ -381,13 +381,13 @@ const activeFilterCount = computed(() => {
                   <button
                     v-for="sub in category.children"
                     :key="sub.id"
-                    @click="handleCategorySelect(category.id, sub.id)"
                     :class="[
                       'w-full text-left px-3 py-2 rounded-lg text-sm',
                       filters.subCategory === sub.id
                         ? 'bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 font-medium'
                         : 'hover:bg-gray-50 dark:hover:bg-gray-700'
                     ]"
+                    @click="handleCategorySelect(category.id, sub.id)"
                   >
                     {{ sub.name }}
                   </button>
@@ -403,16 +403,16 @@ const activeFilterCount = computed(() => {
                 type="number"
                 placeholder="最低价"
                 :value="filters.priceRange[0] || ''"
-                @input="(e) => updateFilter('priceRange', [parseInt((e.target as HTMLInputElement).value) || 0, filters.priceRange[1]])"
                 class="flex-1 px-3 py-2 text-sm border border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                @input="(e) => updateFilter('priceRange', [parseInt((e.target as HTMLInputElement).value) || 0, filters.priceRange[1]])"
               />
               <span class="text-gray-400">-</span>
               <input
                 type="number"
                 placeholder="最高价"
                 :value="filters.priceRange[1] >= 100000 ? '' : filters.priceRange[1]"
-                @input="(e) => updateFilter('priceRange', [filters.priceRange[0], parseInt((e.target as HTMLInputElement).value) || 100000])"
                 class="flex-1 px-3 py-2 text-sm border border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                @input="(e) => updateFilter('priceRange', [filters.priceRange[0], parseInt((e.target as HTMLInputElement).value) || 100000])"
               />
             </div>
           </div>
@@ -421,8 +421,8 @@ const activeFilterCount = computed(() => {
             <h4 class="text-sm font-semibold text-gray-900 dark:text-white mb-3">最低评分</h4>
             <select
               :value="filters.minRating"
-              @change="(e) => updateFilter('minRating', Number((e.target as HTMLSelectElement).value))"
               class="w-full px-3 py-2 text-sm border border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+              @change="(e) => updateFilter('minRating', Number((e.target as HTMLSelectElement).value))"
             >
               <option :value="0">不限</option>
               <option :value="4">4分以上</option>
@@ -446,6 +446,7 @@ const activeFilterCount = computed(() => {
                 <input
                   type="checkbox"
                   :checked="filters.deliveryType.includes(value)"
+                  class="w-4 h-4 rounded border-gray-300 dark:border-gray-600 text-primary-500 focus:ring-primary-500"
                   @change="
                     const types = [...filters.deliveryType];
                     const idx = types.indexOf(value);
@@ -456,7 +457,6 @@ const activeFilterCount = computed(() => {
                     }
                     updateFilter('deliveryType', types)
                   "
-                  class="w-4 h-4 rounded border-gray-300 dark:border-gray-600 text-primary-500 focus:ring-primary-500"
                 />
                 <span class="text-sm text-gray-700 dark:text-gray-300">{{ label }}</span>
               </label>
@@ -466,14 +466,14 @@ const activeFilterCount = computed(() => {
 
         <div class="sticky bottom-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 p-4 flex gap-3">
           <button
-            @click="clearAllFilters"
             class="flex-1 py-2.5 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-700"
+            @click="clearAllFilters"
           >
             重置
           </button>
           <button
-            @click="showMobileFilters = false"
             class="flex-1 py-2.5 bg-primary-500 text-white rounded-lg text-sm font-medium hover:bg-primary-600"
+            @click="showMobileFilters = false"
           >
             确定 ({{ totalResults }})
           </button>

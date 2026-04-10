@@ -50,30 +50,34 @@ const aggregationModes = [
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(_channels, key) in config.channels" :key="key"
+              <tr
+v-for="(_channels, key) in config.channels" :key="key"
                 class="border-t border-gray-100 dark:border-gray-700 hover:bg-gray-50/50 dark:hover:bg-gray-700/20 transition-colors">
                 <td class="py-3 px-4 font-medium text-gray-900 dark:text-white">{{ channelLabels[key] || key }}</td>
 
                 <!-- 浏览器推送 -->
                 <td class="py-3 px-2 text-center">
-                  <button @click="config.channels[key].browserPush = !config.channels[key].browserPush"
-                    :class="['relative w-10 h-5.5 rounded-full transition-colors inline-flex', config.channels[key].browserPush ? 'bg-indigo-500' : 'bg-gray-300']">
+                  <button
+:class="['relative w-10 h-5.5 rounded-full transition-colors inline-flex', config.channels[key].browserPush ? 'bg-indigo-500' : 'bg-gray-300']"
+                    @click="config.channels[key].browserPush = !config.channels[key].browserPush">
                     <span :class="['absolute top-0.5 w-4.5 h-4.5 bg-white rounded-full shadow transition-transform', config.channels[key].browserPush ? 'left-[18px]' : 'left-0.5']"></span>
                   </button>
                 </td>
 
                 <!-- 应用内 -->
                 <td class="py-3 px-2 text-center">
-                  <button @click="config.channels[key].inApp = !config.channels[key].inApp"
-                    :class="['relative w-10 h-5.5 rounded-full transition-colors inline-flex', config.channels[key].inApp ? 'bg-indigo-500' : 'bg-gray-300']">
+                  <button
+:class="['relative w-10 h-5.5 rounded-full transition-colors inline-flex', config.channels[key].inApp ? 'bg-indigo-500' : 'bg-gray-300']"
+                    @click="config.channels[key].inApp = !config.channels[key].inApp">
                     <span :class="['absolute top-0.5 w-4.5 h-4.5 bg-white rounded-full shadow transition-transform', config.channels[key].inApp ? 'left-[18px]' : 'left-0.5']"></span>
                   </button>
                 </td>
 
                 <!-- 邮件 -->
                 <td class="py-3 px-2 text-center">
-                  <button v-if="'email' in config.channels[key]" @click="(config.channels[key] as any).email = !(config.channels[key] as any).email"
-                    :class="['relative w-10 h-5.5 rounded-full transition-colors inline-flex', (config.channels[key] as any).email ? 'bg-indigo-500' : 'bg-gray-300']">
+                  <button
+v-if="'email' in config.channels[key]" :class="['relative w-10 h-5.5 rounded-full transition-colors inline-flex', (config.channels[key] as any).email ? 'bg-indigo-500' : 'bg-gray-300']"
+                    @click="(config.channels[key] as any).email = !(config.channels[key] as any).email">
                     <span :class="['absolute top-0.5 w-4.5 h-4.5 bg-white rounded-full shadow transition-transform', (config.channels[key] as any).email ? 'left-[18px]' : 'left-0.5']"></span>
                   </button>
                   <span v-else class="text-gray-300 dark:text-gray-600">—</span>
@@ -81,8 +85,9 @@ const aggregationModes = [
 
                 <!-- 短信 -->
                 <td class="py-3 px-2 text-center">
-                  <button v-if="'sms' in config.channels[key]" @click="(config.channels[key] as any).sms = !(config.channels[key] as any).sms"
-                    :class="['relative w-10 h-5.5 rounded-full transition-colors inline-flex', (config.channels[key] as any).sms ? 'bg-indigo-500' : 'bg-gray-300']">
+                  <button
+v-if="'sms' in config.channels[key]" :class="['relative w-10 h-5.5 rounded-full transition-colors inline-flex', (config.channels[key] as any).sms ? 'bg-indigo-500' : 'bg-gray-300']"
+                    @click="(config.channels[key] as any).sms = !(config.channels[key] as any).sms">
                     <span :class="['absolute top-0.5 w-4.5 h-4.5 bg-white rounded-full shadow transition-transform', (config.channels[key] as any).sms ? 'left-[18px]' : 'left-0.5']"></span>
                   </button>
                   <span v-else class="text-gray-300 dark:text-gray-600">—</span>
@@ -98,10 +103,12 @@ const aggregationModes = [
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">免打扰时间段</label>
         <p class="text-xs text-gray-500 mb-3">在此期间将不会收到非紧急通知</p>
         <div class="flex items-center gap-3">
-          <input v-model="config.doNotDisturbStart" type="time"
+          <input
+v-model="config.doNotDisturbStart" type="time"
             class="px-3 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-400 outline-none" />
           <span class="text-gray-500">至</span>
-          <input v-model="config.doNotDisturbEnd" type="time"
+          <input
+v-model="config.doNotDisturbEnd" type="time"
             class="px-3 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-400 outline-none" />
           <span class="text-sm text-gray-500 whitespace-nowrap">{{ config.doNotDisturbStart }} - {{ config.doNotDisturbEnd }}</span>
         </div>
@@ -111,13 +118,14 @@ const aggregationModes = [
       <div>
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">通知聚合模式</label>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <button v-for="mode in aggregationModes" :key="mode.value" @click="config.aggregationMode = mode.value"
-            :class="[
+          <button
+v-for="mode in aggregationModes" :key="mode.value" :class="[
               'p-4 rounded-xl border-2 text-left transition-all',
               config.aggregationMode === mode.value
                 ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/30'
                 : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-gray-300'
-            ]">
+            ]"
+            @click="config.aggregationMode = mode.value">
             <p :class="['font-medium', config.aggregationMode === mode.value ? 'text-indigo-700 dark:text-indigo-300' : 'text-gray-900 dark:text-white']">{{ mode.label }}</p>
             <p class="text-xs text-gray-500 mt-1">{{ mode.desc }}</p>
           </button>
@@ -128,13 +136,14 @@ const aggregationModes = [
       <div>
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">提示音</label>
         <div class="flex flex-wrap gap-2">
-          <button v-for="sound in soundOptions" :key="sound.id" @click="config.sound = sound.id"
-            :class="[
+          <button
+v-for="sound in soundOptions" :key="sound.id" :class="[
               'flex items-center gap-2 px-4 py-2.5 rounded-xl border-2 text-sm transition-all',
               config.sound === sound.id
                 ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/30'
                 : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-gray-300'
-            ]">
+            ]"
+            @click="config.sound = sound.id">
             <span>{{ sound.icon }}</span>
             <span>{{ sound.name }}</span>
             <svg v-if="config.sound === sound.id" class="w-4 h-4 text-indigo-500 ml-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
@@ -148,18 +157,19 @@ const aggregationModes = [
           <p class="font-medium text-gray-900 dark:text-white">震动反馈</p>
           <p class="text-xs text-gray-500 mt-0.5">移动端震动提示（当前设备占位）</p>
         </div>
-        <button @click="config.vibration = !config.vibration"
-          :class="['relative w-12 h-7 rounded-full transition-colors', config.vibration ? 'bg-indigo-500' : 'bg-gray-300']">
+        <button
+:class="['relative w-12 h-7 rounded-full transition-colors', config.vibration ? 'bg-indigo-500' : 'bg-gray-300']"
+          @click="config.vibration = !config.vibration">
           <span :class="['absolute top-0.5 w-6 h-6 bg-white rounded-full shadow transition-transform', config.vibration ? 'left-[22px]' : 'left-0.5']"></span>
         </button>
       </div>
 
       <!-- 操作按钮 -->
       <div class="flex justify-end gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
-        <button @click="resetToDefault" class="px-5 py-2.5 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white border border-gray-300 dark:border-gray-600 rounded-lg transition-colors">
+        <button class="px-5 py-2.5 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white border border-gray-300 dark:border-gray-600 rounded-lg transition-colors" @click="resetToDefault">
           重置默认
         </button>
-        <button @click="saveNotification" class="px-6 py-2.5 text-sm bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors font-medium shadow-md">
+        <button class="px-6 py-2.5 text-sm bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors font-medium shadow-md" @click="saveNotification">
           保存设置
         </button>
       </div>

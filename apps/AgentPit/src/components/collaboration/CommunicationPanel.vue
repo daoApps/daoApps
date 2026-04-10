@@ -209,24 +209,24 @@ const groupedMessages = computed(() => {
         <button
           v-for="(config, type) in messageTypeConfig"
           :key="type"
-          @click="messageFilter = type as any"
           :class="[
             'px-3 py-1.5 text-xs font-medium rounded-full whitespace-nowrap transition-colors',
             messageFilter === type
               ? config.color + ' ring-2 ring-offset-1 ring-gray-300 dark:ring-gray-600'
               : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
           ]"
+          @click="messageFilter = type as any"
         >
           {{ config.icon }} {{ config.label }}
         </button>
         <button
-          @click="messageFilter = 'all'"
           :class="[
             'px-3 py-1.5 text-xs font-medium rounded-full transition-colors',
             messageFilter === 'all'
               ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900'
               : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
           ]"
+          @click="messageFilter = 'all'"
         >
           📋 全部
         </button>
@@ -326,9 +326,9 @@ const groupedMessages = computed(() => {
           @keyup.enter="sendMessage"
         />
         <button
-          @click="sendMessage"
           :disabled="!newMessage.trim()"
           class="px-4 py-2 text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed rounded-lg transition-colors"
+          @click="sendMessage"
         >
           发送
         </button>
@@ -338,8 +338,8 @@ const groupedMessages = computed(() => {
       <div class="flex items-center justify-between mt-2 text-xs text-gray-500 dark:text-gray-400">
         <span>{{ filteredMessages.length }} 条消息</span>
         <button
-          @click="clearMessages"
           class="hover:text-red-500 transition-colors"
+          @click="clearMessages"
         >
           清空消息
         </button>

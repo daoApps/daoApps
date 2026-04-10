@@ -276,8 +276,8 @@ watch([() => props.nodes, () => props.edges], () => {
           <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">🔍</span>
         </div>
         <button
-          @click="resetView"
           class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
+          @click="resetView"
         >
           🔄 重置视图
         </button>
@@ -402,7 +402,7 @@ watch([() => props.nodes, () => props.edges], () => {
                   </p>
                 </div>
               </div>
-              <button @click="closeNodeDetail" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 text-xl">×</button>
+              <button class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 text-xl" @click="closeNodeDetail">×</button>
             </div>
 
             <div v-if="selectedNode.description" class="mb-4">

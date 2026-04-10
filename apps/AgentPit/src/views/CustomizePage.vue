@@ -64,8 +64,8 @@ const handleCancel = () => {
             </div>
             <button
               v-if="activeTab !== 'create'"
-              @click="handleCreate"
               class="px-5 py-2.5 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white rounded-lg text-sm font-medium shadow-md hover:shadow-lg transition-all inline-flex items-center gap-1.5 shrink-0"
+              @click="handleCreate"
             >
               <span class="text-base">+</span> 新建智能体
             </button>
@@ -77,13 +77,13 @@ const handleCancel = () => {
               :key="tab.id"
               role="tab"
               :aria-selected="activeTab === tab.id"
-              @click="activeTab = tab.id"
               class="relative px-4 py-3 text-sm font-medium whitespace-nowrap transition-all duration-200 rounded-t-lg group"
               :class="
                 activeTab === tab.id
                   ? 'text-blue-600 dark:text-blue-400'
                   : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-white/50 dark:hover:bg-gray-700/50'
               "
+              @click="activeTab = tab.id"
             >
               <span class="mr-1.5">{{ tab.icon }}</span>
               {{ tab.label }}
@@ -102,11 +102,11 @@ const handleCancel = () => {
               <component
                 :is="tabs.find(t => t.id === activeTab)?.component"
                 :key="activeTab"
+                :edit-agent="editingAgent"
                 @create="handleCreate"
                 @edit="handleEdit"
                 @complete="handleComplete"
                 @cancel="handleCancel"
-                :edit-agent="editingAgent"
               />
             </KeepAlive>
           </Transition>

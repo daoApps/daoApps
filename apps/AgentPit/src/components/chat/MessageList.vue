@@ -1,3 +1,28 @@
+/**
+ * MessageList 组件 - 聊天消息列表
+ * 
+ * @description 展示聊天消息历史，支持 Markdown 渲染、打字机效果和流式输出显示
+ * 
+ * @component
+ * 
+ * @example
+ * <MessageList 
+ *   :messages="chatMessages" 
+ *   :is-streaming="isReceivingMessage"
+ * />
+ * 
+ * @param {Message[]} messages - 消息数组
+ * @param {boolean} [isStreaming=false] - 是否正在流式接收消息
+ * 
+ * @slot default - 默认插槽，未使用
+ * 
+ * @dependencies 
+ * - marked - Markdown 解析库
+ * - DOMPurify - HTML 净化库
+ * - useTypewriter - 打字机效果组合式函数
+ * - MultimediaMessage - 多媒体消息组件
+ */
+
 <script setup lang="ts">
 import { ref, watch, nextTick, onMounted } from 'vue'
 import { marked } from 'marked'
@@ -6,8 +31,19 @@ import type { Message } from '@/types/chat'
 import { useTypewriter } from '@/composables/useTypewriter'
 import MultimediaMessage from './MultimediaMessage.vue'
 
+/**
+ * MessageList 组件 Props 接口
+ * @interface Props
+ */
 interface Props {
+  /**
+   * 消息数组
+   */
   messages: Message[]
+  /**
+   * 是否正在流式接收消息
+   * @default false
+   */
   isStreaming?: boolean
 }
 

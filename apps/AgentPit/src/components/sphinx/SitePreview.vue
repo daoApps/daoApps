@@ -187,13 +187,13 @@ onUnmounted(() => {
           <button
             v-for="(label, key) in { desktop: '🖥️ 桌面', tablet: '📱 平板', mobile: '📲 手机' }"
             :key="key"
-            @click="device = key as DeviceType"
             :class="[
               'px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200',
               device === key
                 ? 'bg-white dark:bg-gray-600 text-blue-600 dark:text-blue-400 shadow-sm'
                 : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
             ]"
+            @click="device = key as DeviceType"
           >
             {{ label }}
           </button>
@@ -203,13 +203,13 @@ onUnmounted(() => {
       <!-- 缩放和刷新控制 -->
       <div class="flex items-center space-x-4">
         <div class="flex items-center space-x-2">
-          <button @click="handleZoomOut" :disabled="zoom <= 50" class="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded disabled:opacity-50">
+          <button :disabled="zoom <= 50" class="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded disabled:opacity-50" @click="handleZoomOut">
             <svg class="w-4 h-4 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/>
             </svg>
           </button>
           <span class="text-sm text-gray-600 dark:text-gray-400 min-w-[50px] text-center">{{ zoom }}%</span>
-          <button @click="handleZoomIn" :disabled="zoom >= 150" class="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded disabled:opacity-50">
+          <button :disabled="zoom >= 150" class="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded disabled:opacity-50" @click="handleZoomIn">
             <svg class="w-4 h-4 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
             </svg>
@@ -217,9 +217,9 @@ onUnmounted(() => {
         </div>
 
         <button
-          @click="handleRefresh"
           :disabled="isRefreshing"
           class="flex items-center space-x-1 px-3 py-1.5 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors disabled:opacity-50"
+          @click="handleRefresh"
         >
           <svg :class="['w-4 h-4', isRefreshing && 'animate-spin']" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>

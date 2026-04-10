@@ -238,7 +238,8 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <canvas ref="canvasRef" :width="CANVAS_SIZE" :height="CANVAS_SIZE"
+    <canvas
+ref="canvasRef" :width="CANVAS_SIZE" :height="CANVAS_SIZE"
       class="rounded-xl border-2 border-gray-700 shadow-lg" tabindex="0"></canvas>
 
     <div v-if="!gameRunning && !gameOver" class="mt-4 text-center">
@@ -251,16 +252,19 @@ onUnmounted(() => {
     </div>
 
     <div class="flex gap-2 mt-4">
-      <button v-if="!gameRunning || gameOver" @click="startGame"
-        class="px-5 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors font-medium text-sm">
+      <button
+v-if="!gameRunning || gameOver" class="px-5 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors font-medium text-sm"
+        @click="startGame">
         {{ gameOver ? '重新开始' : '开始游戏' }}
       </button>
-      <button v-if="gameRunning && !gameOver" @click="togglePause"
-        class="px-5 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors font-medium text-sm">
+      <button
+v-if="gameRunning && !gameOver" class="px-5 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors font-medium text-sm"
+        @click="togglePause">
         {{ gamePaused ? '继续' : '暂停' }}
       </button>
-      <button @click="startGame"
-        class="px-5 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors font-medium text-sm">
+      <button
+class="px-5 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors font-medium text-sm"
+        @click="startGame">
         重置
       </button>
     </div>
@@ -268,11 +272,11 @@ onUnmounted(() => {
     <!-- 移动端触控 -->
     <div class="grid grid-cols-3 gap-2 mt-4 sm:hidden w-[180px]">
       <div></div>
-      <button @click="nextDirection = { x: 0, y: -1 }" class="p-3 bg-gray-200 dark:bg-gray-700 rounded-lg active:bg-indigo-300">↑</button>
+      <button class="p-3 bg-gray-200 dark:bg-gray-700 rounded-lg active:bg-indigo-300" @click="nextDirection = { x: 0, y: -1 }">↑</button>
       <div></div>
-      <button @click="nextDirection = { x: -1, y: 0 }" class="p-3 bg-gray-200 dark:bg-gray-700 rounded-lg active:bg-indigo-300">←</button>
-      <button @click="nextDirection = { x: 0, y: 1 }" class="p-3 bg-gray-200 dark:bg-gray-700 rounded-lg active:bg-indigo-300">↓</button>
-      <button @click="nextDirection = { x: 1, y: 0 }" class="p-3 bg-gray-200 dark:bg-gray-700 rounded-lg active:bg-indigo-300">→</button>
+      <button class="p-3 bg-gray-200 dark:bg-gray-700 rounded-lg active:bg-indigo-300" @click="nextDirection = { x: -1, y: 0 }">←</button>
+      <button class="p-3 bg-gray-200 dark:bg-gray-700 rounded-lg active:bg-indigo-300" @click="nextDirection = { x: 0, y: 1 }">↓</button>
+      <button class="p-3 bg-gray-200 dark:bg-gray-700 rounded-lg active:bg-indigo-300" @click="nextDirection = { x: 1, y: 0 }">→</button>
     </div>
 
     <p class="text-xs text-gray-400 mt-3 text-center">使用 ↑↓←→ 或 WASD 控制方向 | 空格键 暂停/开始</p>
@@ -287,7 +291,7 @@ onUnmounted(() => {
             <p class="text-4xl font-bold text-green-500 my-4">{{ score }} 分</p>
             <p v-if="score >= highScore && score > 0" class="text-yellow-500 font-medium mb-4">🎉 新纪录!</p>
             <p class="text-gray-500 text-sm mb-6">最高分：{{ highScore }}</p>
-            <button @click="startGame" class="w-full py-3 bg-green-500 text-white rounded-xl hover:bg-green-600 transition-colors font-bold text-lg">
+            <button class="w-full py-3 bg-green-500 text-white rounded-xl hover:bg-green-600 transition-colors font-bold text-lg" @click="startGame">
               再来一局
             </button>
           </div>

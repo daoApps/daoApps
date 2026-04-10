@@ -248,7 +248,8 @@ const historyStatusConfig = {
 
         <!-- Score Badge -->
         <div v-if="currentResult" class="flex items-center gap-2">
-          <span :class="[
+          <span
+:class="[
             'px-3 py-1 rounded-full text-sm font-bold',
             currentResult.overallScore >= 90 ? 'bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-300' :
             currentResult.overallScore >= 70 ? 'bg-yellow-100 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-300' :
@@ -262,24 +263,24 @@ const historyStatusConfig = {
       <!-- Tabs -->
       <div class="flex items-center gap-2">
         <button
-          @click="activeTab = 'output'"
           :class="[
             'flex-1 px-4 py-2 text-sm font-medium rounded-lg transition-colors',
             activeTab === 'output'
               ? 'bg-blue-500 text-white'
               : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
           ]"
+          @click="activeTab = 'output'"
         >
           📄 输出结果
         </button>
         <button
-          @click="activeTab = 'history'"
           :class="[
             'flex-1 px-4 py-2 text-sm font-medium rounded-lg transition-colors',
             activeTab === 'history'
               ? 'bg-blue-500 text-white'
               : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
           ]"
+          @click="activeTab = 'history'"
         >
           📜 执行历史
         </button>
@@ -292,29 +293,29 @@ const historyStatusConfig = {
       <div v-if="currentResult" class="px-4 py-2 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
         <div class="flex items-center gap-1 bg-gray-100 dark:bg-gray-700 rounded p-1">
           <button
-            @click="viewMode = 'markdown'"
             :class="[
               'px-3 py-1 text-xs font-medium rounded transition-colors',
               viewMode === 'markdown' ? 'bg-white dark:bg-gray-600 shadow-sm' : 'hover:bg-gray-200 dark:hover:bg-gray-600'
             ]"
+            @click="viewMode = 'markdown'"
           >
             Markdown
           </button>
           <button
-            @click="viewMode = 'json'"
             :class="[
               'px-3 py-1 text-xs font-medium rounded transition-colors',
               viewMode === 'json' ? 'bg-white dark:bg-gray-600 shadow-sm' : 'hover:bg-gray-200 dark:hover:bg-gray-600'
             ]"
+            @click="viewMode = 'json'"
           >
             JSON
           </button>
           <button
-            @click="viewMode = 'raw'"
             :class="[
               'px-3 py-1 text-xs font-medium rounded transition-colors',
               viewMode === 'raw' ? 'bg-white dark:bg-gray-600 shadow-sm' : 'hover:bg-gray-200 dark:hover:bg-gray-600'
             ]"
+            @click="viewMode = 'raw'"
           >
             原文
           </button>
@@ -322,8 +323,8 @@ const historyStatusConfig = {
 
         <div class="flex items-center gap-2">
           <button
-            @click="copyToClipboard"
             class="px-3 py-1.5 text-xs font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors"
+            @click="copyToClipboard"
           >
             📋 复制
           </button>
@@ -335,8 +336,8 @@ const historyStatusConfig = {
               <button
                 v-for="format in currentResult.exportFormats"
                 :key="format"
-                @click="downloadAsFile(format)"
                 class="block w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 first:rounded-t-lg last:rounded-b-lg capitalize"
+                @click="downloadAsFile(format)"
               >
                 {{ format.toUpperCase() }}
               </button>
@@ -384,7 +385,8 @@ const historyStatusConfig = {
           >
             <div class="flex items-center justify-between mb-2">
               <span class="font-semibold text-sm text-gray-900 dark:text-white">{{ agentResult.agentName }}</span>
-              <span :class="[
+              <span
+:class="[
                 'px-2 py-0.5 text-xs font-bold rounded-full',
                 agentResult.score >= 95 ? 'bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-300' :
                 agentResult.score >= 85 ? 'bg-yellow-100 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-300' :

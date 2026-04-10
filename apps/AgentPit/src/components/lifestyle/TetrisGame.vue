@@ -316,14 +316,16 @@ onUnmounted(() => {
 
     <div class="flex gap-4 items-start">
       <!-- 游戏主画布 -->
-      <canvas ref="canvasRef" :width="CANVAS_WIDTH" :height="CANVAS_HEIGHT"
+      <canvas
+ref="canvasRef" :width="CANVAS_WIDTH" :height="CANVAS_HEIGHT"
         class="rounded-xl border-2 border-gray-700 shadow-lg"></canvas>
 
       <!-- 侧边栏 -->
       <div class="flex flex-col gap-4 min-w-[120px]">
         <div class="bg-gray-800 rounded-lg p-3">
           <p class="text-xs text-gray-400 text-center mb-2">下一个</p>
-          <canvas ref="previewCanvasRef" :width="PREVIEW_CELL * 5" :height="PREVIEW_CELL * 5"
+          <canvas
+ref="previewCanvasRef" :width="PREVIEW_CELL * 5" :height="PREVIEW_CELL * 5"
             class="mx-auto rounded border border-gray-700"></canvas>
         </div>
         <div class="text-xs text-gray-500 space-y-1 bg-gray-800/50 rounded p-2">
@@ -346,29 +348,32 @@ onUnmounted(() => {
     </div>
 
     <div class="flex gap-2 mt-4">
-      <button v-if="!gameRunning || gameOver" @click="startGame"
-        class="px-5 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors font-medium text-sm">
+      <button
+v-if="!gameRunning || gameOver" class="px-5 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors font-medium text-sm"
+        @click="startGame">
         {{ gameOver ? '重新开始' : '开始游戏' }}
       </button>
-      <button v-if="gameRunning && !gameOver" @click="togglePause"
-        class="px-5 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors font-medium text-sm">
+      <button
+v-if="gameRunning && !gameOver" class="px-5 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors font-medium text-sm"
+        @click="togglePause">
         {{ gamePaused ? '继续' : '暂停' }}
       </button>
-      <button @click="startGame"
-        class="px-5 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors font-medium text-sm">
+      <button
+class="px-5 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors font-medium text-sm"
+        @click="startGame">
         重置
       </button>
     </div>
 
     <!-- 移动端触控 -->
     <div class="sm:hidden mt-4 grid grid-cols-4 gap-2 w-[200px]">
-      <button @click="rotate()" class="p-3 bg-gray-200 dark:bg-gray-700 rounded-lg active:bg-indigo-300 text-sm">↻</button>
+      <button class="p-3 bg-gray-200 dark:bg-gray-700 rounded-lg active:bg-indigo-300 text-sm" @click="rotate()">↻</button>
       <div></div><div></div><div></div>
-      <button @click="moveLeft(); draw()" class="p-3 bg-gray-200 dark:bg-gray-700 rounded-lg active:bg-indigo-300">←</button>
-      <button @click="softDrop(); draw()" class="p-3 bg-gray-200 dark:bg-gray-700 rounded-lg active:bg-indigo-300">↓</button>
-      <button @click="moveRight(); draw()" class="p-3 bg-gray-200 dark:bg-gray-700 rounded-lg active:bg-indigo-300">→</button>
+      <button class="p-3 bg-gray-200 dark:bg-gray-700 rounded-lg active:bg-indigo-300" @click="moveLeft(); draw()">←</button>
+      <button class="p-3 bg-gray-200 dark:bg-gray-700 rounded-lg active:bg-indigo-300" @click="softDrop(); draw()">↓</button>
+      <button class="p-3 bg-gray-200 dark:bg-gray-700 rounded-lg active:bg-indigo-300" @click="moveRight(); draw()">→</button>
       <div></div>
-      <button @click="hardDrop()" class="p-3 bg-gray-200 dark:bg-gray-700 rounded-lg active:bg-indigo-300 text-sm">⤓</button>
+      <button class="p-3 bg-gray-200 dark:bg-gray-700 rounded-lg active:bg-indigo-300 text-sm" @click="hardDrop()">⤓</button>
       <div></div>
     </div>
 
@@ -385,7 +390,7 @@ onUnmounted(() => {
               <div class="bg-gray-100 dark:bg-gray-700 rounded-lg p-2"><p class="text-gray-500">消行</p><p class="font-bold text-yellow-500">{{ linesCleared }}</p></div>
               <div class="bg-gray-100 dark:bg-gray-700 rounded-lg p-2"><p class="text-gray-500">最高</p><p class="font-bold text-red-500">{{ highScore }}</p></div>
             </div>
-            <button @click="startGame" class="w-full py-3 bg-indigo-500 text-white rounded-xl hover:bg-indigo-600 transition-colors font-bold text-lg">
+            <button class="w-full py-3 bg-indigo-500 text-white rounded-xl hover:bg-indigo-600 transition-colors font-bold text-lg" @click="startGame">
               再来一局
             </button>
           </div>

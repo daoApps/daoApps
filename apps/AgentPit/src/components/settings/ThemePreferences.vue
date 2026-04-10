@@ -80,17 +80,19 @@ provide('updateTheme', saveTheme)
       <div>
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">主题模式</label>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <button v-for="mode in themeModes" :key="mode.value" @click="settings.mode = mode.value"
-            :class="[
+          <button
+v-for="mode in themeModes" :key="mode.value" :class="[
               'relative p-4 rounded-xl border-2 transition-all duration-200 text-left',
               settings.mode === mode.value
                 ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/30 shadow-md'
                 : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-gray-300 dark:hover:border-gray-600'
-            ]">
+            ]"
+            @click="settings.mode = mode.value">
             <span class="text-2xl">{{ mode.icon }}</span>
             <p :class="['font-medium mt-2', settings.mode === mode.value ? 'text-indigo-700 dark:text-indigo-300' : 'text-gray-900 dark:text-white']">{{ mode.label }}</p>
             <p class="text-xs text-gray-500 mt-0.5">{{ mode.desc }}</p>
-            <div v-if="settings.mode === mode.value"
+            <div
+v-if="settings.mode === mode.value"
               class="absolute top-2 right-2 w-5 h-5 rounded-full bg-indigo-500 flex items-center justify-center">
               <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
             </div>
@@ -123,38 +125,42 @@ provide('updateTheme', saveTheme)
       <div>
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">强调色</label>
         <div class="flex flex-wrap gap-3">
-          <button v-for="color in presetColors" :key="color.value" @click="settings.primaryColor = color.value; showCustomPicker = false"
-            :class="[
+          <button
+v-for="color in presetColors" :key="color.value" :class="[
               'w-10 h-10 rounded-xl transition-all duration-200 ring-2 ring-offset-2 dark:ring-offset-gray-800',
               settings.primaryColor === color.value ? 'ring-indigo-400 scale-110' : 'ring-transparent hover:scale-105'
             ]"
             :style="{ backgroundColor: color.value }"
-            :title="color.name">
+            :title="color.name"
+            @click="settings.primaryColor = color.value; showCustomPicker = false">
           </button>
-          <button @click="showCustomPicker = !showCustomPicker; customColor && (settings.primaryColor = customColor)"
-            :class="[
+          <button
+:class="[
               'w-10 h-10 rounded-xl flex items-center justify-center text-lg transition-all duration-200 ring-2 ring-offset-2 dark:ring-offset-gray-800',
               showCustomPicker ? 'ring-indigo-400' : 'ring-transparent'
             ]"
-            style="background: conic-gradient(red, yellow, lime, aqua, blue, magenta, red);">
+            style="background: conic-gradient(red, yellow, lime, aqua, blue, magenta, red);"
+            @click="showCustomPicker = !showCustomPicker; customColor && (settings.primaryColor = customColor)">
             🎨
           </button>
         </div>
-        <input v-if="showCustomPicker" v-model="customColor" @input="(e: Event) => settings.primaryColor = (e.target as HTMLInputElement).value"
-          type="color" class="mt-2 w-12 h-8 rounded cursor-pointer" />
+        <input
+v-if="showCustomPicker" v-model="customColor" type="color"
+          class="mt-2 w-12 h-8 rounded cursor-pointer" @input="(e: Event) => settings.primaryColor = (e.target as HTMLInputElement).value" />
       </div>
 
       <!-- 字体大小 -->
       <div>
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">字体大小</label>
         <div class="grid grid-cols-4 gap-2">
-          <button v-for="size in fontSizes" :key="size.value" @click="settings.fontSize = size.value"
-            :class="[
+          <button
+v-for="size in fontSizes" :key="size.value" :class="[
               'py-2.5 px-3 rounded-lg border-2 text-sm font-medium transition-all',
               settings.fontSize === size.value
                 ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300'
                 : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:border-gray-300'
-            ]">
+            ]"
+            @click="settings.fontSize = size.value">
             {{ size.label }}
           </button>
         </div>
@@ -164,13 +170,14 @@ provide('updateTheme', saveTheme)
       <div>
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">布局密度</label>
         <div class="grid grid-cols-3 gap-2">
-          <button v-for="opt in densityOptions" :key="opt.value" @click="settings.layoutDensity = opt.value"
-            :class="[
+          <button
+v-for="opt in densityOptions" :key="opt.value" :class="[
               'py-2.5 px-3 rounded-lg border-2 text-sm font-medium transition-all',
               settings.layoutDensity === opt.value
                 ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300'
                 : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:border-gray-300'
-            ]">
+            ]"
+            @click="settings.layoutDensity = opt.value">
             {{ opt.label }}
           </button>
         </div>
@@ -183,8 +190,9 @@ provide('updateTheme', saveTheme)
             <p class="font-medium text-gray-900 dark:text-white">动画效果</p>
             <p class="text-xs text-gray-500 mt-0.5">启用或禁用全局过渡动画</p>
           </div>
-          <button @click="settings.reduceMotion = !settings.reduceMotion"
-            :class="['relative w-12 h-7 rounded-full transition-colors', settings.reduceMotion ? 'bg-gray-300' : 'bg-indigo-500']">
+          <button
+:class="['relative w-12 h-7 rounded-full transition-colors', settings.reduceMotion ? 'bg-gray-300' : 'bg-indigo-500']"
+            @click="settings.reduceMotion = !settings.reduceMotion">
             <span :class="['absolute top-0.5 w-6 h-6 bg-white rounded-full shadow transition-transform', settings.reduceMotion ? 'left-0.5' : 'left-[22px]']"></span>
           </button>
         </div>
@@ -194,8 +202,9 @@ provide('updateTheme', saveTheme)
             <p class="font-medium text-gray-900 dark:text-white">高对比度模式</p>
             <p class="text-xs text-gray-500 mt-0.5">提升视觉对比度，辅助无障碍访问</p>
           </div>
-          <button @click="settings.highContrast = !settings.highContrast"
-            :class="['relative w-12 h-7 rounded-full transition-colors', settings.highContrast ? 'bg-yellow-500' : 'bg-gray-300']">
+          <button
+:class="['relative w-12 h-7 rounded-full transition-colors', settings.highContrast ? 'bg-yellow-500' : 'bg-gray-300']"
+            @click="settings.highContrast = !settings.highContrast">
             <span :class="['absolute top-0.5 w-6 h-6 bg-white rounded-full shadow transition-transform', settings.highContrast ? 'left-[22px]' : 'left-0.5']"></span>
           </button>
         </div>
@@ -203,10 +212,10 @@ provide('updateTheme', saveTheme)
 
       <!-- 操作按钮 -->
       <div class="flex justify-end gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
-        <button @click="resetToDefault" class="px-5 py-2.5 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white border border-gray-300 dark:border-gray-600 rounded-lg transition-colors">
+        <button class="px-5 py-2.5 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white border border-gray-300 dark:border-gray-600 rounded-lg transition-colors" @click="resetToDefault">
           重置默认
         </button>
-        <button @click="saveTheme" class="px-6 py-2.5 text-sm bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors font-medium shadow-md">
+        <button class="px-6 py-2.5 text-sm bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors font-medium shadow-md" @click="saveTheme">
           保存主题设置
         </button>
       </div>

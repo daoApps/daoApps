@@ -227,11 +227,14 @@ onUnmounted(() => {
     </div>
 
     <!-- 游戏网格 -->
-    <div id="game2048-container" class="relative bg-gray-700 p-2 rounded-xl shadow-lg select-none"
+    <div
+id="game2048-container" class="relative bg-gray-700 p-2 rounded-xl shadow-lg select-none"
       style="width: min(340px, calc(100vw - 40px)); aspect-ratio: 1;">
-      <TransitionGroup name="tile" tag="div" class="grid gap-1.5 w-full h-full"
+      <TransitionGroup
+name="tile" tag="div" class="grid gap-1.5 w-full h-full"
         :style="{ gridTemplateColumns: `repeat(${SIZE}, 1fr)` }">
-        <div v-for="(cell, idx) in grid.flat()" :key="`${idx}-${cell}`"
+        <div
+v-for="(cell, idx) in grid.flat()" :key="`${idx}-${cell}`"
           :class="[
             'flex items-center justify-center font-bold rounded-md transition-all duration-150',
             cell >= 1024 ? 'text-2xl' : cell >= 128 ? 'text-xl' : cell >= 16 ? 'text-lg' : 'text-base'
@@ -253,10 +256,10 @@ onUnmounted(() => {
             <h3 class="text-3xl font-bold text-gray-900 mb-2">达成 2048!</h3>
             <p class="text-gray-800 mb-6">恭喜你完成了挑战！</p>
             <div class="flex gap-3 justify-center">
-              <button @click="continueAfterWin" class="px-6 py-2.5 bg-gray-900 text-white rounded-xl hover:bg-gray-800 font-medium transition-colors">
+              <button class="px-6 py-2.5 bg-gray-900 text-white rounded-xl hover:bg-gray-800 font-medium transition-colors" @click="continueAfterWin">
                 继续游戏
               </button>
-              <button @click="newGame(); showWinAnimation = false" class="px-6 py-2.5 bg-yellow-500 text-gray-900 rounded-xl hover:bg-yellow-600 font-bold transition-colors">
+              <button class="px-6 py-2.5 bg-yellow-500 text-gray-900 rounded-xl hover:bg-yellow-600 font-bold transition-colors" @click="newGame(); showWinAnimation = false">
                 新游戏
               </button>
             </div>
@@ -271,7 +274,7 @@ onUnmounted(() => {
             <div class="text-6xl mb-3">😔</div>
             <h3 class="text-2xl font-bold text-white mb-2">游戏结束!</h3>
             <p class="text-gray-300 mb-1">最终得分：<span class="font-bold text-yellow-400">{{ score }}</span></p>
-            <button @click="newGame" class="mt-4 px-8 py-3 bg-indigo-500 text-white rounded-xl hover:bg-indigo-600 font-bold transition-colors">
+            <button class="mt-4 px-8 py-3 bg-indigo-500 text-white rounded-xl hover:bg-indigo-600 font-bold transition-colors" @click="newGame">
               再来一局
             </button>
           </div>
@@ -281,12 +284,13 @@ onUnmounted(() => {
 
     <!-- 操作按钮 -->
     <div class="flex gap-2 mt-4">
-      <button @click="newGame" class="px-5 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors font-medium text-sm">
+      <button class="px-5 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors font-medium text-sm" @click="newGame">
         🔄 新游戏
       </button>
-      <button @click="undo" :disabled="history.length === 0"
-        class="px-5 py-2 rounded-lg transition-colors font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-        :class="history.length > 0 ? 'bg-orange-500 text-white hover:bg-orange-600' : 'bg-gray-300 text-gray-500'">
+      <button
+:disabled="history.length === 0" class="px-5 py-2 rounded-lg transition-colors font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+        :class="history.length > 0 ? 'bg-orange-500 text-white hover:bg-orange-600' : 'bg-gray-300 text-gray-500'"
+        @click="undo">
         ↩️ 撤销 ({{ history.length }})
       </button>
     </div>
@@ -294,11 +298,11 @@ onUnmounted(() => {
     <!-- 移动端触控 -->
     <div class="sm:hidden mt-4 grid grid-cols-3 gap-2 w-[180px]">
       <div></div>
-      <button @click="move('up')" class="p-4 bg-gray-200 dark:bg-gray-700 rounded-lg active:bg-indigo-300 text-xl">↑</button>
+      <button class="p-4 bg-gray-200 dark:bg-gray-700 rounded-lg active:bg-indigo-300 text-xl" @click="move('up')">↑</button>
       <div></div>
-      <button @click="move('left')" class="p-4 bg-gray-200 dark:bg-gray-700 rounded-lg active:bg-indigo-300 text-xl">←</button>
-      <button @click="move('down')" class="p-4 bg-gray-200 dark:bg-gray-700 rounded-lg active:bg-indigo-300 text-xl">↓</button>
-      <button @click="move('right')" class="p-4 bg-gray-200 dark:bg-gray-700 rounded-lg active:bg-indigo-300 text-xl">→</button>
+      <button class="p-4 bg-gray-200 dark:bg-gray-700 rounded-lg active:bg-indigo-300 text-xl" @click="move('left')">←</button>
+      <button class="p-4 bg-gray-200 dark:bg-gray-700 rounded-lg active:bg-indigo-300 text-xl" @click="move('down')">↓</button>
+      <button class="p-4 bg-gray-200 dark:bg-gray-700 rounded-lg active:bg-indigo-300 text-xl" @click="move('right')">→</button>
     </div>
 
     <p class="text-xs text-gray-400 mt-3 text-center">使用 ↑↓←→ 或 WASD 合并数字 | 目标：2048</p>

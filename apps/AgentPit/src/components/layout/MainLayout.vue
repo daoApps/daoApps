@@ -1,3 +1,24 @@
+/**
+ * MainLayout 组件 - 应用主布局容器
+ * 
+ * @description 整合 Header、Sidebar、Footer 和主内容区域，提供响应式布局支持
+ * 
+ * @component
+ * 
+ * @example
+ * <MainLayout>
+ *   <YourPageContent />
+ * </MainLayout>
+ * 
+ * @slot default - 主内容插槽，用于放置页面内容
+ * 
+ * @dependencies 
+ * - Header - 顶部导航栏组件
+ * - Sidebar - 侧边栏组件
+ * - Footer - 底部信息栏组件
+ * - useAppStore - 应用全局状态管理
+ */
+
 <script setup lang="ts">
 import { computed } from 'vue'
 import Header from './Header.vue'

@@ -82,8 +82,8 @@ const handleBuyNow = () => {
   <div v-if="!product" class="flex flex-col items-center justify-center py-20">
     <p class="text-xl font-medium text-gray-900 dark:text-white mb-4">商品不存在</p>
     <button
-      @click="router.push('/marketplace')"
       class="px-6 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors"
+      @click="router.push('/marketplace')"
     >
       返回市场首页
     </button>
@@ -91,7 +91,7 @@ const handleBuyNow = () => {
 
   <div v-else class="max-w-7xl mx-auto space-y-8 pb-12">
     <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
-      <button @click="router.push('/marketplace')" class="hover:text-primary-600 dark:hover:text-primary-400">市场首页</button>
+      <button class="hover:text-primary-600 dark:hover:text-primary-400" @click="router.push('/marketplace')">市场首页</button>
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
       </svg>
@@ -109,8 +109,8 @@ const handleBuyNow = () => {
 
           <template v-if="product.images.length > 1">
             <button
-              @click="prevImage"
               class="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/30 hover:bg-black/50 rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity"
+              @click="prevImage"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -118,8 +118,8 @@ const handleBuyNow = () => {
             </button>
 
             <button
-              @click="nextImage"
               class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/30 hover:bg-black/50 rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity"
+              @click="nextImage"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -130,11 +130,11 @@ const handleBuyNow = () => {
               <button
                 v-for="(_, idx) in product.images"
                 :key="idx"
-                @click="setCurrentIndex(idx)"
                 :class="[
                   'h-2 rounded-full transition-all',
                   idx === currentIndex ? 'bg-white w-6' : 'bg-white/50 w-2'
                 ]"
+                @click="setCurrentIndex(idx)"
               />
             </div>
           </template>
@@ -144,11 +144,11 @@ const handleBuyNow = () => {
           <button
             v-for="(img, idx) in product.images"
             :key="idx"
-            @click="setCurrentIndex(idx)"
             :class="[
               'flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all',
               idx === currentIndex ? 'border-primary-500' : 'border-transparent hover:border-gray-300'
             ]"
+            @click="setCurrentIndex(idx)"
           >
             <img :src="img" alt="" class="w-full h-full object-cover" />
           </button>
@@ -160,13 +160,13 @@ const handleBuyNow = () => {
           <div class="flex items-start justify-between gap-4 mb-3">
             <h1 class="text-2xl font-bold text-gray-900 dark:text-white leading-tight">{{ product.name }}</h1>
             <button
-              @click="isFavorite = !isFavorite"
               :class="[
                 'flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-all',
                 isFavorite
                   ? 'bg-red-50 dark:bg-red-900/30 text-red-500'
                   : 'bg-gray-100 dark:bg-gray-700 text-gray-400 hover:text-red-500'
               ]"
+              @click="isFavorite = !isFavorite"
             >
               <svg
                 class="w-5 h-5"
@@ -228,9 +228,9 @@ const handleBuyNow = () => {
           <label class="text-sm font-medium text-gray-900 dark:text-white">数量</label>
           <div class="inline-flex items-center border border-gray-200 dark:border-gray-600 rounded-lg overflow-hidden">
             <button
-              @click="updateQuantity(quantity - 1)"
               :disabled="quantity <= 1"
               class="w-10 h-10 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              @click="updateQuantity(quantity - 1)"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
@@ -239,13 +239,13 @@ const handleBuyNow = () => {
             <input
               type="number"
               :value="quantity"
-              @input="(e) => updateQuantity(parseInt((e.target as HTMLInputElement).value) || 1)"
               class="w-14 h-10 text-center border-x border-gray-200 dark:border-gray-600 focus:outline-none text-sm font-medium bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+              @input="(e) => updateQuantity(parseInt((e.target as HTMLInputElement).value) || 1)"
             />
             <button
-              @click="updateQuantity(quantity + 1)"
               :disabled="quantity >= product.stock"
               class="w-10 h-10 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              @click="updateQuantity(quantity + 1)"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -257,8 +257,8 @@ const handleBuyNow = () => {
 
         <div class="flex gap-3">
           <button
-            @click="handleAddToCart"
             class="flex-1 py-3.5 px-6 bg-primary-500 text-white font-semibold rounded-xl hover:bg-primary-600 active:scale-[0.98] transition-all shadow-lg shadow-primary-500/25 flex items-center justify-center gap-2"
+            @click="handleAddToCart"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z" />
@@ -266,8 +266,8 @@ const handleBuyNow = () => {
             加入购物车
           </button>
           <button
-            @click="handleBuyNow"
             class="flex-1 py-3.5 px-6 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-xl hover:from-orange-600 hover:to-red-600 active:scale-[0.98] transition-all shadow-lg flex items-center justify-center gap-2"
+            @click="handleBuyNow"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -324,21 +324,21 @@ const handleBuyNow = () => {
     <div class="border-b border-gray-200 dark:border-gray-700">
       <div class="flex gap-8">
         <button
-          @click="activeTab = 'detail'"
           :class="[
             'pb-4 text-sm font-medium relative transition-colors',
             activeTab === 'detail' ? 'text-primary-600 dark:text-primary-400' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
           ]"
+          @click="activeTab = 'detail'"
         >
           商品详情
           <span v-if="activeTab === 'detail'" class="absolute bottom-0 left-0 right-0 h-0.5 bg-primary-600 dark:bg-primary-400 rounded-full" />
         </button>
         <button
-          @click="activeTab = 'reviews'"
           :class="[
             'pb-4 text-sm font-medium relative transition-colors',
             activeTab === 'reviews' ? 'text-primary-600 dark:text-primary-400' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
           ]"
+          @click="activeTab = 'reviews'"
         >
           用户评价 ({{ reviews.length }})
           <span v-if="activeTab === 'reviews'" class="absolute bottom-0 left-0 right-0 h-0.5 bg-primary-600 dark:bg-primary-400 rounded-full" />
@@ -382,8 +382,8 @@ const handleBuyNow = () => {
         <div
           v-for="relProduct in relatedProducts"
           :key="relProduct.id"
-          @click="router.push(`/marketplace/product/${relProduct.id}`)"
           class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden cursor-pointer hover:shadow-md transition-shadow group"
+          @click="router.push(`/marketplace/product/${relProduct.id}`)"
         >
           <div class="aspect-square overflow-hidden bg-gray-100 dark:bg-gray-700">
             <img

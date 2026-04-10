@@ -58,55 +58,55 @@
 
 ### Phase 3: P0 核心业务模块重构与增强
 
-- [ ] Task 8: 重构自动变现系统（Monetization）\[P0]
-  - [ ] SubTask 8.1: 实现 `WalletCard.vue`（余额展示、充值提现按钮、实时更新）
-  - [ ] SubTask 8.2: 实现 `RevenueChart.vue`（ECharts 图表、时间范围切换、多币种支持）
-  - [ ] SubTask 8.3: 实现 `TransactionHistory.vue`（交易列表、分页筛选、搜索功能）
-  - [ ] SubTask 8.4: 实现 `WithdrawModal.vue`（提现表单、余额验证、Teleport 弹窗）
-  - [ ] SubTask 8.5: 实现 `FinancialReport.vue`（指标卡片、饼图、AI 趋势预测）
-  - [ ] SubTask 8.6: 整合 `views/MonetizationPage.vue`
-  - [ ] SubTask 8.7: 新增：实时收益仪表盘（WebSocket 模拟）
-  - [ ] SubTask 8.8: 新增：智能财务分析模块
-  - [ ] SubTask 8.9: 新增：收益预警通知系统
-  - [ ] SubTask 8.10: 编写变现模块全量测试
-- [ ] Task 9: 重构 Sphinx 快速建站系统（Sphinx）\[P0]
-  - [ ] SubTask 9.1: 实现 `SiteWizard.vue`（5 步向导流程、步骤条组件）
-  - [ ] SubTask 9.2: 实现 `TemplateGallery.vue`（模板网格、预览弹窗、分类筛选）
-  - [ ] SubTask 9.3: 实现 `AISiteBuilder.vue`（AI 对话界面、Markdown 渲染）
-  - [ ] SubTask 9.4: 实现 `SitePreview.vue`（响应式预览、iframe 沙箱）
-  - [ ] SubTask 9.5: 实现 `PublishPanel.vue`（部署配置、一键发布）
-  - [ ] SubTask 9.6: 整合 `views/SphinxPage.vue`
-  - [ ] SubTask 9.7: 新增：AI 代码生成集成（OpenAI API 模拟）
-  - [ ] SubTask 9.8: 新增：可视化拖拽编辑器基础版
-  - [ ] SubTask 9.9: 新增：Vercel/Netlify 自动部署模拟
-  - [ ] SubTask 9.10: 编写建站模块全量测试
-- [ ] Task 10: 重构智能体对话系统（Chat）\[P0]
-  - [ ] SubTask 10.1: 实现 `ChatInterface.vue`（主聊天容器、布局管理）
-  - [ ] SubTask 10.2: 实现 `MessageList.vue`（消息气泡、流式输出打字机效果）
-  - [ ] SubTask 10.3: 实现 `MessageInput.vue`（输入框、多媒体上传、快捷指令）
-  - [ ] SubTask 10.4: 实现 `QuickCommands.vue`（预设问题面板、可折叠）
-  - [ ] SubTask 10.5: 实现 `ChatSidebar.vue`（对话历史列表、用户信息）
-  - [ ] SubTask 10.6: 创建 `composables/useTypewriter.ts`（流式输出 Composable）
-  - [ ] SubTask 10.7: 创建 `composables/useDebounce.ts`（防抖输入 Composable）
-  - [ ] SubTask 10.8: 整合 `views/ChatPage.vue`
-  - [ ] SubTask 10.9: 新增：SSE 流式输出（Server-Sent Events 模拟）
-  - [ ] SubTask 10.10: 新增：多轮对话上下文保持（10 轮历史）
-  - [ ] SubTask 10.11: 新增：多媒体消息支持（图片、文件、代码块）
-  - [ ] SubTask 10.12: 新增：多语言自动检测与翻译
-  - [ ] SubTask 10.13: 编写对话模块全量测试
+- [x] Task 8: 重构自动变现系统（Monetization）\[P0] ✅
+  - [x] SubTask 8.1: 实现 `WalletCard.vue`（余额展示、充值提现按钮、实时更新）✅
+  - [x] SubTask 8.2: 实现 `RevenueChart.vue`（ECharts 图表、时间范围切换、多币种支持）✅
+  - [x] SubTask 8.3: 实现 `TransactionHistory.vue`（交易列表、分页筛选、搜索功能）✅
+  - [x] SubTask 8.4: 实现 `WithdrawModal.vue`（提现表单、余额验证、Teleport 弹窗）✅
+  - [x] SubTask 8.5: 实现 `FinancialReport.vue`（指标卡片、饼图、AI 趋势预测）✅
+  - [x] SubTask 8.6: 整合 `views/MonetizationPage.vue` ✅
+  - [x] SubTask 8.7: 新增：实时收益仪表盘（WebSocket 模拟）✅
+  - [x] SubTask 8.8: 新增：智能财务分析模块 ✅
+  - [x] SubTask 8.9: 新增：收益预警通知系统 ✅
+  - [x] SubTask 8.10: 编写变现模块全量测试 ✅
+- [x] Task 9: 重构 Sphinx 快速建站系统（Sphinx）\[P0] ✅
+  - [x] SubTask 9.1: 实现 `SiteWizard.vue`（5 步向导流程、步骤条组件）✅
+  - [x] SubTask 9.2: 实现 `TemplateGallery.vue`（模板网格、预览弹窗、分类筛选）✅
+  - [x] SubTask 9.3: 实现 `AISiteBuilder.vue`（AI 对话界面、Markdown 渲染）✅
+  - [x] SubTask 9.4: 实现 `SitePreview.vue`（响应式预览、iframe 沙箱）✅
+  - [x] SubTask 9.5: 实现 `PublishPanel.vue`（部署配置、一键发布）✅
+  - [x] SubTask 9.6: 整合 `views/SphinxPage.vue` ✅
+  - [x] SubTask 9.7: 新增：AI 代码生成集成（OpenAI API 模拟）✅
+  - [x] SubTask 9.8: 新增：可视化拖拽编辑器基础版 ✅
+  - [x] SubTask 9.9: 新增：Vercel/Netlify 自动部署模拟 ✅
+  - [x] SubTask 9.10: 编写建站模块全量测试 ✅
+- [x] Task 10: 重构智能体对话系统（Chat）\[P0] ✅
+  - [x] SubTask 10.1: 实现 `ChatInterface.vue`（主聊天容器、布局管理）✅
+  - [x] SubTask 10.2: 实现 `MessageList.vue`（消息气泡、流式输出打字机效果）✅
+  - [x] SubTask 10.3: 实现 `MessageInput.vue`（输入框、多媒体上传、快捷指令）✅
+  - [x] SubTask 10.4: 实现 `QuickCommands.vue`（预设问题面板、可折叠）✅
+  - [x] SubTask 10.5: 实现 `ChatSidebar.vue`（对话历史列表、用户信息）✅
+  - [x] SubTask 10.6: 创建 `composables/useTypewriter.ts`（流式输出 Composable）✅
+  - [x] SubTask 10.7: 创建 `composables/useDebounce.ts`（防抖输入 Composable）✅
+  - [x] SubTask 10.8: 整合 `views/ChatPage.vue` ✅
+  - [x] SubTask 10.9: 新增：SSE 流式输出（Server-Sent Events 模拟）✅
+  - [x] SubTask 10.10: 新增：多轮对话上下文保持（10 轮历史）✅
+  - [x] SubTask 10.11: 新增：多媒体消息支持（图片、文件、代码块）✅
+  - [x] SubTask 10.12: 新增：多语言自动检测与翻译 ✅
+  - [x] SubTask 10.13: 编写对话模块全量测试 ✅
 
 ### Phase 4: P1 重要业务模块实现
 
-- [ ] Task 11: 实现社交连接系统（Social）\[P1]
-  - [ ] SubTask 11.1: 实现 `UserProfileCard.vue`（用户资料卡、Teleport 浮层）
-  - [ ] SubTask 11.2: 实现 `UserRecommendList.vue`（推荐用户列表、虚拟滚动）
-  - [ ] SubTask 11.3: 实现 `DatingMatch.vue`（Tinder 式滑动匹配、TransitionGroup 动画）
-  - [ ] SubTask 11.4: 实现 `MeetingRoom.vue`（视频会议房间 UI、WebRTC 占位）
-  - [ ] SubTask 11.5: 实现 `SocialFeed.vue`（社交信息流、无限滚动）
-  - [ ] SubTask 11.6: 实现 `FriendsSystem.vue`（好友管理、CRUD 操作）
-  - [ ] SubTask 11.7: 实现 `NotificationPanel.vue`（通知面板、provide/inject 跨组件通信）
-  - [ ] SubTask 11.8: 整合 `views/SocialPage.vue`（Tab 导航切换）
-  - [ ] SubTask 11.9: 编写社交模块测试
+- [x] Task 11: 实现社交连接系统（Social）\[P1] ✅
+  - [x] SubTask 11.1: 实现 `UserProfileCard.vue`（用户资料卡、Teleport 浮层）✅
+  - [x] SubTask 11.2: 实现 `UserRecommendList.vue`（推荐用户列表、虚拟滚动）✅
+  - [x] SubTask 11.3: 实现 `DatingMatch.vue`（Tinder 式滑动匹配、TransitionGroup 动画）✅
+  - [x] SubTask 11.4: 实现 `MeetingRoom.vue`（视频会议房间 UI、WebRTC 占位）✅
+  - [x] SubTask 11.5: 实现 `SocialFeed.vue`（社交信息流、无限滚动）✅
+  - [x] SubTask 11.6: 实现 `FriendsSystem.vue`（好友管理、CRUD 操作）✅
+  - [x] SubTask 11.7: 实现 `NotificationPanel.vue`（通知面板、provide/inject 跨组件通信）✅
+  - [x] SubTask 11.8: 整合 `views/SocialPage.vue`（Tab 导航切换）✅
+  - [x] SubTask 11.9: 编写社交模块测试 ✅
 - [x] Task 12: 实现交易市场（Marketplace）\[P1] ✅
   - [x] SubTask 12.1: 实现 `ProductGrid.vue`（商品网格、虚拟滚动、懒加载图片）✅
   - [x] SubTask 12.2: 实现 `ProductDetail.vue`（商品详情、图片画廊、评价列表）✅
@@ -117,84 +117,84 @@
   - [x] SubTask 12.7: 实现 `SellerCenter.vue`（卖家中心、数据统计图表）✅
   - [x] SubTask 12.8: 整合 `views/MarketplacePage.vue` ✅
   - [x] SubTask 12.9: 编写市场模块测试 ✅
-- [ ] Task 13: 实现多智能体协作系统（Collaboration）\[P1]
-  - [ ] SubTask 13.1: 实现 `AgentWorkspace.vue`（协作工作台主界面）
-  - [ ] SubTask 13.2: 实现 `AgentSelector.vue`（智能体选择器、拖拽排序）
-  - [ ] SubTask 13.3: 实现 `AgentConfigPanel.vue`（配置面板、动态表单）
-  - [ ] SubTask 13.4: 实现 `TaskDistributor.vue`（任务分配器、看板视图）
-  - [ ] SubTask 13.5: 实现 `CommunicationPanel.vue`（通信面板、WebSocket 实时消息）
-  - [ ] SubTask 13.6: 实现 `CollaborationResult.vue`（结果展示、Markdown 渲染）
-  - [ ] SubTask 13.7: 实现 `AgentStatusCard.vue`（状态卡片、实时指示器）
-  - [ ] SubTask 13.8: 整合 `views/CollaborationPage.vue`
-  - [ ] SubTask 13.9: 编写协作模块测试
+- [x] Task 13: 实现多智能体协作系统（Collaboration）\[P1] ✅
+  - [x] SubTask 13.1: 实现 `AgentWorkspace.vue`（协作工作台主界面）✅
+  - [x] SubTask 13.2: 实现 `AgentSelector.vue`（智能体选择器、拖拽排序）✅
+  - [x] SubTask 13.3: 实现 `AgentConfigPanel.vue`（配置面板、动态表单）✅
+  - [x] SubTask 13.4: 实现 `TaskDistributor.vue`（任务分配器、看板视图）✅
+  - [x] SubTask 13.5: 实现 `CommunicationPanel.vue`（通信面板、WebSocket 实时消息）✅
+  - [x] SubTask 13.6: 实现 `CollaborationResult.vue`（结果展示、Markdown 渲染）✅
+  - [x] SubTask 13.7: 实现 `AgentStatusCard.vue`（状态卡片、实时指示器）✅
+  - [x] SubTask 13.8: 整合 `views/CollaborationPage.vue` ✅
+  - [x] SubTask 13.9: 编写协作模块测试 ✅
 
 ### Phase 5: P2 辅助功能模块实现
 
-- [ ] Task 14: 实现存储记忆系统（Memory）\[P2]
-  - [ ] SubTask 14.1: 实现 `FileManager.vue`（文件管理器、树形结构、拖拽上传）
-  - [ ] SubTask 14.2: 实现 `KnowledgeGraph.vue`（知识图谱、D3.js/SVG 力导向图）
-  - [ ] SubTask 14.3: 实现 `MemorySearch.vue`（记忆搜索、全文检索高亮）
-  - [ ] SubTask 14.4: 实现 `MemoryTimeline.vue`（时间线视图、垂直时间轴）
-  - [ ] SubTask 14.5: 实现 `BackupSettings.vue`（备份设置、增量备份策略）
-  - [ ] SubTask 14.6: 实现 `StorageQuota.vue`（存储配额、环形进度条）
-  - [ ] SubTask 14.7: 整合 `views/MemoryPage.vue`
-  - [ ] SubTask 14.8: 编写记忆模块测试
-- [ ] Task 15: 实现定制化智能体（Customize）\[P2]
-  - [ ] SubTask 15.1: 实现 `AgentCreatorWizard.vue`（5 步向导流程、步骤条组件）
-  - [ ] SubTask 15.2: 实现 `BasicInfoForm.vue`（基本信息、表单验证 VeeValidate）
-  - [ ] SubTask 15.3: 实现 `AppearanceCustomizer.vue`（外观定制、颜色选择器、头像上传）
-  - [ ] SubTask 15.4: 实现 `AbilityConfigurator.vue`（能力配置、技能树可视化）
-  - [ ] SubTask 15.5: 实现 `BusinessModelSetup.vue`（商业模式、定价策略配置）
-  - [ ] SubTask 15.6: 实现 `AgentPreview.vue`（实时预览、iframe 沙箱）
-  - [ ] SubTask 15.7: 实现 `MyAgentsList.vue`（我的智能体列表、CRUD 操作）
-  - [ ] SubTask 15.8: 实现 `AgentAnalytics.vue`（数据分析、ECharts 报表）
-  - [ ] SubTask 15.9: 整合 `views/CustomizePage.vue`
-  - [ ] SubTask 15.10: 编写定制模块测试
-- [ ] Task 16: 实现生活服务与设置（Lifestyle & Settings）\[P2]
-  - [ ] SubTask 16.1: 实现 `MeetingCalendar.vue`（会议日历、FullCalendar 集成占位）
-  - [ ] SubTask 16.2: 实现 `TravelPlanner.vue`（旅游规划、地图标记、行程安排）
-  - [ ] SubTask 16.3: 实现 `GameCenter.vue`（游戏中心、3 个内置小游戏）
-    - [ ] SubTask 16.3.1: 贪吃蛇游戏
-    - [ ] SubTask 16.3.2: 俄罗斯方块游戏
-    - [ ] SubTask 16.3.3: 2048 游戏
-  - [ ] SubTask 16.4: 实现 `LifestyleDashboard.vue`（生活服务总览）
-  - [ ] SubTask 16.5: 实现 `UserProfileSettings.vue`（个人资料设置）
-  - [ ] SubTask 16.6: 实现 `ThemePreferences.vue`（主题偏好、暗色/亮色/跟随系统）
-  - [ ] SubTask 16.7: 实现 `NotificationSettings.vue`（通知设置）
-  - [ ] SubTask 16.8: 实现 `PrivacySecurity.vue`（隐私安全、双因素认证 UI）
-  - [ ] SubTask 16.9: 实现 `HelpCenter.vue`（帮助中心、FAQ 折叠面板）
-  - [ ] SubTask 16.10: 整合 `views/LifestylePage.vue` 和 `views/SettingsPage.vue`
-  - [ ] SubTask 16.11: 编写生活服务和设置模块测试
+- [x] Task 14: 实现存储记忆系统（Memory）\[P2] ✅
+  - [x] SubTask 14.1: 实现 `FileManager.vue`（文件管理器、树形结构、拖拽上传）✅
+  - [x] SubTask 14.2: 实现 `KnowledgeGraph.vue`（知识图谱、D3.js/SVG 力导向图）✅
+  - [x] SubTask 14.3: 实现 `MemorySearch.vue`（记忆搜索、全文检索高亮）✅
+  - [x] SubTask 14.4: 实现 `MemoryTimeline.vue`（时间线视图、垂直时间轴）✅
+  - [x] SubTask 14.5: 实现 `BackupSettings.vue`（备份设置、增量备份策略）✅
+  - [x] SubTask 14.6: 实现 `StorageQuota.vue`（存储配额、环形进度条）✅
+  - [x] SubTask 14.7: 整合 `views/MemoryPage.vue` ✅
+  - [x] SubTask 14.8: 编写记忆模块测试 ✅
+- [x] Task 15: 实现定制化智能体（Customize）\[P2] ✅
+  - [x] SubTask 15.1: 实现 `AgentCreatorWizard.vue`（5 步向导流程、步骤条组件）✅
+  - [x] SubTask 15.2: 实现 `BasicInfoForm.vue`（基本信息、表单验证 VeeValidate）✅
+  - [x] SubTask 15.3: 实现 `AppearanceCustomizer.vue`（外观定制、颜色选择器、头像上传）✅
+  - [x] SubTask 15.4: 实现 `AbilityConfigurator.vue`（能力配置、技能树可视化）✅
+  - [x] SubTask 15.5: 实现 `BusinessModelSetup.vue`（商业模式、定价策略配置）✅
+  - [x] SubTask 15.6: 实现 `AgentPreview.vue`（实时预览、iframe 沙箱）✅
+  - [x] SubTask 15.7: 实现 `MyAgentsList.vue`（我的智能体列表、CRUD 操作）✅
+  - [x] SubTask 15.8: 实现 `AgentAnalytics.vue`（数据分析、ECharts 报表）✅
+  - [x] SubTask 15.9: 整合 `views/CustomizePage.vue` ✅
+  - [x] SubTask 15.10: 编写定制模块测试 ✅
+- [x] Task 16: 实现生活服务与设置（Lifestyle & Settings）\[P2] ✅
+  - [x] SubTask 16.1: 实现 `MeetingCalendar.vue`（会议日历、FullCalendar 集成占位）✅
+  - [x] SubTask 16.2: 实现 `TravelPlanner.vue`（旅游规划、地图标记、行程安排）✅
+  - [x] SubTask 16.3: 实现 `GameCenter.vue`（游戏中心、3 个内置小游戏）✅
+    - [x] SubTask 16.3.1: 贪吃蛇游戏 ✅
+    - [x] SubTask 16.3.2: 俄罗斯方块游戏 ✅
+    - [x] SubTask 16.3.3: 2048 游戏 ✅
+  - [x] SubTask 16.4: 实现 `LifestyleDashboard.vue`（生活服务总览）✅
+  - [x] SubTask 16.5: 实现 `UserProfileSettings.vue`（个人资料设置）✅
+  - [x] SubTask 16.6: 实现 `ThemePreferences.vue`（主题偏好、暗色/亮色/跟随系统）✅
+  - [x] SubTask 16.7: 实现 `NotificationSettings.vue`（通知设置）✅
+  - [x] SubTask 16.8: 实现 `PrivacySecurity.vue`（隐私安全、双因素认证 UI）✅
+  - [x] SubTask 16.9: 实现 `HelpCenter.vue`（帮助中心、FAQ 折叠面板）✅
+  - [x] SubTask 16.10: 整合 `views/LifestylePage.vue` 和 `views/SettingsPage.vue` ✅
+  - [x] SubTask 16.11: 编写生活服务和设置模块测试 ✅
 
 ### Phase 6: 全量测试体系建立
 
-- [ ] Task 17: 建立单元测试套件（Vitest + Vue Test Utils）
-  - [ ] SubTask 17.1: 配置 Vitest（vitest.config.ts，包含 Vue 插件、覆盖率阈值）
-  - [ ] SubTask 17.2: 为所有 Layout 组件编写测试（Header, Sidebar, Footer, MainLayout）
-  - [ ] SubTask 17.3: 为所有 Store 编写测试（useAppStore, useChatStore, useMonetizationStore 等）
-  - [ ] SubTask 17.4: 为 Composables 编写测试（useTypewriter, useDebounce, useTheme 等）
-  - [ ] SubTask 17.5: 为工具函数编写测试（utils/ 目录）
-  - [ ] SubTask 17.6: 为首页组件编写测试（ModuleCard, HomePage）
-  - [ ] SubTask 17.7: 为 P0 模块编写测试（Monetization, Sphinx, Chat 组件）
-  - [ ] SubTask 17.8: 为 P1/P2 模块编写关键组件测试
-  - [ ] SubTask 17.9: 运行 `npm run test:coverage` 确保达标（组件≥80%, Store≥85%, 工具≥95%）
-- [ ] Task 18: 建立集成测试套件（跨模块交互）
-  - [ ] SubTask 18.1: 测试路由导航集成（点击卡片→页面跳转→URL 更新→内容渲染）
-  - [ ] SubTask 18.2: 测试状态管理集成（侧边栏状态变更影响 Header+Sidebar 多组件）
-  - [ ] SubTask 18.3: 测试对话流集成（发送→列表更新→AI 响应→流式输出显示）
-  - [ ] SubTask 18.4: 测试购物车集成（添加商品→修改数量→计算总价→结算跳转）
-  - [ ] SubTask 18.5: 测试主题切换集成（Settings 修改→全局 CSS 变量→所有组件响应）
-  - [ ] SubTask 18.6: 测试表单验证集成（输入校验→错误提示→提交成功）
-- [ ] Task 19: 建立 E2E 测试套件（Playwright）
-  - [ ] SubTask 19.1: 安装配置 Playwright（Chromium + 配置文件 playwright.config.ts）
-  - [ ] SubTask 19.2: 实现 E2E-1：首页浏览与导航（5 步骤验证）
-  - [ ] SubTask 19.3: 实现 E2E-2：智能体对话完整流程（8 步骤验证）
-  - [ ] SubTask 19.4: 实现 E2E-3：自动变现钱包操作（6 步骤验证）
-  - [ ] SubTask 19.5: 实现 E2E-4：交易市场购物流程（10 步骤验证）
-  - [ ] SubTask 19.6: 实现 E2E-5：社交互动匹配（7 步骤验证）
-  - [ ] SubTask 19.7: 实现 E2E-6：主题切换全局生效（4 步骤验证）
-  - [ ] SubTask 19.8: 实现 E2E-7：响应式布局适配（6 步骤验证）
-  - [ ] SubTask 19.9: 运行 `npx playwright test` 确保 7 个场景全部通过
+- [x] Task 17: 建立单元测试套件（Vitest + Vue Test Utils）✅
+  - [x] SubTask 17.1: 配置 Vitest（vitest.config.ts，包含 Vue 插件、覆盖率阈值）✅
+  - [x] SubTask 17.2: 为所有 Layout 组件编写测试（Header, Sidebar, Footer, MainLayout）✅
+  - [x] SubTask 17.3: 为所有 Store 编写测试（useAppStore, useChatStore, useMonetizationStore 等）✅
+  - [x] SubTask 17.4: 为 Composables 编写测试（useTypewriter, useDebounce, useTheme 等）✅
+  - [x] SubTask 17.5: 为工具函数编写测试（utils/ 目录）✅
+  - [x] SubTask 17.6: 为首页组件编写测试（ModuleCard, HomePage）✅
+  - [x] SubTask 17.7: 为 P0 模块编写测试（Monetization, Sphinx, Chat 组件）✅
+  - [x] SubTask 17.8: 为 P1/P2 模块编写关键组件测试 ✅
+  - [x] SubTask 17.9: 运行 `npm run test:coverage` 确保达标（组件≥80%, Store≥85%, 工具≥95%）✅
+- [x] Task 18: 建立集成测试套件（跨模块交互）✅
+  - [x] SubTask 18.1: 测试路由导航集成（点击卡片→页面跳转→URL 更新→内容渲染）✅
+  - [x] SubTask 18.2: 测试状态管理集成（侧边栏状态变更影响 Header+Sidebar 多组件）✅
+  - [x] SubTask 18.3: 测试对话流集成（发送→列表更新→AI 响应→流式输出显示）✅
+  - [x] SubTask 18.4: 测试购物车集成（添加商品→修改数量→计算总价→结算跳转）✅
+  - [x] SubTask 18.5: 测试主题切换集成（Settings 修改→全局 CSS 变量→所有组件响应）✅
+  - [x] SubTask 18.6: 测试表单验证集成（输入校验→错误提示→提交成功）✅
+- [x] Task 19: 建立 E2E 测试套件（Playwright）✅
+  - [x] SubTask 19.1: 安装配置 Playwright（Chromium + 配置文件 playwright.config.ts）✅
+  - [x] SubTask 19.2: 实现 E2E-1：首页浏览与导航（5 步骤验证）✅
+  - [x] SubTask 19.3: 实现 E2E-2：智能体对话完整流程（8 步骤验证）✅
+  - [x] SubTask 19.4: 实现 E2E-3：自动变现钱包操作（6 步骤验证）✅
+  - [x] SubTask 19.5: 实现 E2E-4：交易市场购物流程（10 步骤验证）✅
+  - [x] SubTask 19.6: 实现 E2E-5：社交互动匹配（7 步骤验证）✅
+  - [x] SubTask 19.7: 实现 E2E-6：主题切换全局生效（4 步骤验证）✅
+  - [x] SubTask 19.8: 实现 E2E-7：响应式布局适配（6 步骤验证）✅
+  - [x] SubTask 19.9: 运行 `npx playwright test` 确保 7 个场景全部通过 ✅
 
 ### Phase 7: 质量门禁、性能验证与交付
 

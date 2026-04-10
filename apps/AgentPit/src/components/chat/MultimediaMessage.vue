@@ -66,8 +66,8 @@ const getLanguageLabel = (lang: string): string => {
   <!-- 图片消息 -->
   <div v-if="isImage" class="my-2">
     <div
-      @click="handleImageClick"
       class="cursor-pointer group relative rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 hover:border-blue-400 transition-all"
+      @click="handleImageClick"
     >
       <img
         :src="message.imageMeta!.thumbnailUrl || message.imageMeta!.url"
@@ -119,9 +119,9 @@ const getLanguageLabel = (lang: string): string => {
         {{ getLanguageLabel(message.codeMeta!.language) }}
       </span>
       <button
-        @click="copyCode"
         class="text-xs text-gray-500 hover:text-blue-500 transition-colors"
         title="复制代码"
+        @click="copyCode"
       >
         复制
       </button>

@@ -137,14 +137,14 @@ if (props.preselected.length > 0) {
       <div class="flex items-center justify-between gap-2">
         <div class="flex items-center gap-2">
           <button
-            @click="selectAllOnline"
             class="px-3 py-1.5 text-xs font-medium text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 hover:bg-green-100 dark:hover:bg-green-900/30 rounded transition-colors"
+            @click="selectAllOnline"
           >
             ✓ 全选在线
           </button>
           <button
-            @click="clearSelection"
             class="px-3 py-1.5 text-xs font-medium text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 rounded transition-colors"
+            @click="clearSelection"
           >
             ✕ 清空
           </button>
@@ -189,7 +189,7 @@ if (props.preselected.length > 0) {
       <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
         <span>💡 提示：拖拽卡片可调整优先级</span>
         <label class="flex items-center gap-1 cursor-pointer">
-          <input type="checkbox" v-model="showDetails" class="rounded" />
+          <input v-model="showDetails" type="checkbox" class="rounded" />
           <span>显示详情</span>
         </label>
       </div>

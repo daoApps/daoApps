@@ -71,23 +71,26 @@ function renderMarkdown(text: string): string {
     <!-- 搜索框 -->
     <div class="relative mb-6">
       <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-      <input v-model="searchQuery" type="text" placeholder="搜索问题、关键词..."
+      <input
+v-model="searchQuery" type="text" placeholder="搜索问题、关键词..."
         class="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-400 outline-none" />
       <span v-if="searchQuery && !debouncedSearch" class="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-gray-400">搜索中...</span>
     </div>
 
     <!-- 分类筛选 -->
     <div class="flex flex-wrap gap-2 mb-6">
-      <button @click="setCategory(null)" :class="[
+      <button
+:class="[
         'px-3 py-1.5 rounded-full text-sm font-medium transition-all',
         !activeCategory ? 'bg-indigo-500 text-white shadow-md' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200'
-      ]">
+      ]" @click="setCategory(null)">
         全部 ({{ faqData.length }})
       </button>
-      <button v-for="cat in categories" :key="cat.id" @click="setCategory(cat.id)" :class="[
+      <button
+v-for="cat in categories" :key="cat.id" :class="[
         'px-3 py-1.5 rounded-full text-sm font-medium transition-all',
         activeCategory === cat.id ? 'bg-indigo-500 text-white shadow-md' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200'
-      ]">{{ cat.label }} ({{ cat.count }})</button>
+      ]" @click="setCategory(cat.id)">{{ cat.label }} ({{ cat.count }})</button>
     </div>
 
     <!-- FAQ 折叠面板列表 -->
@@ -99,15 +102,18 @@ function renderMarkdown(text: string): string {
           </p>
 
           <TransitionGroup name="faq-list">
-            <div v-for="faq in faqs" :key="faq.id"
+            <div
+v-for="faq in faqs" :key="faq.id"
               class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden transition-all hover:border-indigo-200 dark:hover:border-indigo-800">
-              <button @click="toggleExpand(faq.id)"
-                class="w-full flex items-center justify-between p-4 text-left group">
+              <button
+class="w-full flex items-center justify-between p-4 text-left group"
+                @click="toggleExpand(faq.id)">
                 <div class="flex items-center gap-3 flex-1 min-w-0">
                   <span class="text-lg flex-shrink-0">{{ expandedId === faq.id ? '📖' : '💡' }}</span>
                   <span class="font-medium text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors truncate">{{ faq.title }}</span>
                 </div>
-                <svg class="w-5 h-5 text-gray-400 transition-transform duration-200 flex-shrink-0 ml-2"
+                <svg
+class="w-5 h-5 text-gray-400 transition-transform duration-200 flex-shrink-0 ml-2"
                   :class="{ 'rotate-180': expandedId === faq.id }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                 </svg>
@@ -116,7 +122,8 @@ function renderMarkdown(text: string): string {
               <Transition name="accordion">
                 <div v-if="expandedId === faq.id" class="px-4 pb-4 overflow-hidden">
                   <div class="pl-10 pr-2 pt-2 border-t border-gray-100 dark:border-gray-700">
-                    <div class="prose prose-sm dark:prose-invert max-w-none text-sm text-gray-600 dark:text-gray-400 leading-relaxed space-y-2"
+                    <div
+class="prose prose-sm dark:prose-invert max-w-none text-sm text-gray-600 dark:text-gray-400 leading-relaxed space-y-2"
                       v-html="renderMarkdown(faq.content)">
                     </div>
                     <div class="flex flex-wrap gap-1.5 mt-3 pt-2 border-t border-gray-100 dark:border-gray-700">

@@ -116,7 +116,8 @@ function getBarHeight(value: number): string {
         <div class="flex items-end gap-2 h-[160px]">
           <div v-for="(day, idx) in weeklyActivities" :key="day.day" class="flex-1 flex flex-col items-center gap-1">
             <div class="w-full flex gap-0.5 items-end h-[130px]">
-              <div v-for="dataset in chartData.datasets" :key="dataset.label"
+              <div
+v-for="dataset in chartData.datasets" :key="dataset.label"
                 :title="`${day.day} ${dataset.label}: ${dataset.data[idx]}`"
                 class="flex-1 rounded-t-md transition-all duration-300 hover:opacity-80"
                 :style="{ height: getBarHeight(dataset.data[idx]), backgroundColor: dataset.color, minHeight: dataset.data[idx] > 0 ? '4px' : '0' }">
@@ -161,7 +162,8 @@ function getBarHeight(value: number): string {
         <div class="absolute left-2 top-2 bottom-2 w-0.5 bg-gradient-to-b from-indigo-300 to-purple-300"></div>
         <div class="space-y-3">
           <TransitionGroup name="activity-list">
-            <div v-for="activity in recentActivities" :key="activity.id"
+            <div
+v-for="activity in recentActivities" :key="activity.id"
               class="relative flex items-start gap-3 group">
               <div class="absolute -left-6 top-1 w-3 h-3 rounded-full bg-white dark:bg-gray-800 ring-2 ring-indigo-400"></div>
               <div class="flex-1 p-3 rounded-lg bg-gray-50 dark:bg-gray-700/50 group-hover:bg-gray-100 dark:group-hover:bg-gray-700 transition-colors">

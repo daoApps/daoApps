@@ -321,9 +321,9 @@ try {
             class="flex items-center gap-2 p-2 rounded hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer"
           >
             <input
+              v-model="config.enableTools"
               type="checkbox"
               :value="tool"
-              v-model="config.enableTools"
               class="rounded text-blue-500"
               @change="updateConfig"
             />
@@ -382,8 +382,8 @@ try {
           <label class="flex items-center justify-between p-2 rounded hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer">
             <span class="text-sm text-gray-700 dark:text-gray-300">自动重试</span>
             <input
-              type="checkbox"
               v-model="config.enableAutoRetry"
+              type="checkbox"
               class="rounded text-blue-500"
               @change="updateConfig"
             />
@@ -411,8 +411,8 @@ try {
       <div class="flex items-center justify-between mb-3">
         <h3 class="text-sm font-semibold text-gray-900 dark:text-white">💾 配置预设</h3>
         <button
-          @click="showSaveDialog = !showSaveDialog"
           class="px-3 py-1.5 text-xs font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/30 rounded transition-colors"
+          @click="showSaveDialog = !showSaveDialog"
         >
           + 保存当前配置
         </button>
@@ -429,14 +429,14 @@ try {
         />
         <div class="flex gap-2">
           <button
-            @click="savePreset"
             class="flex-1 px-3 py-1.5 text-xs font-medium text-white bg-blue-500 hover:bg-blue-600 rounded transition-colors"
+            @click="savePreset"
           >
             保存
           </button>
           <button
-            @click="showSaveDialog = false"
             class="px-3 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-600 rounded transition-colors"
+            @click="showSaveDialog = false"
           >
             取消
           </button>
@@ -451,14 +451,14 @@ try {
           class="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-700 rounded group"
         >
           <button
-            @click="loadPreset(preset)"
             class="flex-1 text-left text-sm text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"
+            @click="loadPreset(preset)"
           >
             📋 {{ preset.name }}
           </button>
           <button
-            @click="deletePreset(index)"
             class="opacity-0 group-hover:opacity-100 text-red-500 hover:text-red-700 transition-opacity"
+            @click="deletePreset(index)"
           >
             ✕
           </button>

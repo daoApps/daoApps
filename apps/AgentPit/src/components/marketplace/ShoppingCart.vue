@@ -1,3 +1,20 @@
+/**
+ * ShoppingCart 组件 - 购物车页面
+ * 
+ * @description 展示购物车商品列表，支持修改数量、删除商品、全选/取消全选和结算功能
+ * 
+ * @component
+ * 
+ * @example
+ * <ShoppingCart />
+ * 
+ * @slot default - 默认插槽，未使用
+ * 
+ * @dependencies 
+ * - useCartStore - 购物车状态管理
+ * - vue-router - 路由跳转功能
+ */
+
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import { useCartStore } from '@/stores/useCartStore'

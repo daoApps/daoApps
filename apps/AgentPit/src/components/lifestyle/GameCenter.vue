@@ -31,14 +31,15 @@ const totalGamesPlayed = computed(() => {
     <!-- 游戏选择卡片 -->
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
       <TransitionGroup name="card" tag="div" class="contents">
-        <div v-for="game in games" :key="game.id"
-          @click="activeTab = game.id"
+        <div
+v-for="game in games" :key="game.id"
           :class="[
             'relative overflow-hidden rounded-xl border-2 cursor-pointer transition-all duration-300 p-4',
             activeTab === game.id
               ? `border-transparent bg-gradient-to-br ${game.color} text-white shadow-lg scale-[1.02]`
               : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-indigo-300 hover:shadow-md'
-          ]">
+          ]"
+          @click="activeTab = game.id">
           <div class="flex items-start gap-3">
             <span class="text-4xl">{{ game.icon }}</span>
             <div class="flex-1 min-w-0">
@@ -82,8 +83,9 @@ const totalGamesPlayed = computed(() => {
 
       <!-- 规则说明折叠面板 -->
       <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-        <button @click="showRules = !showRules"
-          class="w-full flex items-center justify-between p-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+        <button
+class="w-full flex items-center justify-between p-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+          @click="showRules = !showRules">
           <span class="font-medium text-gray-900 dark:text-white">📖 游戏规则说明</span>
           <svg class="w-5 h-5 text-gray-400 transition-transform" :class="{ 'rotate-180': showRules }" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
         </button>

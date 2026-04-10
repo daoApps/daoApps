@@ -133,13 +133,13 @@ const goBackToHome = () => {
             <button
               v-for="tab in tabs"
               :key="tab.key"
-              @click="switchTab(tab.key)"
               :class="[
                 'px-4 py-2 rounded-md text-sm font-medium transition-all flex items-center gap-1.5',
                 activeTab === tab.key
                   ? 'bg-white dark:bg-gray-700 text-primary-600 dark:text-primary-400 shadow-sm'
                   : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
               ]"
+              @click="switchTab(tab.key)"
             >
               <span>{{ tab.icon }}</span>
               {{ tab.label }}
@@ -177,8 +177,8 @@ const goBackToHome = () => {
 
       <div v-else>
         <button
-          @click="goBackToHome"
           class="mb-4 flex items-center gap-2 text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors"
+          @click="goBackToHome"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />

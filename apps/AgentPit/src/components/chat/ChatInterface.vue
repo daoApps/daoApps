@@ -1,3 +1,25 @@
+/**
+ * ChatInterface 组件 - 智能对话主界面
+ * 
+ * @description 提供完整的聊天体验，包含对话历史侧边栏、消息列表、快捷指令和消息输入功能
+ * 
+ * @component
+ * 
+ * @example
+ * <ChatInterface />
+ * 
+ * @slot default - 默认插槽，未使用
+ * 
+ * @dependencies 
+ * - useChatStore - 聊天状态管理
+ * - getMockResponse - 模拟响应数据
+ * - useLanguageDetection - 语言检测组合式函数
+ * - ChatSidebar - 聊天侧边栏组件
+ * - MessageList - 消息列表组件
+ * - MessageInput - 消息输入组件
+ * - QuickCommands - 快捷指令组件
+ */
+
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue'
 import { useChatStore } from '@/stores/useChatStore'
@@ -155,7 +177,7 @@ const toggleSidebar = () => {
     <main class="flex-1 flex flex-col min-w-0 bg-white dark:bg-gray-900 relative">
       <!-- 移动端头部 -->
       <div v-if="isMobile" class="lg:hidden flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
-        <button @click="toggleSidebar" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
+        <button class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800" @click="toggleSidebar">
           <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
@@ -167,7 +189,7 @@ const toggleSidebar = () => {
             <span class="text-xs text-gray-500">{{ chatStore.activeAgent.name }}</span>
           </div>
         </div>
-        <button @click="showQuickCommands = !showQuickCommands" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
+        <button class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800" @click="showQuickCommands = !showQuickCommands">
           <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
           </svg>
@@ -201,8 +223,8 @@ const toggleSidebar = () => {
               <span class="text-xs font-medium text-blue-700 dark:text-blue-400">{{ languageLabel }}</span>
             </div>
             <button
-              @click="showQuickCommands = !showQuickCommands"
               class="px-4 py-2 text-sm rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-gray-700 dark:text-gray-300"
+              @click="showQuickCommands = !showQuickCommands"
             >
               {{ showQuickCommands ? '隐藏快捷指令' : '显示快捷指令' }}
             </button>

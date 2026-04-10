@@ -53,13 +53,13 @@ const toggleExpand = (orderId: string) => {
       <button
         v-for="tab in tabs"
         :key="tab.key"
-        @click="activeTab = tab.key"
         :class="[
           'relative px-5 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap transition-all',
           activeTab === tab.key
             ? 'bg-white dark:bg-gray-700 text-primary-600 dark:text-primary-400 shadow-sm'
             : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
         ]"
+        @click="activeTab = tab.key"
       >
         {{ tab.label }}
         <span
@@ -121,8 +121,8 @@ const toggleExpand = (orderId: string) => {
 
           <div class="flex items-center justify-between mt-4 pt-3 border-t border-gray-100 dark:border-gray-700">
             <button
-              @click="toggleExpand(order.id)"
               class="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium flex items-center gap-1"
+              @click="toggleExpand(order.id)"
             >
               {{ expandedOrders.has(order.id) ? '收起详情' : '查看详情' }}
               <svg

@@ -80,11 +80,12 @@ const leaveMeeting = () => {
 </script>
 
 <template>
-  <div class="h-[calc(100vh-120px)] flex flex-col bg-gray-900 rounded-xl overflow-hidden shadow-2xl" v-if="meeting">
+  <div v-if="meeting" class="h-[calc(100vh-120px)] flex flex-col bg-gray-900 rounded-xl overflow-hidden shadow-2xl">
     <div class="bg-gray-800 px-6 py-4 flex items-center justify-between border-b border-gray-700">
       <div class="flex items-center space-x-4">
         <h2 class="text-xl font-bold text-white">{{ meeting.name }}</h2>
-        <span class="px-3 py-1 text-xs font-medium rounded-full"
+        <span
+class="px-3 py-1 text-xs font-medium rounded-full"
           :class="meeting.isRecording ? 'bg-red-500/20 text-red-400 animate-pulse' : 'bg-green-500/20 text-green-400'"
         >
           {{ meeting.isRecording ? '● 录制中' : '● 进行中' }}
@@ -106,7 +107,7 @@ const leaveMeeting = () => {
           <span>ID: {{ meeting.id }}</span>
         </div>
 
-        <button @click="toggleChat" class="p-2 hover:bg-gray-700 rounded-lg transition-colors relative">
+        <button class="p-2 hover:bg-gray-700 rounded-lg transition-colors relative" @click="toggleChat">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
           </svg>
@@ -180,14 +181,14 @@ const leaveMeeting = () => {
             <div class="flex space-x-2">
               <input
                 v-model="newMessage"
-                @keyup.enter="sendMessage"
                 type="text"
                 placeholder="输入消息..."
                 class="flex-1 px-4 py-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                @keyup.enter="sendMessage"
               />
               <button
-                @click="sendMessage"
                 class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                @click="sendMessage"
               >
                 发送
               </button>
@@ -200,9 +201,9 @@ const leaveMeeting = () => {
     <div class="bg-gray-800 px-6 py-4 border-t border-gray-700">
       <div class="flex items-center justify-center space-x-4">
         <button
-          @click="toggleMute"
           class="p-4 rounded-full transition-all duration-200"
           :class="meeting.isMuted ? 'bg-red-600 hover:bg-red-700' : 'bg-gray-700 hover:bg-gray-600'"
+          @click="toggleMute"
         >
           <svg v-if="!meeting.isMuted" class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
@@ -213,9 +214,9 @@ const leaveMeeting = () => {
         </button>
 
         <button
-          @click="toggleVideo"
           class="p-4 rounded-full transition-all duration-200"
           :class="!meeting.isVideoOn ? 'bg-red-600 hover:bg-red-700' : 'bg-gray-700 hover:bg-gray-600'"
+          @click="toggleVideo"
         >
           <svg v-if="meeting.isVideoOn" class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
@@ -226,9 +227,9 @@ const leaveMeeting = () => {
         </button>
 
         <button
-          @click="toggleRecording"
           class="p-4 rounded-full transition-all duration-200 relative"
           :class="meeting.isRecording ? 'bg-red-600 hover:bg-red-700 animate-pulse' : 'bg-gray-700 hover:bg-gray-600'"
+          @click="toggleRecording"
         >
           <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
             <circle cx="12" cy="12" r="8"/>
@@ -236,8 +237,8 @@ const leaveMeeting = () => {
         </button>
 
         <button
-          @click="leaveMeeting"
           class="px-8 py-4 bg-red-600 hover:bg-red-700 text-white rounded-full font-medium transition-all duration-200 hover:scale-105"
+          @click="leaveMeeting"
         >
           离开会议
         </button>

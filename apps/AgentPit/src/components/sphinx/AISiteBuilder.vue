@@ -363,14 +363,14 @@ const applyToPreview = () => {
           生成的代码
           <span class="ml-2 px-2 py-0.5 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs rounded">{{ currentCodeLanguage.toUpperCase() }}</span>
         </h4>
-        <button @click="showCodePanel = false" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">✕</button>
+        <button class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300" @click="showCodePanel = false">✕</button>
       </div>
       <pre class="bg-gray-900 dark:bg-black text-green-400 p-4 rounded-lg overflow-x-auto text-sm max-h-48"><code>{{ generatedCode }}</code></pre>
       <div class="mt-3 flex space-x-2">
-        <button @click="copyCode" class="px-4 py-2 bg-blue-500 text-white text-sm rounded-lg hover:bg-blue-600 transition-colors">
+        <button class="px-4 py-2 bg-blue-500 text-white text-sm rounded-lg hover:bg-blue-600 transition-colors" @click="copyCode">
           📋 复制代码
         </button>
-        <button @click="applyToPreview" class="px-4 py-2 bg-green-500 text-white text-sm rounded-lg hover:bg-green-600 transition-colors">
+        <button class="px-4 py-2 bg-green-500 text-white text-sm rounded-lg hover:bg-green-600 transition-colors" @click="applyToPreview">
           ✨ 应用到预览
         </button>
       </div>
@@ -384,19 +384,19 @@ const applyToPreview = () => {
           <button
             v-for="question in presetQuestions"
             :key="question"
-            @click="handleSend(question)"
             class="px-3 py-1.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-xs text-gray-700 dark:text-gray-300 rounded-full hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-300 dark:hover:border-blue-700 hover:text-blue-700 dark:hover:text-blue-300 transition-all duration-200"
+            @click="handleSend(question)"
           >
             {{ question }}
           </button>
           <button
-            @click="showCodePanel = !showCodePanel"
             :class="[
               'px-3 py-1.5 text-xs rounded-full transition-all duration-200',
               showCodePanel
                 ? 'bg-blue-500 text-white border border-blue-500'
                 : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-blue-900/20'
             ]"
+            @click="showCodePanel = !showCodePanel"
           >
             💻 {{ showCodePanel ? '隐藏代码' : '查看代码' }}
           </button>
@@ -406,15 +406,15 @@ const applyToPreview = () => {
       <div class="flex space-x-2">
         <textarea
           v-model="inputValue"
-          @keydown="handleKeyPress"
           placeholder="描述您想创建的网站..."
           rows="2"
           class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+          @keydown="handleKeyPress"
         ></textarea>
         <button
-          @click="handleSend()"
           :disabled="!inputValue.trim() || isTyping"
           class="px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed self-end"
+          @click="handleSend()"
         >
           发送
         </button>

@@ -155,8 +155,8 @@ const onSubmit = handleSubmit((values) => {
           <p v-if="errors.description" class="text-red-500 text-xs">{{ errors.description }}</p>
           <button
             type="button"
-            @click="showMarkdownPreview = !showMarkdownPreview"
             class="text-xs text-blue-500 hover:text-blue-600 transition-colors"
+            @click="showMarkdownPreview = !showMarkdownPreview"
           >
             {{ showMarkdownPreview ? '隐藏预览' : '预览 Markdown' }}
           </button>
@@ -177,8 +177,8 @@ const onSubmit = handleSubmit((values) => {
       </label>
       <div class="flex items-center gap-4">
         <div
-          @click="showAvatarPicker = !showAvatarPicker"
           class="w-20 h-20 rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-600 flex items-center justify-center cursor-pointer hover:border-blue-500 transition-colors bg-gray-50 dark:bg-gray-800 overflow-hidden"
+          @click="showAvatarPicker = !showAvatarPicker"
         >
           <span v-if="!selectedAvatar" class="text-3xl text-gray-400">+</span>
           <span v-else class="text-4xl">{{ selectedAvatar }}</span>
@@ -203,7 +203,6 @@ const onSubmit = handleSubmit((values) => {
                 v-for="avatar in group"
                 :key="avatar.id"
                 type="button"
-                @click="selectAvatar(avatar.id)"
                 class="w-10 h-10 rounded-lg flex items-center justify-center text-xl transition-all hover:scale-110"
                 :class="
                   avatarId === avatar.id
@@ -211,6 +210,7 @@ const onSubmit = handleSubmit((values) => {
                     : 'bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600'
                 "
                 :aria-label="`选择${avatar.name}头像`"
+                @click="selectAvatar(avatar.id)"
               >
                 {{ avatar.emoji }}
               </button>
@@ -233,9 +233,9 @@ const onSubmit = handleSubmit((values) => {
           {{ tag }}
           <button
             type="button"
-            @click="removeTag(index)"
             class="hover:text-red-500 transition-colors"
             aria-label="删除标签"
+            @click="removeTag(index)"
           >×</button>
         </span>
         <input
@@ -244,8 +244,8 @@ const onSubmit = handleSubmit((values) => {
           placeholder="输入标签后按回车添加..."
           class="flex-1 min-w-[140px] px-2 py-1 text-sm bg-transparent outline-none text-gray-900 dark:text-white placeholder-gray-400"
           :disabled="(tags?.length ?? 0) >= 10"
-          @keydown="handleTagKeydown"
           aria-label="标签输入"
+          @keydown="handleTagKeydown"
         />
       </div>
       <p v-if="errors.tags" class="text-red-500 text-xs mt-1">{{ errors.tags }}</p>

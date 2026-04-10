@@ -236,13 +236,13 @@ const orderChartOption = computed(() => ({
       <button
         v-for="tab in tabs"
         :key="tab.key"
-        @click="activeTab = tab.key"
         :class="[
           'relative px-5 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap transition-all flex items-center gap-2',
           activeTab === tab.key
             ? 'bg-white dark:bg-gray-700 text-primary-600 dark:text-primary-400 shadow-sm'
             : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
         ]"
+        @click="activeTab = tab.key"
       >
         <span>{{ tab.icon }}</span>
         {{ tab.label }}
@@ -366,8 +366,8 @@ const orderChartOption = computed(() => ({
           </button>
         </div>
         <button
-          @click="activeTab = 'publish'"
           class="px-4 py-2 bg-primary-500 text-white rounded-lg text-sm font-medium hover:bg-primary-600 transition-colors flex items-center gap-1.5"
+          @click="activeTab = 'publish'"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -437,7 +437,8 @@ const orderChartOption = computed(() => ({
             <span class="text-gray-500 dark:text-gray-400">订单号：{{ order.orderNumber }}</span>
             <span class="text-gray-400">{{ order.createdAt }}</span>
           </div>
-          <span :class="[
+          <span
+:class="[
             'px-3 py-1 rounded-full text-xs font-medium',
             order.status === 'pending_shipment' ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400' :
             order.status === 'pending_receipt' ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400' :
@@ -483,7 +484,7 @@ const orderChartOption = computed(() => ({
     <div v-if="activeTab === 'publish'" class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
       <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">发布新商品</h2>
 
-      <form @submit.prevent="handlePublishSubmit" class="space-y-6 max-w-2xl">
+      <form class="space-y-6 max-w-2xl" @submit.prevent="handlePublishSubmit">
         <div>
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">商品标题 *</label>
           <input
@@ -551,20 +552,21 @@ const orderChartOption = computed(() => ({
         <div>
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">商品类型 *</label>
           <div class="flex gap-3">
-            <template v-for="{ value, label, desc } in [
+            <template
+v-for="{ value, label, desc } in [
               { value: 'digital', label: '数字产品', desc: '模板、课程、工具等' },
               { value: 'physical', label: '实体商品', desc: '需要物流配送' },
               { value: 'service', label: '服务', desc: '咨询、定制等' }
             ]" :key="value">
               <button
                 type="button"
-                @click="publishFormData.type = value as any"
                 :class="[
                   'flex-1 p-4 rounded-xl border-2 transition-all',
                   publishFormData.type === value
                     ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/30'
                     : 'border-gray-200 dark:border-gray-600 hover:border-gray-300'
                 ]"
+                @click="publishFormData.type = value as any"
               >
                 <p class="font-medium text-sm text-gray-900 dark:text-white">{{ label }}</p>
                 <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ desc }}</p>
@@ -579,13 +581,13 @@ const orderChartOption = computed(() => ({
             <template v-for="i in 3" :key="i">
               <button
                 type="button"
-                @click="i > publishFormData.images.length + 1 ? null : handleAddPublishImage()"
                 :class="[
                   'w-24 h-24 rounded-xl border-2 border-dashed flex items-center justify-center transition-colors',
                   i <= publishFormData.images.length
                     ? 'border-primary-300 bg-primary-50 dark:bg-primary-900/30'
                     : 'border-gray-300 dark:border-gray-600 hover:border-primary-500'
                 ]"
+                @click="i > publishFormData.images.length + 1 ? null : handleAddPublishImage()"
               >
                 <template v-if="i <= publishFormData.images.length">
                   <img :src="publishFormData.images[i - 1]" alt="" class="w-full h-full object-cover rounded-lg" />
@@ -619,8 +621,8 @@ const orderChartOption = computed(() => ({
           </button>
           <button
             type="button"
-            @click="resetPublishForm"
             class="px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-xl font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+            @click="resetPublishForm"
           >
             重置
           </button>

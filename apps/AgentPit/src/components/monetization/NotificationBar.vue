@@ -66,8 +66,8 @@ const notificationConfig = {
         </div>
 
         <button
-          @click="emit('remove', notification.id)"
           class="ml-4 text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0"
+          @click="emit('remove', notification.id)"
         >
           <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />

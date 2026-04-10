@@ -208,7 +208,6 @@ const strokeDashoffset = computed(() => {
         <!-- 操作按钮 -->
         <div class="flex gap-3">
           <button
-            @click="handleCleanup"
             :disabled="isCleaningUp"
             class="flex-1 px-4 py-2.5 font-medium rounded-lg transition-all"
             :class="
@@ -216,13 +215,14 @@ const strokeDashoffset = computed(() => {
                 ? 'bg-gray-300 dark:bg-gray-600 text-gray-600 dark:text-gray-400 cursor-not-allowed'
                 : 'bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 hover:bg-orange-200 dark:hover:bg-orange-900/50 border border-orange-300 dark:border-orange-700'
             "
+            @click="handleCleanup"
           >
             {{ isCleaningUp ? '🧹 清理中...' : '🧹 一键清理' }}
           </button>
 
           <button
-            @click="showUpgradeModal = true"
             class="flex-1 px-4 py-2.5 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium rounded-lg hover:from-blue-600 hover:to-purple-600 transition-all shadow-md hover:shadow-lg"
+            @click="showUpgradeModal = true"
           >
             ⬆️ 升级配额
           </button>
@@ -328,13 +328,13 @@ const strokeDashoffset = computed(() => {
                   { name: '企业版', space: '1 TB', price: '¥199/月', features: ['1TB 存储空间', '无限备份历史', '专属客户经理', 'API 接口访问', '定制化方案'], popular: false }
                 ]"
                 :key="plan.name"
-                @click="emit('upgrade', plan.name)"
                 class="relative p-5 rounded-xl border-2 cursor-pointer transition-all hover:shadow-lg"
                 :class="
                   plan.popular
                     ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 scale-105'
                     : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
                 "
+                @click="emit('upgrade', plan.name)"
               >
                 <div v-if="plan.popular" class="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-blue-500 text-white text-xs font-medium rounded-full">
                   推荐
@@ -357,8 +357,8 @@ const strokeDashoffset = computed(() => {
 
             <div class="flex justify-end">
               <button
-                @click="showUpgradeModal = false"
                 class="px-6 py-2.5 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg font-medium transition-colors"
+                @click="showUpgradeModal = false"
               >
                 关闭
               </button>

@@ -170,9 +170,9 @@ watch(selectedAbilityId, () => {
         v-for="preset in abilityPresets"
         :key="preset.id"
         type="button"
-        @click="applyPreset(preset.id)"
         class="px-3 py-1.5 rounded-full text-xs font-medium border transition-all hover:shadow-sm"
         class="border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
+        @click="applyPreset(preset.id)"
       >
         {{ preset.icon }} {{ preset.name }}
       </button>
@@ -187,9 +187,9 @@ watch(selectedAbilityId, () => {
         >
           <button
             type="button"
-            @click="toggleCategory(category)"
             class="w-full px-4 py-3 flex items-center justify-between bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-750 transition-colors"
             :aria-expanded="expandedCategories.has(category)"
+            @click="toggleCategory(category)"
           >
             <div class="flex items-center gap-2.5">
               <span class="text-lg">{{ categoryIcons[category] }}</span>
@@ -218,7 +218,6 @@ watch(selectedAbilityId, () => {
                 <div class="pt-0.5">
                   <button
                     type="button"
-                    @click.stop="toggleAbility(ability.id)"
                     class="relative w-10 h-5.5 rounded-full transition-colors"
                     :class="
                       enabledAbilities[ability.id]?.enabled
@@ -231,6 +230,7 @@ watch(selectedAbilityId, () => {
                     :aria-label="`切换${ability.name}`"
                     :aria-checked="enabledAbilities[ability.id]?.enabled || false"
                     role="switch"
+                    @click.stop="toggleAbility(ability.id)"
                   >
                     <span
                       class="absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform"
@@ -258,13 +258,13 @@ watch(selectedAbilityId, () => {
                   <input
                     type="range"
                     :value="enabledAbilities[ability.id].proficiency"
-                    @input="updateProficiency(ability.id, Number(($event.target as HTMLInputElement).value))"
                     min="0"
                     max="100"
                     step="5"
                     class="w-full h-1.5 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-500"
-                    @click.stop
                     :aria-label="`${ability.name}熟练度`"
+                    @input="updateProficiency(ability.id, Number(($event.target as HTMLInputElement).value))"
+                    @click.stop
                   />
                   <p class="text-[10px] text-right text-gray-400 mt-0.5">{{ enabledAbilities[ability.id].proficiency }}%</p>
                 </div>
@@ -281,7 +281,8 @@ watch(selectedAbilityId, () => {
               <span class="text-xl">{{ selectedAbility.icon }}</span>
               <h4 class="font-semibold text-gray-800 dark:text-gray-200">{{ selectedAbility.name }}</h4>
             </div>
-            <span class="text-[10px] px-1.5 py-0.5 rounded capitalize"
+            <span
+class="text-[10px] px-1.5 py-0.5 rounded capitalize"
               :class="{
                 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400': selectedAbility.category === 'conversation',
                 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400': selectedAbility.category === 'creative',
@@ -301,9 +302,9 @@ watch(selectedAbilityId, () => {
                 :is="typeof value === 'number' ? 'input' : typeof value === 'boolean' ? 'select' : 'input'"
                 :type="typeof value === 'number' ? 'number' : 'text'"
                 :value="value"
+                class="w-full px-2.5 py-1.5 text-sm border border-gray-200 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 focus:ring-1 focus:ring-blue-500 outline-none"
                 @input="updateParam(selectedAbility!.id, key, ($event.target as HTMLInputElement).value)"
                 @change="updateParam(selectedAbility!.id, key, ($event.target as HTMLSelectElement).value)"
-                class="w-full px-2.5 py-1.5 text-sm border border-gray-200 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 focus:ring-1 focus:ring-blue-500 outline-none"
               />
             </div>
           </div>

@@ -79,8 +79,8 @@ const setMaxAmount = () => {
           <div class="flex items-center justify-between">
             <h2 class="text-xl font-bold text-gray-900">提现</h2>
             <button
-              @click="emit('close')"
               class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 transition-colors"
+              @click="emit('close')"
             >
               <svg class="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -123,16 +123,16 @@ const setMaxAmount = () => {
 
             <div class="flex gap-3">
               <button
-                @click="showConfirm = false"
                 :disabled="isProcessing"
                 class="flex-1 px-6 py-3 border border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-colors disabled:opacity-50"
+                @click="showConfirm = false"
               >
                 返回修改
               </button>
               <button
-                @click="handleSubmit"
                 :disabled="isProcessing"
                 class="flex-1 px-6 py-3 bg-teal-500 hover:bg-teal-600 text-white font-semibold rounded-xl transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                @click="handleSubmit"
               >
                 <svg v-if="isProcessing" class="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
                   <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
@@ -167,8 +167,8 @@ const setMaxAmount = () => {
                   class="w-full pl-10 pr-20 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent text-lg font-semibold"
                 />
                 <button
-                  @click="setMaxAmount"
                   class="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-1 text-xs font-medium text-teal-600 bg-teal-50 hover:bg-teal-100 rounded-lg transition-colors"
+                  @click="setMaxAmount"
                 >
                   全部
                 </button>
@@ -194,13 +194,13 @@ const setMaxAmount = () => {
                 <button
                   v-for="method in withdrawMethods"
                   :key="method.value"
-                  @click="selectedMethod = method.value"
                   :class="[
                     'p-4 rounded-xl border-2 transition-all duration-200',
                     selectedMethod === method.value
                       ? 'border-teal-500 bg-teal-50 shadow-sm'
                       : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
                   ]"
+                  @click="selectedMethod = method.value"
                 >
                   <div class="text-2xl mb-2">{{ method.icon }}</div>
                   <p
@@ -216,9 +216,9 @@ const setMaxAmount = () => {
             </div>
 
             <button
-              @click="handleSubmit"
               :disabled="!isValidAmount"
               class="w-full py-3.5 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transform hover:-translate-y-0.5"
+              @click="handleSubmit"
             >
               下一步
             </button>

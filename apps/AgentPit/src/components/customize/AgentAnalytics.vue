@@ -172,7 +172,8 @@ const exportReport = (format: 'csv' | 'excel') => {
 <template>
   <div class="space-y-6">
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      <div v-for="kpi in kpiCards" :key="kpi.key"
+      <div
+v-for="kpi in kpiCards" :key="kpi.key"
         class="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow"
       >
         <div class="flex items-center justify-between mb-3">
@@ -195,31 +196,32 @@ const exportReport = (format: 'csv' | 'excel') => {
         <div class="flex items-center justify-between mb-4">
           <h3 class="font-semibold text-gray-800 dark:text-gray-200">调用量趋势</h3>
           <div class="flex bg-gray-100 dark:bg-gray-700 rounded-lg p-0.5">
-            <button v-for="(label, val) in ({ week: '7天', month: '30天', quarter: '90天' })" :key="val"
-              @click="trendRange = val as any"
+            <button
+v-for="(label, val) in ({ week: '7天', month: '30天', quarter: '90天' })" :key="val"
               class="px-2.5 py-1 rounded-md text-[11px] font-medium transition-all"
               :class="trendRange === val ? 'bg-white dark:bg-gray-600 shadow-sm text-blue-600 dark:text-blue-400' : 'text-gray-500 hover:text-gray-700'"
+              @click="trendRange = val as any"
             >{{ label }}</button>
           </div>
         </div>
-        <VChart :option="trendOption" ref="chartRefs.trend" autoresize style="height: 280px" />
+        <VChart ref="chartRefs.trend" :option="trendOption" autoresize style="height: 280px" />
       </div>
 
       <div class="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700">
         <h3 class="font-semibold text-gray-800 dark:text-gray-200 mb-4">用户来源分布</h3>
-        <VChart :option="sourceOption" ref="chartRefs.source" autoresize style="height: 280px" />
+        <VChart ref="chartRefs.source" :option="sourceOption" autoresize style="height: 280px" />
       </div>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <div class="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700">
         <h3 class="font-semibold text-gray-800 dark:text-gray-200 mb-4">热门问题 Top 10</h3>
-        <VChart :option="questionsOption" ref="chartRefs.questions" autoresize style="height: 340px" />
+        <VChart ref="chartRefs.questions" :option="questionsOption" autoresize style="height: 340px" />
       </div>
 
       <div class="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700">
         <h3 class="font-semibold text-gray-800 dark:text-gray-200 mb-4">收入趋势</h3>
-        <VChart :option="revenueOption" ref="chartRefs.revenue" autoresize style="height: 280px" />
+        <VChart ref="chartRefs.revenue" :option="revenueOption" autoresize style="height: 280px" />
       </div>
     </div>
 
@@ -277,10 +279,10 @@ const exportReport = (format: 'csv' | 'excel') => {
     </div>
 
     <div class="flex justify-end gap-3">
-      <button @click="exportReport('csv')" class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors inline-flex items-center gap-1.5">
+      <button class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors inline-flex items-center gap-1.5" @click="exportReport('csv')">
         📄 导出 CSV
       </button>
-      <button @click="exportReport('excel')" class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg text-sm font-medium transition-colors inline-flex items-center gap-1.5">
+      <button class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg text-sm font-medium transition-colors inline-flex items-center gap-1.5" @click="exportReport('excel')">
         📊 导出 Excel
       </button>
     </div>

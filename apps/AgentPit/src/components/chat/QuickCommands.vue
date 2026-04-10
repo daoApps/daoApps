@@ -45,13 +45,13 @@ const handleSelectCommand = (prompt: string) => {
         <button
           v-for="cat in categories"
           :key="cat.value"
-          @click="selectedCategory = cat.value"
           :class="[
             'px-3 py-1.5 rounded-full text-sm font-medium transition-all whitespace-nowrap flex items-center gap-1.5',
             selectedCategory === cat.value
               ? 'bg-blue-500 text-white shadow-md'
               : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
           ]"
+          @click="selectedCategory = cat.value"
         >
           <span>{{ cat.icon }}</span>
           <span>{{ cat.label }}</span>
@@ -63,8 +63,8 @@ const handleSelectCommand = (prompt: string) => {
         <button
           v-for="command in filteredCommands"
           :key="command.id"
-          @click="handleSelectCommand(command.prompt)"
           class="group p-3 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-md transition-all text-left"
+          @click="handleSelectCommand(command.prompt)"
         >
           <div class="flex items-start gap-2">
             <span class="text-xl group-hover:scale-110 transition-transform">{{ command.icon }}</span>

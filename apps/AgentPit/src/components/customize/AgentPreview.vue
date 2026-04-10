@@ -71,18 +71,18 @@ const sharePreview = () => {
             v-for="size in (['desktop', 'tablet', 'mobile'] as const)"
             :key="size"
             type="button"
-            @click="deviceSize = size"
             class="px-2.5 py-1 rounded-md text-[11px] font-medium transition-all capitalize"
             :class="deviceSize === size ? 'bg-white dark:bg-gray-600 shadow-sm text-blue-600 dark:text-blue-400' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'"
+            @click="deviceSize = size"
           >{{ size }}</button>
         </div>
-        <button type="button" @click="refreshPreview" class="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" title="刷新预览" aria-label="刷新预览">
+        <button type="button" class="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" title="刷新预览" aria-label="刷新预览" @click="refreshPreview">
           <svg class="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
         </button>
-        <button type="button" @click="toggleFullscreen" class="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" title="全屏预览" aria-label="全屏预览">
+        <button type="button" class="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" title="全屏预览" aria-label="全屏预览" @click="toggleFullscreen">
           <svg class="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" /></svg>
         </button>
-        <button type="button" @click="sharePreview" class="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" title="分享链接" aria-label="分享链接">
+        <button type="button" class="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" title="分享链接" aria-label="分享链接" @click="sharePreview">
           <svg class="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" /></svg>
         </button>
       </div>
@@ -90,7 +90,7 @@ const sharePreview = () => {
 
     <div v-if="isFullscreen" class="flex items-center justify-between p-3 bg-gray-800 border-b border-gray-700">
       <span class="text-sm font-medium text-white">智能体预览</span>
-      <button type="button" @click="toggleFullscreen" class="px-3 py-1.5 bg-gray-700 hover:bg-gray-600 text-white text-sm rounded-lg transition-colors">退出全屏</button>
+      <button type="button" class="px-3 py-1.5 bg-gray-700 hover:bg-gray-600 text-white text-sm rounded-lg transition-colors" @click="toggleFullscreen">退出全屏</button>
     </div>
 
     <div class="flex-1 flex items-start justify-center overflow-auto p-2" :class="{ 'p-6': isFullscreen }">

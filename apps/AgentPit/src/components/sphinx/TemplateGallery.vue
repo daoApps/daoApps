@@ -37,13 +37,13 @@ const getCategoryInfo = (categoryId: string) => {
         <button
           v-for="category in templateCategories"
           :key="category.id"
-          @click="selectedCategory = category.id"
           :class="[
             'px-4 py-2 rounded-full text-sm font-medium transition-all duration-200',
             selectedCategory === category.id
               ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-md'
               : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
           ]"
+          @click="selectedCategory = category.id"
         >
           <span class="mr-1">{{ category.icon }}</span>
           {{ category.label }}
@@ -55,13 +55,13 @@ const getCategoryInfo = (categoryId: string) => {
       <div
         v-for="template in filteredTemplates"
         :key="template.id"
-        @click="previewTemplate = template"
         :class="[
           'group relative bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden border-2',
           selectedTemplateId === template.id
             ? 'border-blue-500 ring-2 ring-blue-200'
             : 'border-transparent hover:border-gray-200 dark:hover:border-gray-600'
         ]"
+        @click="previewTemplate = template"
       >
         <div class="aspect-video bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-600 flex items-center justify-center text-6xl group-hover:scale-105 transition-transform duration-300">
           {{ template.thumbnail }}
@@ -117,8 +117,8 @@ const getCategoryInfo = (categoryId: string) => {
                 </p>
               </div>
               <button
-                @click="previewTemplate = null"
                 class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors text-gray-500 dark:text-gray-400"
+                @click="previewTemplate = null"
               >
                 ✕
               </button>
@@ -151,14 +151,14 @@ const getCategoryInfo = (categoryId: string) => {
 
             <div class="flex space-x-3">
               <button
-                @click="handleSelectWithPreview(previewTemplate)"
                 class="flex-1 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-200 shadow-md"
+                @click="handleSelectWithPreview(previewTemplate)"
               >
                 选择此模板
               </button>
               <button
-                @click="previewTemplate = null"
                 class="px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                @click="previewTemplate = null"
               >
                 关闭
               </button>

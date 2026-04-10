@@ -93,15 +93,6 @@ defineExpose({
               <button
                 v-for="step in steps"
                 :key="step.id"
-                @click="
-                  step.id === 1 ||
-                  (step.id === 2 && canProceedToStep2) ||
-                  (step.id === 3 && canProceedToStep3) ||
-                  (step.id === 4 && canProceedToStep4) ||
-                  step.id === 5
-                    ? (currentStep = step.id as WizardStep)
-                    : null
-                "
                 :disabled="
                   (step.id === 2 && !canProceedToStep2) ||
                   (step.id === 3 && !canProceedToStep3) ||
@@ -116,6 +107,15 @@ defineExpose({
                       ? 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer'
                       : 'text-gray-400 dark:text-gray-500 cursor-not-allowed'
                 ]"
+                @click="
+                  step.id === 1 ||
+                  (step.id === 2 && canProceedToStep2) ||
+                  (step.id === 3 && canProceedToStep3) ||
+                  (step.id === 4 && canProceedToStep4) ||
+                  step.id === 5
+                    ? (currentStep = step.id as WizardStep)
+                    : null
+                "
               >
                 <div
                   :class="[
@@ -169,13 +169,13 @@ defineExpose({
                     { id: 'portfolio', icon: '🎨', name: '作品集', desc: '展示设计作品、项目案例、个人简历' }
                   ]"
                   :key="type.id"
-                  @click="handleSiteTypeSelect(type.id)"
                   :class="[
                     'p-6 rounded-xl border-2 transition-all duration-300 text-left',
                     siteType === type.id
                       ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 shadow-md'
                       : 'border-gray-200 dark:border-gray-700 hover:border-blue-300 hover:shadow-md'
                   ]"
+                  @click="handleSiteTypeSelect(type.id)"
                 >
                   <div class="text-4xl mb-3">{{ type.icon }}</div>
                   <h4 class="font-semibold text-gray-900 dark:text-white mb-1">{{ type.name }}</h4>
@@ -262,13 +262,13 @@ defineExpose({
                           { id: 'orange', name: '橙色', colors: ['#F97316', '#FB923C'] }
                         ]"
                         :key="scheme.id"
-                        @click="colorScheme = scheme.id"
                         :class="[
                           'p-3 rounded-lg border-2 transition-all duration-200 text-center',
                           colorScheme === scheme.id
                             ? 'border-blue-500 shadow-md'
                             : 'border-gray-200 dark:border-gray-700 hover:border-gray-300'
                         ]"
+                        @click="colorScheme = scheme.id"
                       >
                         <div class="flex justify-center space-x-1 mb-2">
                           <div
@@ -293,13 +293,13 @@ defineExpose({
                           { id: 'fullwidth', name: '全宽' }
                         ]"
                         :key="layout.id"
-                        @click="layoutMode = layout.id"
                         :class="[
                           'px-4 py-3 rounded-lg border-2 transition-all duration-200 text-sm font-medium',
                           layoutMode === layout.id
                             ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300'
                             : 'border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-300'
                         ]"
+                        @click="layoutMode = layout.id"
                       >
                         {{ layout.name }}
                       </button>
@@ -331,8 +331,8 @@ defineExpose({
                           </p>
                         </div>
                         <input
-                          type="checkbox"
                           v-model="enableModules[key]"
+                          type="checkbox"
                           class="w-5 h-5 text-blue-600 rounded focus:ring-blue-500"
                         />
                       </label>
@@ -367,7 +367,6 @@ defineExpose({
             <!-- 底部导航按钮 -->
             <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
               <button
-                @click="handlePrev"
                 :disabled="currentStep === 1"
                 :class="[
                   'px-6 py-2.5 rounded-lg font-medium transition-all duration-200',
@@ -375,6 +374,7 @@ defineExpose({
                     ? 'text-gray-400 dark:text-gray-500 cursor-not-allowed'
                     : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-300 dark:border-gray-600'
                 ]"
+                @click="handlePrev"
               >
                 ← 上一步
               </button>
@@ -396,20 +396,20 @@ defineExpose({
 
               <button
                 v-if="currentStep < 5"
-                @click="handleNext"
                 :disabled="
                   (currentStep === 1 && !canProceedToStep2) ||
                   (currentStep === 2 && !canProceedToStep3) ||
                   (currentStep === 3 && !canProceedToStep4)
                 "
                 class="px-6 py-2.5 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg font-medium hover:from-blue-600 hover:to-purple-700 transition-all duration-200 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                @click="handleNext"
               >
                 下一步 →
               </button>
               <button
                 v-else
-                @click="handleComplete()"
                 class="px-6 py-2.5 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-medium hover:from-green-600 hover:to-green-700 transition-all duration-200 shadow-md hover:shadow-lg"
+                @click="handleComplete()"
               >
                 ✨ 完成建站
               </button>

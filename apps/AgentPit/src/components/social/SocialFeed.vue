@@ -99,8 +99,8 @@ const publishPost = () => {
         <p class="text-gray-600 dark:text-gray-400 mt-1">查看好友的最新动态</p>
       </div>
       <button
-        @click="showNewPostModal = true"
         class="px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-md hover:shadow-lg flex items-center space-x-2"
+        @click="showNewPostModal = true"
       >
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
@@ -111,8 +111,8 @@ const publishPost = () => {
 
     <div
       ref="containerRef"
-      @scroll="handleScroll"
       class="space-y-4 max-h-[calc(100vh-250px)] overflow-y-auto pr-2 custom-scrollbar"
+      @scroll="handleScroll"
     >
       <TransitionGroup name="post">
         <div
@@ -145,7 +145,8 @@ const publishPost = () => {
 
             <p class="mt-4 text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line">{{ post.content }}</p>
 
-            <div v-if="post.images && post.images.length > 0" class="mt-4 grid gap-2" :class="{
+            <div
+v-if="post.images && post.images.length > 0" class="mt-4 grid gap-2" :class="{
               'grid-cols-1': post.images.length === 1,
               'grid-cols-2': post.images.length === 2,
               'grid-cols-3': post.images.length >= 3,
@@ -161,8 +162,8 @@ const publishPost = () => {
 
             <div class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700 flex items-center justify-between text-sm">
               <button
-                @click="handleLike(post.id)"
                 class="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors group"
+                @click="handleLike(post.id)"
               >
                 <svg
                   class="w-5 h-5 transition-colors"
@@ -177,8 +178,8 @@ const publishPost = () => {
               </button>
 
               <button
-                @click="handleComment(post.id)"
                 class="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors group"
+                @click="handleComment(post.id)"
               >
                 <svg class="w-5 h-5 text-gray-500 group-hover:text-blue-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
@@ -187,8 +188,8 @@ const publishPost = () => {
               </button>
 
               <button
-                @click="handleShare(post.id)"
                 class="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors group"
+                @click="handleShare(post.id)"
               >
                 <svg class="w-5 h-5 text-gray-500 group-hover:text-green-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
@@ -220,8 +221,8 @@ const publishPost = () => {
             <div class="flex items-center justify-between mb-4">
               <h3 class="text-xl font-bold text-gray-900 dark:text-white">发布新动态</h3>
               <button
-                @click="showNewPostModal = false"
                 class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
+                @click="showNewPostModal = false"
               >
                 <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -258,9 +259,9 @@ const publishPost = () => {
               </div>
 
               <button
-                @click="publishPost"
                 :disabled="!newPostContent.trim()"
                 class="px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                @click="publishPost"
               >
                 发布
               </button>

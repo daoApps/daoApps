@@ -76,9 +76,9 @@ const formatTime = (timestamp: number) => {
       <div class="flex items-center justify-between mb-3">
         <h2 class="text-lg font-semibold text-gray-900 dark:text-white">对话历史</h2>
         <button
-          @click="handleNewConversation"
           class="p-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600 transition-colors"
           title="新建对话"
+          @click="handleNewConversation"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -89,8 +89,8 @@ const formatTime = (timestamp: number) => {
       <!-- 智能体选择器 -->
       <div class="relative mb-3">
         <button
-          @click="showAgentSelector = !showAgentSelector"
           class="w-full px-3 py-2 text-left text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:border-blue-400 transition-colors flex items-center justify-between"
+          @click="showAgentSelector = !showAgentSelector"
         >
           <span class="flex items-center gap-2">
             <span v-if="chatStore.activeAgent">{{ chatStore.activeAgent.avatar }}</span>
@@ -105,8 +105,8 @@ const formatTime = (timestamp: number) => {
           <button
             v-for="agent in availableAgents"
             :key="agent.id"
-            @click="handleSwitchAgent(agent.id)"
             class="w-full px-3 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2 transition-colors"
+            @click="handleSwitchAgent(agent.id)"
           >
             <span>{{ agent.avatar }}</span>
             <div>
@@ -136,14 +136,14 @@ const formatTime = (timestamp: number) => {
         <div
           v-for="conv in filteredConversations"
           :key="conv.id"
-          @click="handleSelectConversation(conv.id)"
-          @contextmenu.prevent="handleDeleteConversation(conv.id, $event)"
           :class="[
             'group mx-2 mb-1 px-3 py-3 rounded-lg cursor-pointer transition-all',
             chatStore.activeConversationId === conv.id
               ? 'bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700'
               : 'hover:bg-gray-100 dark:hover:bg-gray-800 border border-transparent'
           ]"
+          @click="handleSelectConversation(conv.id)"
+          @contextmenu.prevent="handleDeleteConversation(conv.id, $event)"
         >
           <div class="flex items-start justify-between">
             <div class="flex-1 min-w-0">
@@ -163,18 +163,18 @@ const formatTime = (timestamp: number) => {
             <!-- 操作按钮（悬停显示） -->
             <div class="opacity-0 group-hover:opacity-100 flex gap-1 ml-2 transition-opacity">
               <button
-                @click.stop="handleRenameConversation(conv.id, $event)"
                 class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600"
                 title="重命名"
+                @click.stop="handleRenameConversation(conv.id, $event)"
               >
                 <svg class="w-3.5 h-3.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                 </svg>
               </button>
               <button
-                @click.stop="handleDeleteConversation(conv.id, $event)"
                 class="p-1 rounded hover:bg-red-100 dark:hover:bg-red-900/30"
                 title="删除"
+                @click.stop="handleDeleteConversation(conv.id, $event)"
               >
                 <svg class="w-3.5 h-3.5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />

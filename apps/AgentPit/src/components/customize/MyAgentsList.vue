@@ -139,21 +139,23 @@ const formatDate = (dateStr: string) => {
         />
       </div>
       <div class="flex items-center gap-2 w-full sm:w-auto">
-        <select v-model="statusFilter"
+        <select
+v-model="statusFilter"
           class="flex-1 sm:flex-initial px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-300 outline-none focus:ring-2 focus:ring-blue-500"
           aria-label="状态筛选"
         >
           <option v-for="opt in statusOptions" :key="opt.value" :value="opt.value">{{ opt.label }}</option>
         </select>
-        <select v-model="sortBy"
+        <select
+v-model="sortBy"
           class="flex-1 sm:flex-initial px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-300 outline-none focus:ring-2 focus:ring-blue-500"
           aria-label="排序方式"
         >
           <option v-for="opt in sortOptions" :key="opt.value" :value="opt.value">{{ opt.label }}</option>
         </select>
         <button
-          @click="$emit('create')"
           class="px-4 py-2.5 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white rounded-lg text-sm font-medium shadow-sm hover:shadow transition-all whitespace-nowrap flex items-center gap-1.5"
+          @click="$emit('create')"
         >
           <span>+</span> 新建
         </button>
@@ -163,14 +165,14 @@ const formatDate = (dateStr: string) => {
     <div v-if="selectedIds.size > 0" class="flex items-center justify-between px-4 py-2.5 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
       <span class="text-sm text-blue-700 dark:text-blue-300">已选择 {{ selectedIds.size }} 项</span>
       <div class="flex gap-2">
-        <button @click="confirmDelete()" class="px-3 py-1.5 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-lg text-xs font-medium hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors">
+        <button class="px-3 py-1.5 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-lg text-xs font-medium hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors" @click="confirmDelete()">
           批量删除
         </button>
-        <button @click="selectedIds.clear()" class="px-3 py-1.5 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 text-xs transition-colors">取消选择</button>
+        <button class="px-3 py-1.5 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 text-xs transition-colors" @click="selectedIds.clear()">取消选择</button>
       </div>
     </div>
 
-    <TransitionGroup name="list" tag="div" v-if="paginatedAgents.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <TransitionGroup v-if="paginatedAgents.length > 0" name="list" tag="div" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       <div
         v-for="agent in paginatedAgents"
         :key="agent.id"
@@ -180,9 +182,9 @@ const formatDate = (dateStr: string) => {
           <input
             type="checkbox"
             :checked="selectedIds.has(agent.id)"
-            @change="toggleSelect(agent.id)"
             class="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity"
             :aria-label="`选择${agent.name}`"
+            @change="toggleSelect(agent.id)"
           />
         </div>
 
@@ -216,11 +218,11 @@ const formatDate = (dateStr: string) => {
         </div>
 
         <div class="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-white/95 dark:from-gray-800/95 to-transparent translate-y-full group-hover:translate-y-0 transition-transform duration-200 flex justify-end gap-1.5">
-          <button @click="handleEdit(agent)" class="px-3 py-1.5 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg text-xs font-medium hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors">编辑</button>
+          <button class="px-3 py-1.5 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg text-xs font-medium hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors" @click="handleEdit(agent)">编辑</button>
           <button class="px-3 py-1.5 bg-gray-50 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded-lg text-xs font-medium hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">复制</button>
           <button v-if="agent.status === 'draft'" class="px-3 py-1.5 bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-lg text-xs font-medium hover:bg-green-100 dark:hover:bg-green-900/50 transition-colors">发布</button>
           <button v-if="agent.status === 'published'" class="px-3 py-1.5 bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 rounded-lg text-xs font-medium hover:bg-amber-100 dark:hover:bg-amber-900/50 transition-colors">停用</button>
-          <button @click="confirmDelete(agent.id)" class="px-3 py-1.5 bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-lg text-xs font-medium hover:bg-red-100 dark:hover:bg-red-900/50 transition-colors">删除</button>
+          <button class="px-3 py-1.5 bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-lg text-xs font-medium hover:bg-red-100 dark:hover:bg-red-900/50 transition-colors" @click="confirmDelete(agent.id)">删除</button>
         </div>
       </div>
     </TransitionGroup>
@@ -229,34 +231,34 @@ const formatDate = (dateStr: string) => {
       <span class="text-5xl block mb-4">🤖</span>
       <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-2">暂无智能体</h3>
       <p class="text-sm text-gray-400 mb-6">创建您的第一个 AI 智能体，开启智能化之旅</p>
-      <button @click="$emit('create')" class="px-6 py-2.5 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-sm font-medium transition-colors inline-flex items-center gap-1.5">
+      <button class="px-6 py-2.5 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-sm font-medium transition-colors inline-flex items-center gap-1.5" @click="$emit('create')">
         <span>+</span> 创建智能体
       </button>
     </div>
 
     <div v-if="totalPages > 1" class="flex items-center justify-center gap-2 pt-4">
       <button
-        @click="currentPage = Math.max(1, currentPage - 1)"
         :disabled="currentPage <= 1"
         class="px-3 py-1.5 border border-gray-300 dark:border-gray-600 rounded-lg text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+        @click="currentPage = Math.max(1, currentPage - 1)"
       >上一页</button>
       <div class="flex gap-1">
         <button
           v-for="page in totalPages"
           :key="page"
-          @click="currentPage = page"
           class="w-8 h-8 rounded-lg text-sm font-medium transition-all"
           :class="
             currentPage === page
               ? 'bg-blue-500 text-white'
               : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400'
           "
+          @click="currentPage = page"
         >{{ page }}</button>
       </div>
       <button
-        @click="currentPage = Math.min(totalPages, currentPage + 1)"
         :disabled="currentPage >= totalPages"
         class="px-3 py-1.5 border border-gray-300 dark:border-gray-600 rounded-lg text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+        @click="currentPage = Math.min(totalPages, currentPage + 1)"
       >下一页</button>
     </div>
 
@@ -274,8 +276,8 @@ const formatDate = (dateStr: string) => {
               </p>
             </div>
             <div class="flex gap-3 mt-6">
-              <button @click="showDeleteConfirm = false" class="flex-1 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">取消</button>
-              <button @click="executeDelete" class="flex-1 py-2.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-sm font-medium transition-colors">确认删除</button>
+              <button class="flex-1 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors" @click="showDeleteConfirm = false">取消</button>
+              <button class="flex-1 py-2.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-sm font-medium transition-colors" @click="executeDelete">确认删除</button>
             </div>
           </div>
         </div>

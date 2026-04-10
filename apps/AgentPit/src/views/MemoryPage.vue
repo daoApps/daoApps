@@ -116,13 +116,13 @@ onMounted(() => {
               <button
                 v-for="tab in tabs"
                 :key="tab.id"
-                @click="activeTab = tab.id"
                 class="flex-1 min-w-[120px] px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 flex items-center justify-center gap-2"
                 :class="
                   activeTab === tab.id
                     ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-md'
                     : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'
                 "
+                @click="activeTab = tab.id"
               >
                 <span>{{ tab.icon }}</span>
                 <span class="hidden sm:inline">{{ tab.label }}</span>

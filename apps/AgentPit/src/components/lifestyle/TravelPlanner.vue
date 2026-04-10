@@ -96,7 +96,8 @@ function exportItinerary() {
     <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
       <div class="relative flex-1 max-w-md">
         <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-        <input v-model="searchQuery" type="text" placeholder="搜索目的地、城市或标签..."
+        <input
+v-model="searchQuery" type="text" placeholder="搜索目的地、城市或标签..."
           class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-400 outline-none" />
       </div>
       <div class="flex gap-2 text-sm text-gray-600 dark:text-gray-400">
@@ -110,13 +111,15 @@ function exportItinerary() {
     <div>
       <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-3">热门目的地</h3>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        <div v-for="dest in filteredDestinations.slice(0, 8)" :key="dest.id"
-          @click="openDestinationDetail(dest)"
-          class="group relative overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-all duration-300 cursor-pointer bg-white dark:bg-gray-800">
+        <div
+v-for="dest in filteredDestinations.slice(0, 8)" :key="dest.id"
+          class="group relative overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-all duration-300 cursor-pointer bg-white dark:bg-gray-800"
+          @click="openDestinationDetail(dest)">
           <div class="aspect-[4/3] overflow-hidden">
             <img :src="dest.image" :alt="dest.name" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy" />
-            <button @click.stop="toggleFavorite(dest.id)"
-              class="absolute top-2 right-2 p-1.5 rounded-full bg-black/30 backdrop-blur-sm hover:bg-black/50 transition-colors">
+            <button
+class="absolute top-2 right-2 p-1.5 rounded-full bg-black/30 backdrop-blur-sm hover:bg-black/50 transition-colors"
+              @click.stop="toggleFavorite(dest.id)">
               <svg class="w-5 h-5" :class="isFavorite(dest.id) ? 'text-red-500 fill-red-500' : 'text-white'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
             </button>
             <div class="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/70 to-transparent">
@@ -139,10 +142,10 @@ function exportItinerary() {
       <div class="flex items-center justify-between mb-3">
         <h3 class="text-lg font-bold text-gray-900 dark:text-white">📋 {{ currentPlan.destinationName }}</h3>
         <div class="flex gap-2">
-          <button @click="exportItinerary" class="px-3 py-1.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition-colors">
+          <button class="px-3 py-1.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition-colors" @click="exportItinerary">
             📤 导出行程
           </button>
-          <button @click="openAddActivity" class="px-3 py-1.5 text-sm rounded-lg bg-indigo-500 text-white hover:bg-indigo-600 transition-colors">
+          <button class="px-3 py-1.5 text-sm rounded-lg bg-indigo-500 text-white hover:bg-indigo-600 transition-colors" @click="openAddActivity">
             + 添加活动
           </button>
         </div>
@@ -160,7 +163,8 @@ function exportItinerary() {
             </div>
             <div class="space-y-2">
               <TransitionGroup name="activity-list">
-                <div v-for="activity in day.activities" :key="activity.id"
+                <div
+v-for="activity in day.activities" :key="activity.id"
                   class="flex items-start gap-3 p-3 rounded-lg bg-gray-50 dark:bg-gray-700/50 group hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                   <span class="mt-0.5 px-2 py-0.5 text-xs font-mono font-medium rounded bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 flex-shrink-0">{{ activity.time }}</span>
                   <div class="flex-1 min-w-0">
@@ -168,7 +172,7 @@ function exportItinerary() {
                     <p class="text-xs text-gray-500 mt-0.5">📍 {{ activity.location }}{{ activity.notes ? ` · ${activity.notes}` : '' }}</p>
                   </div>
                   <span v-if="activity.cost" class="text-xs text-green-600 dark:text-green-400 flex-shrink-0">¥{{ activity.cost }}</span>
-                  <button @click="deleteActivity(dayIdx, activity.id)" class="opacity-0 group-hover:opacity-100 p-1 text-red-400 hover:text-red-600 transition-all">
+                  <button class="opacity-0 group-hover:opacity-100 p-1 text-red-400 hover:text-red-600 transition-all" @click="deleteActivity(dayIdx, activity.id)">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                   </button>
                 </div>
@@ -198,13 +202,14 @@ function exportItinerary() {
               <p class="text-lg font-bold text-indigo-600 dark:text-indigo-400">预计费用：约 ¥{{ selectedDestination.estimatedCost }}/天</p>
             </div>
             <div class="p-4 border-t border-gray-200 dark:border-gray-700 flex gap-3">
-              <button @click="toggleFavorite(selectedDestination.id)" :class="[
+              <button
+:class="[
                 'flex-1 py-2.5 rounded-xl font-medium transition-colors',
                 isFavorite(selectedDestination.id) ? 'bg-red-50 text-red-600 hover:bg-red-100' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              ]">
+              ]" @click="toggleFavorite(selectedDestination.id)">
                 {{ isFavorite(selectedDestination.id) ? '❤️ 已收藏' : '🤍 收藏' }}
               </button>
-              <button @click="showDestinationDetail = false" class="flex-1 py-2.5 bg-indigo-500 text-white rounded-xl hover:bg-indigo-600 transition-colors font-medium">
+              <button class="flex-1 py-2.5 bg-indigo-500 text-white rounded-xl hover:bg-indigo-600 transition-colors font-medium" @click="showDestinationDetail = false">
                 开始规划
               </button>
             </div>
@@ -246,8 +251,8 @@ function exportItinerary() {
               </div>
             </div>
             <div class="p-4 border-t border-gray-200 dark:border-gray-700 flex gap-3">
-              <button @click="showActivityModal = false" class="flex-1 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">取消</button>
-              <button @click="addActivity" class="flex-1 py-2.5 bg-indigo-500 text-white rounded-xl hover:bg-indigo-600 transition-colors font-medium">添加</button>
+              <button class="flex-1 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors" @click="showActivityModal = false">取消</button>
+              <button class="flex-1 py-2.5 bg-indigo-500 text-white rounded-xl hover:bg-indigo-600 transition-colors font-medium" @click="addActivity">添加</button>
             </div>
           </div>
         </div>

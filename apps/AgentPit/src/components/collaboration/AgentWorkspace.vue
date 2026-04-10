@@ -149,22 +149,22 @@ const formatDuration = (ms: number) => {
         <div class="flex items-center gap-2">
           <!-- New Session -->
           <button
-            @click="resetWorkspace"
             :disabled="isRunning"
             class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg transition-colors flex items-center gap-1.5"
+            @click="resetWorkspace"
           >
             🔄 新建会话
           </button>
 
           <!-- Run/Stop Button -->
           <button
-            @click="toggleRun"
             :class="[
               'px-4 py-2 text-sm font-semibold rounded-lg transition-all flex items-center gap-2',
               isRunning
                 ? 'bg-red-500 hover:bg-red-600 text-white animate-pulse'
                 : 'bg-green-500 hover:bg-green-600 text-white'
             ]"
+            @click="toggleRun"
           >
             {{ isRunning ? '⏹️ 停止' : '▶️ 运行' }}
             <span class="text-xs opacity-75">(Ctrl+Enter)</span>
@@ -172,8 +172,8 @@ const formatDuration = (ms: number) => {
 
           <!-- Settings -->
           <button
-            @click="showShortcuts = !showShortcuts"
             class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors flex items-center gap-1.5"
+            @click="showShortcuts = !showShortcuts"
           >
             ⌨️ 快捷键 (?)
           </button>
@@ -219,24 +219,24 @@ const formatDuration = (ms: number) => {
         <!-- Panel Tabs -->
         <div class="border-b border-gray-200 dark:border-gray-700 px-4 flex items-center gap-1">
           <button
-            @click="activeRightPanel = 'config'"
             :class="[
               'px-4 py-2.5 text-sm font-medium rounded-t-lg transition-colors',
               activeRightPanel === 'config'
                 ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/10 border-b-2 border-blue-600 dark:border-blue-400'
                 : 'text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
             ]"
+            @click="activeRightPanel = 'config'"
           >
             ⚙️ 配置面板
           </button>
           <button
-            @click="activeRightPanel = 'result'"
             :class="[
               'px-4 py-2.5 text-sm font-medium rounded-t-lg transition-colors',
               activeRightPanel === 'result'
                 ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/10 border-b-2 border-blue-600 dark:border-blue-400'
                 : 'text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
             ]"
+            @click="activeRightPanel = 'result'"
           >
             📊 协作结果
           </button>
@@ -284,8 +284,8 @@ const formatDuration = (ms: number) => {
     >
       <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-lg w-full p-6 relative">
         <button
-          @click="showShortcuts = false"
           class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 text-xl"
+          @click="showShortcuts = false"
         >
           ✕
         </button>

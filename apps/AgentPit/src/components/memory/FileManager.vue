@@ -1,8 +1,47 @@
+/**
+ * FileManager 组件 - 文件管理器
+ * 
+ * @description 提供文件和文件夹的浏览、管理功能，支持上传、下载、重命名、删除等操作
+ * 
+ * @component
+ * 
+ * @example
+ * <FileManager 
+ *   :files="fileList"
+ *   @file-select="handleFileSelect"
+ *   @file-upload="handleFileUpload"
+ *   @file-delete="handleFileDelete"
+ *   @file-rename="handleFileRename"
+ *   @folder-create="handleFolderCreate"
+ * />
+ * 
+ * @param {FileNode[]} [files=[]] - 文件节点数组
+ * 
+ * @emits fileSelect - 当用户选中文件时触发，返回文件节点对象
+ * @emits fileUpload - 当用户上传文件时触发，返回 FileList 对象
+ * @emits fileDelete - 当用户删除文件时触发，返回文件节点对象
+ * @emits fileRename - 当用户重命名文件时触发，返回文件节点对象和新名称
+ * @emits folderCreate - 当用户创建文件夹时触发，返回父路径和文件夹名称
+ * 
+ * @slot default - 默认插槽，未使用
+ * 
+ * @dependencies 
+ * - 无外部组合式函数依赖
+ */
+
 <script setup lang="ts">
 import { ref, reactive, computed } from 'vue'
 import type { FileNode, ContextMenuAction } from '@/types/memory'
 
+/**
+ * FileManager 组件 Props 接口
+ * @interface Props
+ */
 interface Props {
+  /**
+   * 文件节点数组
+   * @default []
+   */
   files?: FileNode[]
 }
 
@@ -10,11 +49,36 @@ const props = withDefaults(defineProps<Props>(), {
   files: () => []
 })
 
+/**
+ * FileManager 组件事件定义
+ */
 const emit = defineEmits<{
+  /**
+   * 文件选中事件
+   * @param {FileNode} file - 文件节点对象
+   */
   fileSelect: [file: FileNode]
+  /**
+   * 文件上传事件
+   * @param {FileList} files - 文件列表对象
+   */
   fileUpload: [files: FileList]
+  /**
+   * 文件删除事件
+   * @param {FileNode} file - 文件节点对象
+   */
   fileDelete: [file: FileNode]
+  /**
+   * 文件重命名事件
+   * @param {FileNode} file - 文件节点对象
+   * @param {string} newName - 新文件名
+   */
   fileRename: [file: FileNode, newName: string]
+  /**
+   * 文件夹创建事件
+   * @param {string} parentPath - 父路径
+   * @param {string} name - 文件夹名称
+   */
   folderCreate: [parentPath: string, name: string]
 }>()
 
@@ -172,14 +236,15 @@ const confirmNewFolder = () => {
     <div class="file-manager__toolbar flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
       <div class="flex items-center gap-2">
         <button
-          @click="createNewFolder"
           class="px-3 py-2 text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 rounded-lg transition-colors"
+          @click="createNewFolder"
         >
           📁 新建文件夹
         </button>
         <label class="px-3 py-2 text-sm font-medium text-white bg-green-500 hover:bg-green-600 rounded-lg transition-colors cursor-pointer">
           📤 上传文件
-          <input type="file" multiple class="hidden" @change="(e: Event) => {
+          <input
+type="file" multiple class="hidden" @change="(e: Event) => {
             const target = e.target as HTMLInputElement
             if (target.files) emit('fileUpload', target.files)
           }" />
@@ -194,8 +259,8 @@ const confirmNewFolder = () => {
     <div class="file-manager__breadcrumb flex items-center gap-2 px-4 py-3 bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
       <template v-for="(item, index) in currentPath" :key="index">
         <button
-          @click="navigateBreadcrumb(index)"
           class="text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
+          @click="navigateBreadcrumb(index)"
         >
           {{ item }}
         </button>
@@ -232,11 +297,11 @@ const confirmNewFolder = () => {
             <div class="text-4xl mb-2">📁</div>
             <input
               v-model="newFolderName"
-              @keyup.enter="confirmNewFolder"
-              @blur="confirmNewFolder"
               autofocus
               class="w-full text-xs text-center px-2 py-1 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="文件夹名称"
+              @keyup.enter="confirmNewFolder"
+              @blur="confirmNewFolder"
             />
           </div>
 
@@ -281,8 +346,8 @@ const confirmNewFolder = () => {
           <button
             v-for="action in ['rename', 'copy', 'move', 'download', 'delete', 'properties'] as ContextMenuAction[]"
             :key="action"
-            @click="handleContextAction(action)"
             class="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-2"
+            @click="handleContextAction(action)"
           >
             <span>{{ { rename: '✏️', copy: '📋', move: '📦', download: '⬇️', delete: '🗑️', properties: 'ℹ️' }[action] }}</span>
             {{ { rename: '重命名', copy: '复制', move: '移动', download: '下载', delete: '删除', properties: '属性' }[action] }}
@@ -299,15 +364,15 @@ const confirmNewFolder = () => {
             <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">重命名</h3>
             <input
               v-model="renameValue"
-              @keyup.enter="confirmRename"
               autofocus
               class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              @keyup.enter="confirmRename"
             />
             <div class="flex justify-end gap-3 mt-6">
-              <button @click="isRenaming = false" class="px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+              <button class="px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors" @click="isRenaming = false">
                 取消
               </button>
-              <button @click="confirmRename" class="px-4 py-2 bg-blue-500 text-white hover:bg-blue-600 rounded-lg transition-colors">
+              <button class="px-4 py-2 bg-blue-500 text-white hover:bg-blue-600 rounded-lg transition-colors" @click="confirmRename">
                 确认
               </button>
             </div>

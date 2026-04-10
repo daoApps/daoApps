@@ -128,8 +128,8 @@ const handleRemoveImage = (index: number) => {
 
     <button
       v-if="!showForm"
-      @click="showForm = true"
       class="w-full py-3 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl text-gray-500 dark:text-gray-400 hover:border-primary-500 hover:text-primary-500 dark:hover:border-primary-400 dark:hover:text-primary-400 transition-colors font-medium"
+      @click="showForm = true"
     >
       写评价，分享您的体验
     </button>
@@ -143,11 +143,11 @@ const handleRemoveImage = (index: number) => {
           <template v-for="star in 5" :key="star">
             <button
               type="button"
-              @click="formRating = star"
               :class="[
                 'w-5 h-5 cursor-pointer hover:scale-110 transition-transform',
                 star <= formRating ? 'text-yellow-400' : 'text-gray-300'
               ]"
+              @click="formRating = star"
             >
               <svg fill="currentColor" viewBox="0 0 20 20">
                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
@@ -174,8 +174,8 @@ const handleRemoveImage = (index: number) => {
         <div class="flex gap-2">
           <button
             type="button"
-            @click="handleAddImage"
             class="w-20 h-20 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl flex flex-col items-center justify-center text-gray-400 dark:text-gray-500 hover:border-primary-500 hover:text-primary-500 dark:hover:border-primary-400 dark:hover:text-primary-400 transition-colors"
+            @click="handleAddImage"
           >
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -191,8 +191,8 @@ const handleRemoveImage = (index: number) => {
             <img :src="img" alt="" class="w-full h-full object-cover" />
             <button
               type="button"
-              @click="handleRemoveImage(idx)"
               class="absolute top-1 right-1 w-5 h-5 bg-black/50 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+              @click="handleRemoveImage(idx)"
             >
               <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -206,13 +206,13 @@ const handleRemoveImage = (index: number) => {
       <button
         type="button"
         :disabled="!formContent.trim()"
-        @click="handleSubmitReview"
         :class="[
           'px-6 py-2.5 rounded-lg text-sm font-medium transition-all',
           formContent.trim()
             ? 'bg-primary-500 text-white hover:bg-primary-600 shadow-md'
             : 'bg-gray-200 dark:bg-gray-700 text-gray-400 cursor-not-allowed'
         ]"
+        @click="handleSubmitReview"
       >
         提交评价
       </button>
@@ -280,11 +280,11 @@ const handleRemoveImage = (index: number) => {
 
         <div class="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-700">
           <button
-            @click="handleLike(review.id)"
             :class="[
               'flex items-center gap-1.5 text-sm transition-colors',
               likedReviews.has(review.id) ? 'text-red-500' : 'text-gray-400 hover:text-red-500'
             ]"
+            @click="handleLike(review.id)"
           >
             <svg
               class="w-4 h-4"

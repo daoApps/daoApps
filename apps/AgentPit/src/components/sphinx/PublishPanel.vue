@@ -138,13 +138,13 @@ const getStatusConfig = (status: PublishHistory['status']) => {
         <button
           v-for="platform in platforms"
           :key="platform.id"
-          @click="deployPlatform = platform.id"
           :class="[
             'p-4 rounded-lg border-2 transition-all duration-200 text-left',
             deployPlatform === platform.id
               ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 shadow-md'
               : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
           ]"
+          @click="deployPlatform = platform.id"
         >
           <div class="flex items-center space-x-3">
             <span class="text-2xl">{{ platform.icon }}</span>
@@ -188,11 +188,11 @@ const getStatusConfig = (status: PublishHistory['status']) => {
             <p class="text-sm text-gray-600 dark:text-gray-400">自动配置 HTTPS 安全连接</p>
           </div>
           <button
-            @click="enableSSL = !enableSSL"
             :class="[
               'relative inline-flex h-6 w-11 items-center rounded-full transition-colors',
               enableSSL ? 'bg-blue-500' : 'bg-gray-300 dark:bg-gray-600'
             ]"
+            @click="enableSSL = !enableSSL"
           >
             <span
               :class="[
@@ -306,7 +306,6 @@ const getStatusConfig = (status: PublishHistory['status']) => {
         </div>
 
         <button
-          @click="handlePublish"
           :disabled="publishStatus === 'building' || publishStatus === 'deploying' || !domain.trim()"
           :class="[
             'px-8 py-3 rounded-lg font-semibold transition-all duration-200',
@@ -317,6 +316,7 @@ const getStatusConfig = (status: PublishHistory['status']) => {
                 : 'bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:from-blue-600 hover:to-purple-700 shadow-md hover:shadow-lg',
             (publishStatus === 'building' || publishStatus === 'deploying') && 'opacity-50 cursor-not-allowed'
           ]"
+          @click="handlePublish"
         >
           <span v-if="publishStatus === 'idle'">🚀 一键发布</span>
           <span v-if="publishStatus === 'building'" class="flex items-center space-x-2">

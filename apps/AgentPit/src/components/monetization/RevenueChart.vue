@@ -263,13 +263,13 @@ const currentChartOption = computed(() =>
           <button
             v-for="range in timeRanges"
             :key="range.value"
-            @click="selectedRange = range.value"
             :class="[
               'px-4 py-1.5 text-sm font-medium rounded-md transition-all duration-200',
               selectedRange === range.value
                 ? 'bg-white text-teal-600 shadow-sm'
                 : 'text-gray-600 hover:text-gray-900'
             ]"
+            @click="selectedRange = range.value"
           >
             {{ range.label }}
           </button>
@@ -277,24 +277,24 @@ const currentChartOption = computed(() =>
 
         <div class="flex bg-gray-100 rounded-lg p-1">
           <button
-            @click="chartView = 'line'"
             :class="[
               'px-4 py-1.5 text-sm font-medium rounded-md transition-all duration-200',
               chartView === 'line'
                 ? 'bg-white text-teal-600 shadow-sm'
                 : 'text-gray-600 hover:text-gray-900'
             ]"
+            @click="chartView = 'line'"
           >
             折线图
           </button>
           <button
-            @click="chartView = 'bar'"
             :class="[
               'px-4 py-1.5 text-sm font-medium rounded-md transition-all duration-200',
               chartView === 'bar'
                 ? 'bg-white text-teal-600 shadow-sm'
                 : 'text-gray-600 hover:text-gray-900'
             ]"
+            @click="chartView = 'bar'"
           >
             柱状图
           </button>

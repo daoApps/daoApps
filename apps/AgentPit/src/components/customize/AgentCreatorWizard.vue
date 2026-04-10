@@ -131,11 +131,11 @@ watch(selectedTemplateId, (val) => {
             v-for="step in steps"
             :key="step.id"
             type="button"
-            @click="currentStep >= step.id && (currentStep = step.id)"
             class="flex flex-col items-center group focus:outline-none"
             :disabled="currentStep + 1 < step.id"
             :aria-label="`步骤 ${step.id}: ${step.title}`"
             :aria-current="currentStep === step.id ? 'step' : undefined"
+            @click="currentStep >= step.id && (currentStep = step.id)"
           >
             <div
               class="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300 border-2 relative z-10"
@@ -175,13 +175,13 @@ watch(selectedTemplateId, (val) => {
                 v-for="template in agentTemplates"
                 :key="template.id"
                 type="button"
-                @click="applyTemplate(template.id)"
                 class="p-5 rounded-xl border-2 text-left transition-all hover:shadow-md group"
                 :class="
                   selectedTemplateId === template.id
                     ? 'border-blue-500 bg-blue-50/50 dark:bg-blue-900/20 shadow-md'
                     : 'border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 bg-white dark:bg-gray-800'
                 "
+                @click="applyTemplate(template.id)"
               >
                 <div class="flex items-start gap-3">
                   <span class="text-3xl">{{ template.icon }}</span>
@@ -233,26 +233,26 @@ watch(selectedTemplateId, (val) => {
             <button
               v-if="!isFirstStep"
               type="button"
-              @click="goPrev"
               class="flex-1 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+              @click="goPrev"
             >
               上一步
             </button>
             <button
               v-if="!isLastStep"
               type="button"
-              @click="goNext"
               :disabled="!canGoNext"
               class="flex-1 py-2.5 bg-blue-500 hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-xl text-sm font-medium transition-colors shadow-sm"
+              @click="goNext"
             >
               下一步
             </button>
             <button
               v-else
               type="button"
-              @click="handleSubmit"
               :disabled="isSubmitting"
               class="flex-1 py-2.5 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 disabled:opacity-70 text-white rounded-xl text-sm font-medium transition-all shadow-md"
+              @click="handleSubmit"
             >
               <span v-if="isSubmitting" class="inline-flex items-center gap-1.5">
                 <svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
@@ -264,8 +264,8 @@ watch(selectedTemplateId, (val) => {
 
           <button
             type="button"
-            @click="handleCancel"
             class="w-full py-2 text-sm text-gray-400 hover:text-red-500 transition-colors"
+            @click="handleCancel"
           >
             取消并返回
           </button>

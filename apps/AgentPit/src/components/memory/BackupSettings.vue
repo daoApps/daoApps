@@ -131,9 +131,9 @@ const saveConfig = () => {
           <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">开启后将按照设定的频率自动创建备份</p>
         </div>
         <button
-          @click="localConfig.autoBackup = !localConfig.autoBackup"
           class="relative w-14 h-7 rounded-full transition-colors duration-200"
           :class="localConfig.autoBackup ? 'bg-blue-500' : 'bg-gray-300 dark:bg-gray-600'"
+          @click="localConfig.autoBackup = !localConfig.autoBackup"
         >
           <span
             class="absolute top-0.5 left-0.5 w-6 h-6 bg-white rounded-full shadow transition-transform duration-200"
@@ -153,13 +153,13 @@ const saveConfig = () => {
               { value: 'weekly', label: '每周', desc: '节省存储空间' }
             ]"
             :key="option.value"
-            @click="localConfig.frequency = option.value as BackupConfig['frequency']"
             class="p-3 rounded-lg border-2 transition-all text-left"
             :class="
               localConfig.frequency === option.value
                 ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
                 : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
             "
+            @click="localConfig.frequency = option.value as BackupConfig['frequency']"
           >
             <div class="font-medium text-sm" :class="localConfig.frequency === option.value ? 'text-blue-600 dark:text-blue-400' : 'text-gray-900 dark:text-white'">
               {{ option.label }}
@@ -174,13 +174,13 @@ const saveConfig = () => {
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">备份类型</label>
         <div class="grid grid-cols-2 gap-3">
           <button
-            @click="localConfig.backupType = 'incremental'"
             class="p-4 rounded-lg border-2 transition-all text-left"
             :class="
               localConfig.backupType === 'incremental'
                 ? 'border-green-500 bg-green-50 dark:bg-green-900/20'
                 : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
             "
+            @click="localConfig.backupType = 'incremental'"
           >
             <div class="font-medium" :class="localConfig.backupType === 'incremental' ? 'text-green-600 dark:text-green-400' : 'text-gray-900 dark:text-white'">
               📦 增量备份
@@ -189,13 +189,13 @@ const saveConfig = () => {
           </button>
 
           <button
-            @click="localConfig.backupType = 'full'"
             class="p-4 rounded-lg border-2 transition-all text-left"
             :class="
               localConfig.backupType === 'full'
                 ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20'
                 : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
             "
+            @click="localConfig.backupType = 'full'"
           >
             <div class="font-medium" :class="localConfig.backupType === 'full' ? 'text-purple-600 dark:text-purple-400' : 'text-gray-900 dark:text-white'">
               🔄 完整备份
@@ -242,8 +242,8 @@ const saveConfig = () => {
       <!-- 保存配置按钮 -->
       <div v-if="isModified" class="flex justify-end pt-4 border-t border-gray-200 dark:border-gray-700">
         <button
-          @click="saveConfig"
           class="px-6 py-2.5 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition-colors shadow-md hover:shadow-lg"
+          @click="saveConfig"
         >
           💾 保存配置
         </button>
@@ -258,7 +258,6 @@ const saveConfig = () => {
           <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">立即创建一次完整的备份快照</p>
         </div>
         <button
-          @click="handleManualBackup"
           :disabled="isBackingUp"
           class="px-6 py-2.5 font-medium rounded-lg transition-all shadow-md"
           :class="
@@ -266,6 +265,7 @@ const saveConfig = () => {
               ? 'bg-gray-400 text-white cursor-not-allowed'
               : 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white hover:from-blue-600 hover:to-cyan-600 hover:shadow-lg'
           "
+          @click="handleManualBackup"
         >
           {{ isBackingUp ? `备份中 ${Math.round(backupProgress)}%` : '⚡ 立即备份' }}
         </button>
@@ -339,8 +339,8 @@ const saveConfig = () => {
             <div class="opacity-0 group-hover:opacity-100 transition-opacity ml-4 flex-shrink-0">
               <button
                 v-if="record.status === 'success'"
-                @click="handleRestoreClick(record)"
                 class="px-3 py-1.5 text-xs font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors"
+                @click="handleRestoreClick(record)"
               >
                 🔄 恢复
               </button>
@@ -373,14 +373,14 @@ const saveConfig = () => {
 
             <div class="flex gap-3">
               <button
-                @click="showRestoreDialog = false"
                 class="flex-1 px-4 py-2.5 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg font-medium transition-colors"
+                @click="showRestoreDialog = false"
               >
                 取消
               </button>
               <button
-                @click="confirmRestore"
                 class="flex-1 px-4 py-2.5 bg-red-500 text-white hover:bg-red-600 rounded-lg font-medium transition-colors"
+                @click="confirmRestore"
               >
                 确认恢复
               </button>

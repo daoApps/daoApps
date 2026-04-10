@@ -169,8 +169,8 @@ onMounted(() => {
           </svg>
           <h3 class="text-xl font-semibold text-gray-700 dark:text-gray-300">没有更多用户了</h3>
           <button
-            @click="resetCards"
             class="mt-4 px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-xl font-medium hover:from-pink-600 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl"
+            @click="resetCards"
           >
             重新开始
           </button>
@@ -205,9 +205,9 @@ onMounted(() => {
 
     <div v-if="currentUser" class="flex justify-center gap-6 max-w-sm mx-auto">
       <button
-        @click="dislike"
         class="w-16 h-16 rounded-full bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center group hover:bg-red-50 dark:hover:bg-red-900/20 border-2 border-gray-200 dark:border-gray-700 hover:border-red-300 dark:hover:border-red-700"
         :disabled="isAnimating"
+        @click="dislike"
       >
         <svg class="w-8 h-8 text-gray-600 dark:text-gray-400 group-hover:text-red-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
@@ -215,9 +215,9 @@ onMounted(() => {
       </button>
 
       <button
-        @click="like"
         class="w-16 h-16 rounded-full bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center group hover:bg-green-50 dark:hover:bg-green-900/20 border-2 border-gray-200 dark:border-gray-700 hover:border-green-300 dark:hover:border-green-700"
         :disabled="isAnimating"
+        @click="like"
       >
         <svg class="w-8 h-8 text-gray-600 dark:text-gray-400 group-hover:text-green-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>

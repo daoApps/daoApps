@@ -62,8 +62,8 @@ const loadMore = async () => {
 
     <div
       ref="containerRef"
-      @scroll="handleScroll"
       class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-h-[calc(100vh-200px)] overflow-y-auto pr-2 custom-scrollbar"
+      @scroll="handleScroll"
     >
       <TransitionGroup name="list">
         <UserProfileCard

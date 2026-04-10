@@ -111,10 +111,10 @@ const resetToDefault = () => {
           v-for="theme in themeColors"
           :key="theme.id"
           type="button"
-          @click="themeId = theme.id; useCustomColor = false"
           class="relative group p-1 rounded-xl transition-all hover:scale-105"
           :class="themeId === theme.id && !useCustomColor ? 'ring-2 ring-offset-2 ring-blue-500 dark:ring-offset-gray-800' : ''"
           :aria-label="`选择${theme.name}主题`"
+          @click="themeId = theme.id; useCustomColor = false"
         >
           <div class="w-full aspect-square rounded-lg" :style="{ background: theme.preview }"></div>
           <span class="absolute -bottom-5 left-1/2 -translate-x-1/2 text-[10px] text-gray-600 dark:text-gray-400 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">{{ theme.name }}</span>
@@ -123,13 +123,13 @@ const resetToDefault = () => {
 
       <div class="flex items-center gap-3 mt-6">
         <label class="flex items-center gap-2 cursor-pointer">
-          <input type="checkbox" v-model="useCustomColor" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+          <input v-model="useCustomColor" type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
           <span class="text-sm text-gray-700 dark:text-gray-300">使用自定义颜色</span>
         </label>
         <input
           v-if="useCustomColor"
-          type="color"
           v-model="customPrimary"
+          type="color"
           class="w-10 h-10 rounded cursor-pointer border-0"
           aria-label="自定义主色调"
         />
@@ -205,8 +205,8 @@ const resetToDefault = () => {
           字号大小：{{ fontSize }}px
         </label>
         <input
-          type="range"
           v-model.number="fontSize"
+          type="range"
           min="12"
           max="24"
           step="1"
@@ -243,13 +243,13 @@ const resetToDefault = () => {
           v-for="opt in layoutOptions"
           :key="opt.value"
           type="button"
-          @click="layoutStyle = opt.value as any"
           class="p-3 rounded-xl border-2 transition-all text-center"
           :class="
             layoutStyle === opt.value
               ? 'border-green-500 bg-green-50 dark:bg-green-900/20'
               : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
           "
+          @click="layoutStyle = opt.value as any"
         >
           <span class="text-2xl block mb-1">{{ opt.icon }}</span>
           <span class="text-xs font-medium text-gray-700 dark:text-gray-300">{{ opt.label }}</span>
@@ -268,8 +268,8 @@ const resetToDefault = () => {
             圆角大小：{{ borderRadius }}px
           </label>
           <input
-            type="range"
             v-model.number="borderRadius"
+            type="range"
             min="0"
             max="20"
             step="1"
@@ -288,13 +288,13 @@ const resetToDefault = () => {
               v-for="opt in shadowOptions"
               :key="opt.value"
               type="button"
-              @click="shadowIntensity = opt.value"
               class="flex-1 px-3 py-2 rounded-lg border text-sm font-medium transition-all"
               :class="
                 shadowIntensity === opt.value
                   ? 'border-orange-500 bg-orange-50 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300'
                   : 'border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'
               "
+              @click="shadowIntensity = opt.value"
             >
               {{ opt.label }}
             </button>
@@ -304,12 +304,12 @@ const resetToDefault = () => {
           <span class="text-sm text-gray-600 dark:text-gray-400">深色模式</span>
           <button
             type="button"
-            @click="darkMode = !darkMode"
             class="relative w-12 h-6 rounded-full transition-colors"
             :class="darkMode ? 'bg-indigo-500' : 'bg-gray-300'"
             role="switch"
             :aria-checked="darkMode"
             aria-label="切换深色模式"
+            @click="darkMode = !darkMode"
           >
             <span
               class="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform"
@@ -322,8 +322,8 @@ const resetToDefault = () => {
 
     <button
       type="button"
-      @click="resetToDefault"
       class="w-full py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+      @click="resetToDefault"
     >
       重置为默认设置
     </button>

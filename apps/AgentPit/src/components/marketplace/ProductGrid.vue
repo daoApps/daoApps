@@ -1,16 +1,61 @@
+/**
+ * ProductGrid 组件 - 商品网格展示
+ * 
+ * @description 以网格形式展示商品列表，支持商品查看、收藏和添加到购物车功能
+ * 
+ * @component
+ * 
+ * @example
+ * <ProductGrid 
+ *   :products="productList"
+ *   @add-to-cart="handleAddToCart"
+ *   @toggle-favorite="handleToggleFavorite"
+ * />
+ * 
+ * @param {Product[]} products - 商品数组
+ * 
+ * @emits addToCart - 当用户点击添加到购物车按钮时触发，返回商品对象
+ * @emits toggleFavorite - 当用户点击收藏按钮时触发，返回商品 ID
+ * 
+ * @slot default - 默认插槽，未使用
+ * 
+ * @dependencies 
+ * - vue-router - 路由跳转功能
+ */
+
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import type { Product, ProductTag } from '@/types/marketplace'
 
+/**
+ * ProductGrid 组件 Props 接口
+ * @interface Props
+ */
 interface Props {
+  /**
+   * 商品数组
+   */
   products: Product[]
 }
 
 const props = defineProps<Props>()
 
+/**
+ * ProductGrid 组件事件定义
+ * @emits addToCart - 添加到购物车事件
+ * @emits toggleFavorite - 切换收藏状态事件
+ */
 const emit = defineEmits<{
+  /**
+   * 添加到购物车事件
+   * @param {Product} product - 商品对象
+   */
   addToCart: [product: Product]
+  /**
+   * 切换收藏状态事件
+   * @param {string} productId - 商品 ID
+   */
   toggleFavorite: [productId: string]
 }>()
 
@@ -91,13 +136,13 @@ const navigateToProduct = (productId: string) => {
         </span>
 
         <button
-          @click="(e) => toggleFavorite(product.id, e)"
           :class="[
             'absolute bottom-3 right-3 w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg',
             favorites.has(product.id)
               ? 'bg-red-50 dark:bg-red-900/30 text-red-500'
               : 'bg-white/90 dark:bg-gray-800/90 text-gray-600 dark:text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0'
           ]"
+          @click="(e) => toggleFavorite(product.id, e)"
         >
           <svg
             class="w-5 h-5"
@@ -110,8 +155,8 @@ const navigateToProduct = (productId: string) => {
         </button>
 
         <button
-          @click="(e) => handleAddToCart(product, e)"
           class="absolute bottom-3 right-14 w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300 bg-primary-500 text-white shadow-lg hover:bg-primary-600 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0"
+          @click="(e) => handleAddToCart(product, e)"
         >
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z" />

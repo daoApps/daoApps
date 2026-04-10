@@ -1,11 +1,53 @@
+/**
+ * Header 组件 - 应用顶部导航栏
+ * 
+ * @description 提供应用的主要导航功能，包括 Logo、导航菜单、搜索框、通知、主题切换和用户菜单
+ * 
+ * @component
+ * 
+ * @example
+ * <Header 
+ *   logo-text="AgentPit" 
+ *   :show-search="true" 
+ *   :show-notifications="true"
+ *   @toggle-sidebar="handleToggleSidebar"
+ *   @search="handleSearch"
+ * />
+ * 
+ * @emits toggle-sidebar - 当用户点击汉堡菜单时触发，用于切换侧边栏显示状态
+ * @emits search - 当用户在搜索框输入并回车时触发，返回搜索查询字符串
+ * 
+ * @slot default - 默认插槽，未使用
+ * 
+ * @dependencies 
+ * - useAppStore - 应用全局状态管理
+ * - vue-router - 路由相关功能
+ */
+
 <script setup lang="ts">
 import { ref } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 import { useAppStore } from '../../stores/useAppStore'
 
+/**
+ * Header 组件 Props 接口
+ * @interface Props
+ */
 interface Props {
+  /**
+   * Logo 显示的文字
+   * @default 'AgentPit'
+   */
   logoText?: string
+  /**
+   * 是否显示搜索框
+   * @default true
+   */
   showSearch?: boolean
+  /**
+   * 是否显示通知图标
+   * @default true
+   */
   showNotifications?: boolean
 }
 
@@ -55,9 +97,9 @@ const toggleSidebar = () => {
       <div class="flex items-center gap-3">
         <!-- 汉堡菜单按钮（移动端显示） -->
         <button
-          @click="toggleSidebar"
           class="lg:hidden p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
           aria-label="切换侧边栏"
+          @click="toggleSidebar"
         >
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -123,9 +165,9 @@ const toggleSidebar = () => {
 
         <!-- 主题切换按钮 -->
         <button
-          @click="appStore.toggleDarkMode()"
           class="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
           aria-label="切换主题"
+          @click="appStore.toggleDarkMode()"
         >
           <svg v-if="!appStore.isDarkTheme" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
@@ -138,8 +180,8 @@ const toggleSidebar = () => {
         <!-- 用户头像和下拉菜单 -->
         <div class="relative">
           <button
-            @click="isUserMenuOpen = !isUserMenuOpen"
             class="flex items-center gap-2 p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            @click="isUserMenuOpen = !isUserMenuOpen"
           >
             <div class="w-8 h-8 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-white font-semibold text-sm shadow-sm">
               U

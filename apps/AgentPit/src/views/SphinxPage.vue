@@ -57,13 +57,13 @@ const mySites = ref([
           <button
             v-for="tab in tabs"
             :key="tab.id"
-            @click="activeTab = tab.id as TabType"
             :class="[
               'px-6 py-3 rounded-lg font-medium transition-all duration-200 flex items-center space-x-2',
               activeTab === tab.id
                 ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-md'
                 : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-gray-700'
             ]"
+            @click="activeTab = tab.id as TabType"
           >
             <span>{{ tab.icon }}</span>
             <span>{{ tab.label }}</span>
@@ -95,8 +95,8 @@ const mySites = ref([
           <div class="flex items-center justify-between mb-6">
             <h2 class="text-xl font-semibold text-gray-900 dark:text-white">已发布的站点</h2>
             <button
-              @click="activeTab = 'wizard'"
               class="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg font-medium hover:from-blue-600 hover:to-purple-700 transition-all duration-200 shadow-sm"
+              @click="activeTab = 'wizard'"
             >
               + 创建新站点
             </button>
@@ -158,8 +158,8 @@ const mySites = ref([
             <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">还没有发布任何站点</h3>
             <p class="text-gray-600 dark:text-gray-400 mb-6">开始使用 Sphinx AI 创建您的第一个网站</p>
             <button
-              @click="activeTab = 'wizard'"
               class="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-200 shadow-md"
+              @click="activeTab = 'wizard'"
             >
               开始创建 →
             </button>

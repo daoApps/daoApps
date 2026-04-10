@@ -1,9 +1,40 @@
+/**
+ * MemorySearch 组件 - 记忆搜索功能
+ * 
+ * @description 提供记忆内容的全文搜索功能，支持关键词搜索、历史记录、高级筛选和结果排序
+ * 
+ * @component
+ * 
+ * @example
+ * <MemorySearch 
+ *   :data="searchData"
+ *   @result-select="handleResultSelect"
+ * />
+ * 
+ * @param {SearchResult[]} [data=[]] - 搜索数据源数组
+ * 
+ * @emits resultSelect - 当用户点击搜索结果时触发，返回选中的搜索结果对象
+ * 
+ * @slot default - 默认插槽，未使用
+ * 
+ * @dependencies 
+ * - useDebounce - 防抖组合式函数
+ */
+
 <script setup lang="ts">
 import { ref, reactive, computed, watch } from 'vue'
 import { useDebounce } from '@/composables/useDebounce'
 import type { SearchResult, SearchFilter } from '@/types/memory'
 
+/**
+ * MemorySearch 组件 Props 接口
+ * @interface Props
+ */
 interface Props {
+  /**
+   * 搜索数据源数组
+   * @default []
+   */
   data?: SearchResult[]
 }
 
@@ -11,7 +42,15 @@ const props = withDefaults(defineProps<Props>(), {
   data: () => []
 })
 
+/**
+ * MemorySearch 组件事件定义
+ * @emits resultSelect - 搜索结果选中事件
+ */
 const emit = defineEmits<{
+  /**
+   * 搜索结果选中事件
+   * @param {SearchResult} result - 选中的搜索结果对象
+   */
   resultSelect: [result: SearchResult]
 }>()
 
@@ -139,8 +178,8 @@ watch(debouncedSearch, (newVal) => {
         <span class="absolute left-4 top-1/2 -translate-y-1/2 text-xl">🔍</span>
         <button
           v-if="searchQuery"
-          @click="searchQuery = ''"
           class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+          @click="searchQuery = ''"
         >
           ✕
         </button>
@@ -153,14 +192,14 @@ watch(debouncedSearch, (newVal) => {
           <button
             v-for="(item, index) in searchHistory.slice(0, 5)"
             :key="index"
-            @click="selectFromHistory(item)"
             class="px-3 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+            @click="selectFromHistory(item)"
           >
             {{ item }}
           </button>
           <button
-            @click="clearHistory"
             class="text-xs text-red-500 hover:text-red-600 transition-colors"
+            @click="clearHistory"
           >
             清除
           </button>
@@ -172,8 +211,8 @@ watch(debouncedSearch, (newVal) => {
     <div class="flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
       <div class="flex items-center gap-3">
         <button
-          @click="showFilters = !showFilters"
           class="px-3 py-1.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-1"
+          @click="showFilters = !showFilters"
         >
           🔽 筛选
           <span v-if="filter.dateRange || filter.fileType || (filter.tags && filter.tags.length > 0)" class="ml-1 w-2 h-2 bg-blue-500 rounded-full"></span>
@@ -239,11 +278,11 @@ watch(debouncedSearch, (newVal) => {
             <button
               v-for="tag in availableTags"
               :key="tag"
-              @click="toggleTag(tag)"
               class="px-3 py-1 text-xs rounded-full transition-colors"
               :class="filter.tags?.includes(tag)
                 ? 'bg-blue-500 text-white'
                 : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'"
+              @click="toggleTag(tag)"
             >
               {{ tag }}
             </button>
@@ -251,8 +290,8 @@ watch(debouncedSearch, (newVal) => {
         </div>
 
         <button
-          @click="clearFilters"
           class="w-full py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+          @click="clearFilters"
         >
           清除所有筛选
         </button>
@@ -262,12 +301,12 @@ watch(debouncedSearch, (newVal) => {
     <!-- 搜索结果列表 -->
     <div class="divide-y divide-gray-200 dark:divide-gray-700 max-h-[500px] overflow-y-auto">
       <!-- 有结果 -->
-      <TransitionGroup name="list" v-if="filteredResults.length > 0">
+      <TransitionGroup v-if="filteredResults.length > 0" name="list">
         <div
           v-for="result in filteredResults"
           :key="result.id"
-          @click="emit('resultSelect', result)"
           class="memory-search__result-item p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 cursor-pointer transition-colors"
+          @click="emit('resultSelect', result)"
         >
           <div class="flex items-start justify-between gap-4">
             <div class="flex-1 min-w-0">

@@ -137,13 +137,13 @@ const scrollToEvent = (eventId: string) => {
                 { value: 'custom', label: '自定义' }
               ]"
               :key="option.value"
-              @click="timeFilter = option.value as 'today' | 'week' | 'month' | 'custom'"
               class="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors"
               :class="
                 timeFilter === option.value
                   ? 'bg-blue-500 text-white'
                   : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
               "
+              @click="timeFilter = option.value as 'today' | 'week' | 'month' | 'custom'"
             >
               {{ option.label }}
             </button>
@@ -151,7 +151,7 @@ const scrollToEvent = (eventId: string) => {
         </div>
 
         <!-- 自定义日期范围 -->
-        <Transition name="slide" v-if="timeFilter === 'custom'">
+        <Transition v-if="timeFilter === 'custom'" name="slide">
           <div class="flex items-center gap-2">
             <input
               v-model="customDateRange.start"
@@ -217,8 +217,8 @@ const scrollToEvent = (eventId: string) => {
         <TransitionGroup name="timeline" tag="div" class="space-y-6">
           <div
             v-for="(event, _index) in filteredEvents"
-            :key="event.id"
             :id="`event-${event.id}`"
+            :key="event.id"
             class="memory-timeline__event relative pl-20 group"
           >
             <!-- 时间点标记 -->
@@ -247,8 +247,8 @@ const scrollToEvent = (eventId: string) => {
 
             <!-- 事件卡片 -->
             <div
-              @click="toggleExpand(event.id)"
               class="bg-white dark:bg-gray-700 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer overflow-hidden border border-gray-100 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-600"
+              @click="toggleExpand(event.id)"
             >
               <!-- 卡片头部 -->
               <div class="p-4">
@@ -309,14 +309,14 @@ const scrollToEvent = (eventId: string) => {
 
                     <div class="flex gap-2">
                       <button
-                        @click.stop="emit('eventClick', event)"
                         class="flex-1 px-3 py-2 text-xs font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors"
+                        @click.stop="emit('eventClick', event)"
                       >
                         查看详情
                       </button>
                       <button
-                        @click.stop="scrollToEvent(event.id)"
                         class="px-3 py-2 text-xs font-medium text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                        @click.stop="scrollToEvent(event.id)"
                       >
                         定位
                       </button>

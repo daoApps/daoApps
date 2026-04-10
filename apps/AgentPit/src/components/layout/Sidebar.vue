@@ -1,12 +1,45 @@
+/**
+ * Sidebar 组件 - 应用侧边栏导航
+ * 
+ * @description 提供应用的导航菜单，支持展开/收起状态，包含桌面端和移动端两种显示模式
+ * 
+ * @component
+ * 
+ * @example
+ * <Sidebar />
+ * 
+ * @slot default - 默认插槽，未使用
+ * 
+ * @dependencies 
+ * - useAppStore - 应用全局状态管理
+ * - vue-router - 路由相关功能
+ */
+
 <script setup lang="ts">
 import { computed } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 import { useAppStore } from '../../stores/useAppStore'
 
+/**
+ * 导航项接口
+ * @interface NavItem
+ */
 interface NavItem {
+  /**
+   * 导航路径
+   */
   path: string
+  /**
+   * 导航标签文字
+   */
   label: string
+  /**
+   * 图标名称
+   */
   icon: string
+  /**
+   * 徽章数字（可选）
+   */
   badge?: number
 }
 
@@ -105,8 +138,8 @@ const getIconPath = (iconName: string): string => {
     <!-- 底部折叠按钮 -->
     <div class="p-2 border-t border-gray-200 dark:border-gray-700">
       <button
-        @click="appStore.toggleSidebar()"
         class="w-full flex items-center justify-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+        @click="appStore.toggleSidebar()"
       >
         <svg
           class="w-5 h-5 transition-transform duration-300"
@@ -142,8 +175,8 @@ const getIconPath = (iconName: string): string => {
           <div class="p-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
             <h2 class="text-lg font-semibold text-gray-900 dark:text-white">导航菜单</h2>
             <button
-              @click="appStore.setMobileSidebarOpen(false)"
               class="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700"
+              @click="appStore.setMobileSidebarOpen(false)"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -156,13 +189,13 @@ const getIconPath = (iconName: string): string => {
               <li v-for="item in navItems" :key="item.path">
                 <RouterLink
                   :to="item.path"
-                  @click="appStore.setMobileSidebarOpen(false)"
                   class="flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-all duration-200"
                   :class="[
                     route.path === item.path
                       ? 'bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300'
                       : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
                   ]"
+                  @click="appStore.setMobileSidebarOpen(false)"
                 >
                   <svg
                     class="w-5 h-5"

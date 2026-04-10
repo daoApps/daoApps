@@ -93,19 +93,19 @@ const closeDetail = () => {
 
         <div class="flex gap-2 mt-3" @click.stop>
           <button
-            @click="handleFollow"
             class="flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all duration-200"
             :class="
               isFollowing
                 ? 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
                 : 'bg-blue-600 text-white hover:bg-blue-700'
             "
+            @click="handleFollow"
           >
             {{ isFollowing ? '已关注' : '关注' }}
           </button>
           <button
-            @click="handleMessage"
             class="flex-1 py-2 px-4 rounded-lg text-sm font-medium border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200"
+            @click="handleMessage"
           >
             私信
           </button>
@@ -122,8 +122,8 @@ const closeDetail = () => {
             @click.stop
           >
             <button
-              @click="closeDetail"
               class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300 transition-colors z-10"
+              @click="closeDetail"
             >
               ✕
             </button>
@@ -182,19 +182,19 @@ const closeDetail = () => {
 
               <div class="flex gap-3 mt-6">
                 <button
-                  @click="handleFollow(); closeDetail()"
                   class="flex-1 py-3 px-6 rounded-xl text-base font-semibold transition-all duration-200"
                   :class="
                     isFollowing
                       ? 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
                       : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700'
                   "
+                  @click="handleFollow(); closeDetail()"
                 >
                   {{ isFollowing ? '已关注' : '关注' }}
                 </button>
                 <button
-                  @click="handleMessage(); closeDetail()"
                   class="flex-1 py-3 px-6 rounded-xl text-base font-semibold border-2 border-blue-600 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all duration-200"
+                  @click="handleMessage(); closeDetail()"
                 >
                   发送消息
                 </button>

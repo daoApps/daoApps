@@ -63,7 +63,7 @@ import { watch, computed } from 'vue'
         </div>
         <label class="absolute inset-0 bg-black/40 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer">
           <span class="text-white text-xs font-medium">更换</span>
-          <input type="file" accept="image/*" @change="handleAvatarUpload" class="hidden" />
+          <input type="file" accept="image/*" class="hidden" @change="handleAvatarUpload" />
         </label>
       </div>
       <div>
@@ -80,7 +80,8 @@ import { watch, computed } from 'vue'
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
           昵称 <span class="text-red-500">*</span>
         </label>
-        <input v-model="profile.nickname" type="text" placeholder="请输入昵称（2-30字符）"
+        <input
+v-model="profile.nickname" type="text" placeholder="请输入昵称（2-30字符）"
           maxlength="30"
           :class="[
             'w-full px-3 py-2.5 rounded-lg border bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-400 outline-none transition-colors',
@@ -94,7 +95,8 @@ import { watch, computed } from 'vue'
       <!-- 个人简介 -->
       <div>
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">个人简介</label>
-        <textarea v-model="profile.bio" rows="3" placeholder="介绍一下自己吧..." maxlength="200"
+        <textarea
+v-model="profile.bio" rows="3" placeholder="介绍一下自己吧..." maxlength="200"
           :class="[
             'w-full px-3 py-2.5 rounded-lg border bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-400 outline-none resize-none transition-colors',
             bioValid ? 'border-gray-300 dark:border-gray-600' : 'border-red-400'
@@ -106,7 +108,8 @@ import { watch, computed } from 'vue'
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">邮箱地址</label>
-          <input v-model="profile.email" type="email" placeholder="example@email.com"
+          <input
+v-model="profile.email" type="email" placeholder="example@email.com"
             :class="[
               'w-full px-3 py-2.5 rounded-lg border bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-400 outline-none',
               emailValid ? 'border-gray-300 dark:border-gray-600' : 'border-red-400'
@@ -115,7 +118,8 @@ import { watch, computed } from 'vue'
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">手机号码</label>
-          <input v-model="profile.phone" type="tel" placeholder="13800138000"
+          <input
+v-model="profile.phone" type="tel" placeholder="13800138000"
             :class="[
               'w-full px-3 py-2.5 rounded-lg border bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-400 outline-none',
               phoneValid ? 'border-gray-300 dark:border-gray-600' : 'border-red-400'
@@ -127,7 +131,8 @@ import { watch, computed } from 'vue'
       <!-- 所在城市 -->
       <div>
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">所在城市</label>
-        <select v-model="profile.location"
+        <select
+v-model="profile.location"
           class="w-full px-3 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-400 outline-none">
           <option value="">请选择城市</option>
           <option v-for="city in cities" :key="city" :value="city">{{ city }}</option>
@@ -137,23 +142,25 @@ import { watch, computed } from 'vue'
       <!-- 个人网站 -->
       <div>
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">个人网站 <span class="text-gray-400">(可选)</span></label>
-        <input v-model="profile.website" type="url" placeholder="https://example.com"
+        <input
+v-model="profile.website" type="url" placeholder="https://example.com"
           class="w-full px-3 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-400 outline-none" />
       </div>
     </div>
 
     <!-- 操作按钮 -->
     <div class="flex items-center justify-between mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
-      <button @click="resetForm" class="px-4 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
+      <button class="px-4 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors" @click="resetForm">
         重置
       </button>
       <div class="flex items-center gap-3">
         <span v-if="hasUnsavedChanges" class="text-xs text-orange-500 font-medium animate-pulse">* 有未保存的更改</span>
-        <button @click="saveProfile" :disabled="!isFormValid"
-          class="px-6 py-2.5 rounded-lg font-medium text-sm transition-all"
+        <button
+:disabled="!isFormValid" class="px-6 py-2.5 rounded-lg font-medium text-sm transition-all"
           :class="isFormValid
             ? 'bg-indigo-500 text-white hover:bg-indigo-600 shadow-md hover:shadow-lg'
-            : 'bg-gray-200 text-gray-400 cursor-not-allowed'">
+            : 'bg-gray-200 text-gray-400 cursor-not-allowed'"
+          @click="saveProfile">
           保存修改
         </button>
       </div>

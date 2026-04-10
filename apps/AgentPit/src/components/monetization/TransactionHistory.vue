@@ -78,8 +78,8 @@ const formatAmount = (amount: number, type: string) => {
 <template>
   <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
     <div
-      @click="isExpanded = !isExpanded"
       class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
+      @click="isExpanded = !isExpanded"
     >
       <h3 class="text-lg font-bold text-gray-900">交易历史</h3>
       <div class="flex items-center gap-2">
@@ -103,17 +103,17 @@ const formatAmount = (amount: number, type: string) => {
           <div class="flex-1">
             <input
               v-model="searchQuery"
-              @input="currentPage = 1"
               type="text"
               placeholder="搜索交易ID或描述..."
               class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm"
+              @input="currentPage = 1"
             />
           </div>
 
           <select
             v-model="filterType"
-            @change="currentPage = 1"
             class="px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm bg-white"
+            @change="currentPage = 1"
           >
             <option value="all">全部类型</option>
             <option value="income">收入</option>
@@ -122,8 +122,8 @@ const formatAmount = (amount: number, type: string) => {
 
           <select
             v-model="filterStatus"
-            @change="currentPage = 1"
             class="px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm bg-white"
+            @change="currentPage = 1"
           >
             <option value="all">全部状态</option>
             <option value="success">成功</option>
@@ -218,29 +218,29 @@ const formatAmount = (amount: number, type: string) => {
           </p>
           <div class="flex gap-2">
             <button
-              @click="currentPage = Math.max(1, currentPage - 1)"
               :disabled="currentPage === 1"
               class="px-3 py-1.5 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              @click="currentPage = Math.max(1, currentPage - 1)"
             >
               上一页
             </button>
             <button
               v-for="page in totalPages"
               :key="page"
-              @click="currentPage = page"
               :class="[
                 'px-3 py-1.5 text-sm font-medium rounded-lg transition-colors',
                 currentPage === page
                   ? 'bg-teal-500 text-white'
                   : 'text-gray-700 bg-gray-100 hover:bg-gray-200'
               ]"
+              @click="currentPage = page"
             >
               {{ page }}
             </button>
             <button
-              @click="currentPage = Math.min(totalPages, currentPage + 1)"
               :disabled="currentPage === totalPages"
               class="px-3 py-1.5 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              @click="currentPage = Math.min(totalPages, currentPage + 1)"
             >
               下一页
             </button>

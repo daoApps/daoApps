@@ -104,14 +104,14 @@ defineExpose({
       <div class="flex items-center space-x-3">
         <button
           v-if="unreadCount > 0"
-          @click="markAllAsRead"
           class="px-4 py-2 text-sm font-medium text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
+          @click="markAllAsRead"
         >
           全部已读
         </button>
         <button
-          @click="clearAll"
           class="px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+          @click="clearAll"
         >
           清空
         </button>
@@ -122,13 +122,13 @@ defineExpose({
       <button
         v-for="(label, type) in { all: '全部', system: '系统', interaction: '互动', message: '消息' }"
         :key="type"
-        @click="filterType = type as 'all' | 'system' | 'interaction' | 'message'"
         class="flex-1 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200"
         :class="
           filterType === type
             ? 'bg-blue-600 text-white shadow-md'
             : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
         "
+        @click="filterType = type as 'all' | 'system' | 'interaction' | 'message'"
       >
         {{ label }}
         <span
@@ -150,13 +150,13 @@ defineExpose({
         <div
           v-for="notification in filteredNotifications"
           :key="notification.id"
-          @click="handleNotificationClick(notification)"
           class="relative bg-white dark:bg-gray-800 rounded-xl shadow-sm border transition-all duration-200 cursor-pointer group hover:shadow-md"
           :class="[
             notification.read
               ? 'border-gray-200 dark:border-gray-700 opacity-75'
               : 'border-blue-200 dark:border-blue-800 border-l-4 border-l-blue-500',
           ]"
+          @click="handleNotificationClick(notification)"
         >
           <div class="p-5 flex items-start space-x-4">
             <div
@@ -175,8 +175,8 @@ defineExpose({
                   {{ notification.title }}
                 </h4>
                 <button
-                  @click.stop="deleteNotification(notification.id)"
                   class="opacity-0 group-hover:opacity-100 p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-all text-gray-400 hover:text-red-500"
+                  @click.stop="deleteNotification(notification.id)"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>

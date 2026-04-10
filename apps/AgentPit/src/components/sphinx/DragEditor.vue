@@ -172,13 +172,13 @@ const updateProps = () => {
           <button
             v-for="cat in categories"
             :key="cat.id"
-            @click="activeCategory = cat.id"
             :class="[
               'px-2 py-1 text-xs rounded transition-colors',
               activeCategory === cat.id
                 ? 'bg-blue-500 text-white'
                 : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
             ]"
+            @click="activeCategory = cat.id"
           >
             {{ cat.label }}
           </button>
@@ -190,8 +190,8 @@ const updateProps = () => {
           v-for="component in filteredComponents()"
           :key="component.id"
           draggable="true"
-          @dragstart="handleDragStart(component, $event)"
           class="p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg cursor-grab hover:bg-blue-50 dark:hover:bg-blue-900/20 border border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-700 transition-all duration-200 active:cursor-grabbing"
+          @dragstart="handleDragStart(component, $event)"
         >
           <div class="flex items-center space-x-2">
             <span class="text-xl">{{ component.icon }}</span>
@@ -211,13 +211,13 @@ const updateProps = () => {
       </div>
 
       <div
-        @dragover="handleDragOver"
-        @dragleave="handleDragLeave"
-        @drop="handleDrop"
         :class="[
           'flex-1 p-6 overflow-y-auto transition-colors duration-200',
           isDraggingOverCanvas ? 'bg-blue-50 dark:bg-blue-900/10' : 'bg-gray-50 dark:bg-gray-900/50'
         ]"
+        @dragover="handleDragOver"
+        @dragleave="handleDragLeave"
+        @drop="handleDrop"
       >
         <div
           v-if="canvasComponents.length === 0"
@@ -239,36 +239,36 @@ const updateProps = () => {
           <div
             v-for="(component, index) in canvasComponents"
             :key="component.id"
-            @click="selectComponent(component)"
             :class="[
               'relative group bg-white dark:bg-gray-800 rounded-lg shadow-sm border-2 p-6 cursor-pointer transition-all duration-200',
               selectedComponent?.id === component.id
                 ? 'border-blue-500 ring-2 ring-blue-200'
                 : 'border-transparent hover:border-gray-300 dark:hover:border-gray-600'
             ]"
+            @click="selectComponent(component)"
           >
             <!-- 组件操作按钮 -->
             <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex space-x-1">
               <button
-                @click.stop="moveComponentUp(index)"
                 :disabled="index === 0"
                 class="p-1.5 bg-white dark:bg-gray-700 rounded shadow-sm hover:bg-gray-100 dark:hover:bg-gray-600 disabled:opacity-30 text-xs"
                 title="上移"
+                @click.stop="moveComponentUp(index)"
               >
                 ↑
               </button>
               <button
-                @click.stop="moveComponentDown(index)"
                 :disabled="index === canvasComponents.length - 1"
                 class="p-1.5 bg-white dark:bg-gray-700 rounded shadow-sm hover:bg-gray-100 dark:hover:bg-gray-600 disabled:opacity-30 text-xs"
                 title="下移"
+                @click.stop="moveComponentDown(index)"
               >
                 ↓
               </button>
               <button
-                @click.stop="removeComponent(index)"
                 class="p-1.5 bg-red-500 text-white rounded shadow-sm hover:bg-red-600 text-xs"
                 title="删除"
+                @click.stop="removeComponent(index)"
               >
                 ✕
               </button>
@@ -320,9 +320,9 @@ const updateProps = () => {
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">标题</label>
           <input
             v-model="componentProps.title"
-            @input="updateProps()"
             type="text"
             class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+            @input="updateProps()"
           />
         </div>
 
@@ -330,9 +330,9 @@ const updateProps = () => {
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">副标题</label>
           <input
             v-model="componentProps.subtitle"
-            @input="updateProps()"
             type="text"
             class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+            @input="updateProps()"
           />
         </div>
 
@@ -340,9 +340,9 @@ const updateProps = () => {
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">描述</label>
           <textarea
             v-model="componentProps.description"
-            @input="updateProps()"
             rows="3"
             class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+            @input="updateProps()"
           ></textarea>
         </div>
 
@@ -350,9 +350,9 @@ const updateProps = () => {
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">按钮文字</label>
           <input
             v-model="componentProps.buttonText"
-            @input="updateProps()"
             type="text"
             class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+            @input="updateProps()"
           />
         </div>
 
@@ -361,15 +361,15 @@ const updateProps = () => {
           <div class="flex items-center space-x-2">
             <input
               v-model="componentProps.buttonColor"
-              @input="updateProps()"
               type="color"
               class="w-10 h-10 rounded border border-gray-300 dark:border-gray-600"
+              @input="updateProps()"
             />
             <input
               v-model="componentProps.buttonColor"
-              @input="updateProps()"
               type="text"
               class="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+              @input="updateProps()"
             />
           </div>
         </div>
@@ -378,9 +378,9 @@ const updateProps = () => {
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">版权信息</label>
           <input
             v-model="componentProps.copyright"
-            @input="updateProps()"
             type="text"
             class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+            @input="updateProps()"
           />
         </div>
       </div>
