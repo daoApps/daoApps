@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import type { Task, Agent } from '../../data/mockCollaboration';
+import type { MCPTask } from '../../services/mcp/types';
 import { sampleTasks, presetAgents } from '../../data/mockCollaboration';
 
 const props = defineProps<{
   agents?: Agent[];
+  tasks?: MCPTask[];
 }>();
 
 const emit = defineEmits<{
@@ -14,12 +16,32 @@ const emit = defineEmits<{
 }>();
 
 const viewMode = ref<'kanban' | 'list'>('kanban');
-const tasks = ref<Task[]>([...sampleTasks]);
+const localTasks = ref<Task[]>([...sampleTasks]);
 const draggedTask = ref<Task | null>(null);
 const selectedTasks = ref<Set<string>>(new Set());
 const showDependencies = ref(false);
 const filterPriority = ref<string>('all');
 const searchQuery = ref('');
+
+// 如果传入了任务，使用传入的任务（来自后端）
+const tasks = computed(() => {
+  if (props.tasks && props.tasks.length > 0) {
+    // 转换 MCP 任务到本地 Task 类型
+    return props.tasks.map(t => ({
+      id: t.id,
+      title: t.title,
+      description: t.description,
+      status: t.status as Task['status'],
+      priority: t.priority as Task['priority'],
+      progress: t.progress,
+      assignedAgentId: t.assigned_agent_id,
+      estimatedTime: t.estimated_time,
+      result: t.result,
+      qualityScore: t.quality_score,
+    } as Task));
+  }
+  return localTasks.value;
+});
 
 // Kanban columns
 const columns = [

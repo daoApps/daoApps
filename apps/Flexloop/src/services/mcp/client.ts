@@ -1,27 +1,32 @@
 import { ApiError, NetworkError, ServerError } from '../errors';
-import { TaskStatusValues } from './types';
 import type {
-  CreateResearchRequest,
-  CreateResearchResponse,
-  ResearchStatusResponse,
-  ProgressEvent,
-  HealthResponse,
-  VersionInfo,
-  ErrorResponse,
-  ProgressCallback,
-  CompleteCallback,
-  ErrorCallback
+  MCPListAgentsResponse,
+  MCPCollaborationCreateRequest,
+  MCPCollaborationCreateResponse,
+  MCPCollaborationStatusResponse,
+  MCPCollaborationResult,
+  MCPProgressEvent,
+  MCPSendMessageRequest,
+  MCPSendMessageResponse,
+  MCPAgentInfo,
+  MCPClientConfig,
+  MCPProgressCallback,
+  MCPCompleteCallback,
+  MCPErrorCallback,
 } from './types';
 
-export interface DeepResearchClientConfig {
-  baseURL: string;
-  apiKey?: string;
-  timeout?: number;
-  maxRetries?: number;
-  retryDelay?: number;
-}
+export {
+  MCPListAgentsResponse,
+  MCPCollaborationCreateRequest,
+  MCPCollaborationCreateResponse,
+  MCPCollaborationStatusResponse,
+  MCPProgressEvent,
+  MCPSendMessageRequest,
+  MCPSendMessageResponse,
+  MCPAgentInfo,
+};
 
-export class DeepResearchClient {
+export class MCPClient {
   private baseURL: string;
   private apiKey?: string;
   private timeout: number;
@@ -30,26 +35,19 @@ export class DeepResearchClient {
   private eventSource: EventSource | null = null;
   private abortControllers: Map<string, AbortController> = new Map();
 
-  constructor(config: DeepResearchClientConfig) {
-    this.baseURL = config.baseURL.endsWith('/') ? config.baseURL.slice(0, -1) : config.baseURL;
+  constructor(config: MCPClientConfig) {
+    this.baseURL = config.baseURL.endsWith('/')
+      ? config.baseURL.slice(0, -1)
+      : config.baseURL;
     this.apiKey = config.apiKey;
     this.timeout = config.timeout ?? 30000;
     this.maxRetries = config.maxRetries ?? 3;
     this.retryDelay = config.retryDelay ?? 1000;
   }
 
-  private log(level: string, message: string, data?: Record<string, unknown>) {
-    const prefix = `[DeepResearch] ${message}`;
-    if (data) {
-      (console as any)[level](prefix, data);
-    } else {
-      (console as any)[level](prefix);
-    }
-  }
-
   private getHeaders(): Record<string, string> {
     const headers: Record<string, string> = {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     };
 
     if (this.apiKey) {
@@ -94,7 +92,7 @@ export class DeepResearchClient {
     data?: unknown,
     signal?: AbortSignal
   ): Promise<T> {
-    const url = `${this.baseURL}${path}`;
+    const url = `${this.baseURL}/api/v1/mcp${path}`;
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), this.timeout);
 
@@ -103,7 +101,7 @@ export class DeepResearchClient {
         method,
         headers: this.getHeaders(),
         body: data ? JSON.stringify(data) : undefined,
-        signal: signal || controller.signal
+        signal: signal || controller.signal,
       });
 
       clearTimeout(timeoutId);
@@ -111,9 +109,10 @@ export class DeepResearchClient {
       if (!response.ok) {
         let errorDetail: string = response.statusText;
         try {
-          const errorBody = await response.json() as ErrorResponse;
+          const errorBody = await response.json() as { detail?: string };
           errorDetail = errorBody.detail || errorDetail;
         } catch {
+          // ignore
         }
         throw new ServerError(response.status, errorDetail);
       }
@@ -135,23 +134,42 @@ export class DeepResearchClient {
     }
   }
 
-  async createResearch(request: CreateResearchRequest): Promise<CreateResearchResponse> {
+  async listAgents(): Promise<MCPListAgentsResponse> {
     return this.withRetry(() =>
-      this.request<CreateResearchResponse>('POST', '/research', request)
+      this.request<MCPListAgentsResponse>('GET', '/agents')
     );
   }
 
-  async getStatus(taskId: string): Promise<ResearchStatusResponse> {
+  async createCollaboration(
+    request: MCPCollaborationCreateRequest
+  ): Promise<MCPCollaborationCreateResponse> {
     return this.withRetry(() =>
-      this.request<ResearchStatusResponse>('GET', `/research/${taskId}`)
+      this.request<MCPCollaborationCreateResponse>('POST', '/collaboration', request)
     );
   }
 
-  async cancelTask(taskId: string): Promise<void> {
-    const controller = this.abortControllers.get(taskId);
+  async getCollaborationStatus(
+    sessionId: string
+  ): Promise<MCPCollaborationStatusResponse> {
+    return this.withRetry(() =>
+      this.request<MCPCollaborationStatusResponse>('GET', `/collaboration/${sessionId}`)
+    );
+  }
+
+  async sendMessage(
+    sessionId: string,
+    request: MCPSendMessageRequest
+  ): Promise<MCPSendMessageResponse> {
+    return this.withRetry(() =>
+      this.request<MCPSendMessageResponse>('POST', `/collaboration/${sessionId}/message`, request)
+    );
+  }
+
+  async cancelCollaboration(sessionId: string): Promise<void> {
+    const controller = this.abortControllers.get(sessionId);
     if (controller) {
       controller.abort();
-      this.abortControllers.delete(taskId);
+      this.abortControllers.delete(sessionId);
     }
 
     if (this.eventSource) {
@@ -159,21 +177,21 @@ export class DeepResearchClient {
       this.eventSource = null;
     }
 
-    await this.request<void>('DELETE', `/research/${taskId}`);
+    await this.request<void>('DELETE', `/collaboration/${sessionId}`);
   }
 
   streamProgress(
-    taskId: string,
-    onProgress: ProgressCallback,
-    onComplete: CompleteCallback,
-    onError: ErrorCallback
+    sessionId: string,
+    onProgress: MCPProgressCallback,
+    onComplete: MCPCompleteCallback,
+    onError: MCPErrorCallback
   ): () => void {
     if (typeof EventSource === 'undefined') {
-      this.streamProgressWithFetch(taskId, onProgress, onComplete, onError);
-      return () => this.cancelStreaming(taskId);
+      this.streamProgressWithFetch(sessionId, onProgress, onComplete, onError);
+      return () => this.cancelStreaming(sessionId);
     }
 
-    let url = `${this.baseURL}/research/${taskId}/stream`;
+    let url = `${this.baseURL}/api/v1/mcp/collaboration/${sessionId}/stream`;
     if (this.apiKey) {
       url += (url.includes('?') ? '&' : '?') + `api_key=${encodeURIComponent(this.apiKey)}`;
     }
@@ -181,22 +199,18 @@ export class DeepResearchClient {
     const eventSource = new EventSource(url, { withCredentials: false });
     this.eventSource = eventSource;
 
-    eventSource.onopen = () => {
-      this.log('debug', 'SSE connection opened', { taskId });
-    };
-
     eventSource.onmessage = (event) => {
       try {
-        const data = JSON.parse(event.data) as ProgressEvent;
+        const data = JSON.parse(event.data) as MCPProgressEvent;
         onProgress(data);
 
-        if (data.status === TaskStatusValues.COMPLETED || data.status === TaskStatusValues.FAILED || data.status === TaskStatusValues.CANCELLED) {
+        if (data.status === 'completed' || data.status === 'failed' || data.status === 'cancelled') {
           eventSource.close();
           if (this.eventSource === eventSource) {
             this.eventSource = null;
           }
 
-          this.getStatus(taskId)
+          this.getCollaborationStatus(sessionId)
             .then(status => onComplete(status))
             .catch(err => onError(err as Error));
         }
@@ -205,13 +219,12 @@ export class DeepResearchClient {
       }
     };
 
-    eventSource.onerror = (error) => {
+    eventSource.onerror = () => {
       eventSource.close();
       if (this.eventSource === eventSource) {
         this.eventSource = null;
       }
       onError(new Error('SSE 连接错误，请检查后端服务是否正常运行以及 API 密钥是否正确'));
-      this.log('error', 'SSE connection error', { taskId, error });
     };
 
     return () => {
@@ -223,19 +236,19 @@ export class DeepResearchClient {
   }
 
   private async streamProgressWithFetch(
-    taskId: string,
-    onProgress: ProgressCallback,
-    onComplete: CompleteCallback,
-    onError: ErrorCallback
+    sessionId: string,
+    onProgress: MCPProgressCallback,
+    onComplete: MCPCompleteCallback,
+    onError: MCPErrorCallback
   ): Promise<void> {
     const controller = new AbortController();
-    this.abortControllers.set(taskId, controller);
+    this.abortControllers.set(sessionId, controller);
 
     try {
-      const url = `${this.baseURL}/research/${taskId}/stream`;
+      const url = `${this.baseURL}/api/v1/mcp/collaboration/${sessionId}/stream`;
       const response = await fetch(url, {
         headers: this.getHeaders(),
-        signal: controller.signal
+        signal: controller.signal,
       });
 
       if (!response.ok) {
@@ -270,13 +283,13 @@ export class DeepResearchClient {
             }
 
             try {
-              const data = JSON.parse(jsonStr) as ProgressEvent;
+              const data = JSON.parse(jsonStr) as MCPProgressEvent;
               onProgress(data);
 
-              if (data.status === TaskStatusValues.COMPLETED || data.status === TaskStatusValues.FAILED || data.status === TaskStatusValues.CANCELLED) {
+              if (data.status === 'completed' || data.status === 'failed' || data.status === 'cancelled') {
                 reader.cancel();
-                this.abortControllers.delete(taskId);
-                const status = await this.getStatus(taskId);
+                this.abortControllers.delete(sessionId);
+                const status = await this.getCollaborationStatus(sessionId);
                 onComplete(status);
                 return;
               }
@@ -287,35 +300,23 @@ export class DeepResearchClient {
         }
       }
 
-      this.abortControllers.delete(taskId);
-      const finalStatus = await this.getStatus(taskId);
+      this.abortControllers.delete(sessionId);
+      const finalStatus = await this.getCollaborationStatus(sessionId);
       onComplete(finalStatus);
     } catch (error) {
-      this.abortControllers.delete(taskId);
+      this.abortControllers.delete(sessionId);
       if ((error as Error).name !== 'AbortError') {
         onError(error as Error);
       }
     }
   }
 
-  private cancelStreaming(taskId: string): void {
-    const controller = this.abortControllers.get(taskId);
+  private cancelStreaming(sessionId: string): void {
+    const controller = this.abortControllers.get(sessionId);
     if (controller) {
       controller.abort();
-      this.abortControllers.delete(taskId);
+      this.abortControllers.delete(sessionId);
     }
-  }
-
-  async healthCheck(): Promise<HealthResponse> {
-    return this.withRetry(() =>
-      this.request<HealthResponse>('GET', '/health')
-    );
-  }
-
-  async getVersion(): Promise<VersionInfo> {
-    return this.withRetry(() =>
-      this.request<VersionInfo>('GET', '/version')
-    );
   }
 
   close(): void {

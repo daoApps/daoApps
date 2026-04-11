@@ -1,18 +1,58 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { useMultiAgentCollaboration } from '../../composables/useMultiAgentCollaboration';
 import type { Agent, Task, Message } from '../../data/mockCollaboration';
+import type { MCPAgentInfo } from '../../services/mcp/types';
 import AgentSelector from './AgentSelector.vue';
 import AgentConfigPanel from './AgentConfigPanel.vue';
 import TaskDistributor from './TaskDistributor.vue';
 import CommunicationPanel from './CommunicationPanel.vue';
 import CollaborationResult from './CollaborationResult.vue';
 
-const isRunning = ref(false);
-const selectedAgents = ref<Agent[]>([]);
-const selectedAgentForConfig = ref<Agent | null>(null);
+const deepResearchBaseUrl = import.meta.env.VITE_DEEPRESEARCH_API_URL || 'http://localhost:8000/api/v1';
+const deepResearchApiKey = import.meta.env.VITE_DEEPRESEARCH_API_KEY;
+
+const {
+  agents,
+  currentSessionId,
+  sessionStatus,
+  progress,
+  tasks,
+  messages,
+  result,
+  error,
+  isLoading,
+  isConnected,
+  hasActiveSession,
+  canCancel,
+  loadAgents,
+  createCollaboration,
+  sendMessage,
+  cancel,
+  reset,
+} = useMultiAgentCollaboration({
+  baseURL: `${deepResearchBaseUrl}`,
+  apiKey: deepResearchApiKey,
+});
+
+const selectedAgents = ref<MCPAgentInfo[]>([]);
+const selectedAgentForConfig = ref<MCPAgentInfo | null>(null);
 const activeRightPanel = ref<'config' | 'result'>('config');
 const showShortcuts = ref(false);
-const currentSession = ref<string | null>(null);
+
+const isRunning = computed(() => {
+  return sessionStatus.value === 'running';
+});
+
+const currentSession = computed(() => currentSessionId.value);
+
+onMounted(async () => {
+  try {
+    await loadAgents();
+  } catch (e) {
+    console.error('Failed to load agents from MCP:', e);
+  }
+});
 
 // Keyboard shortcuts
 const handleKeyDown = (event: KeyboardEvent) => {
@@ -57,76 +97,101 @@ const toggleRun = () => {
   }
 };
 
-const startCollaboration = () => {
+const startCollaboration = async () => {
   if (selectedAgents.value.length < 2) {
     alert('请至少选择 2 个智能体进行协作');
     return;
   }
 
-  isRunning.value = true;
-  currentSession.value = `session-${Date.now()}`;
-
-  // Simulate running state
-  setTimeout(() => {
-    // Auto switch to result panel after some time
-    if (isRunning.value) {
-      activeRightPanel.value = 'result';
-    }
-  }, 3000);
+  try {
+    const title = '多智能体协作任务';
+    await createCollaboration({
+      title,
+      agent_ids: selectedAgents.value.map(a => a.id),
+    });
+    activeRightPanel.value = 'result';
+  } catch (e) {
+    console.error('Failed to start collaboration:', e);
+    alert(`启动协作失败: ${e instanceof Error ? e.message : String(e)}`);
+  }
 };
 
-const stopCollaboration = () => {
-  isRunning.value = false;
-
-  setTimeout(() => {
-    if (!isRunning.value && currentSession.value) {
-      alert('协作已停止');
-      currentSession.value = null;
-    }
-  }, 500);
+const stopCollaboration = async () => {
+  if (!canCancel.value) {
+    return;
+  }
+  try {
+    await cancel();
+    alert('协作已取消');
+  } catch (e) {
+    console.error('Failed to cancel collaboration:', e);
+    alert(`取消失败: ${e instanceof Error ? e.message : String(e)}`);
+  }
 };
 
 const resetWorkspace = () => {
   if (confirm('确定要重置工作台吗？这将清除所有当前配置和选择。')) {
+    reset();
     selectedAgents.value = [];
     selectedAgentForConfig.value = null;
-    isRunning.value = false;
-    currentSession.value = null;
     activeRightPanel.value = 'config';
   }
 };
 
 // Event handlers
-const onAgentsSelected = (agents: Agent[]) => {
+const onAgentsSelected = (agents: MCPAgentInfo[]) => {
   selectedAgents.value = agents;
 };
 
-const onConfigureAgent = (agent: Agent) => {
+const onConfigureAgent = (agent: MCPAgentInfo) => {
   selectedAgentForConfig.value = agent;
   activeRightPanel.value = 'config';
 };
 
-const onTaskUpdate = (tasks: Task[]) => {
-  console.log('Tasks updated:', tasks);
+const onTaskUpdate = (updatedTasks: Task[]) => {
+  console.log('Tasks updated:', updatedTasks);
 };
 
 const onTaskSelect = (task: Task) => {
   console.log('Task selected:', task);
 };
 
-const onSendMessage = (message: Message) => {
+const onSendMessage = (message: {
+  fromAgentId: string;
+  fromAgentName: string;
+  toAgentId?: string;
+  toAgentName?: string;
+  content: string;
+}) => {
+  if (!currentSessionId.value) {
+    console.warn('No active session, message not sent');
+    return;
+  }
   console.log('Message sent:', message);
+  // Message will be handled by MCP and broadcast via SSE
 };
 
 // Status bar info
 const statusInfo = computed(() => ({
-  status: isRunning.value ? 'running' : 'idle',
-  label: isRunning.value ? '运行中' : '就绪',
+  status: sessionStatus.value || 'idle',
+  label: getStatusLabel(sessionStatus.value),
   agentsCount: selectedAgents.value.length,
-  sessionTime: currentSession.value
-    ? formatDuration(Date.now() - parseInt(currentSession.value.split('-')[1]!))
+  sessionTime: currentSessionId.value
+    ? formatDuration(Date.now() - parseInt(currentSessionId.value.split('-')[1]!))
     : '00:00:00'
 }));
+
+const getStatusLabel = (status: string | null): string => {
+  const labels: Record<string, string> = {
+    pending: '等待中',
+    running: '运行中',
+    completed: '已完成',
+    failed: '失败',
+    cancelled: '已取消',
+    idle: '就绪',
+  };
+  return labels[status || 'idle'] || '就绪';
+};
 
 const formatDuration = (ms: number) => {
   const seconds = Math.floor(ms / 1000);
@@ -221,6 +286,7 @@ const formatDuration = (ms: number) => {
         <div class="flex-1 overflow-hidden">
           <TaskDistributor
             :agents="selectedAgents"
+            :tasks="tasks"
             @task-update="onTaskUpdate"
             @task-select="onTaskSelect"
           />
@@ -228,7 +294,12 @@ const formatDuration = (ms: number) => {
 
         <!-- Communication Panel (Bottom Section) -->
         <div class="h-80 border-t border-gray-200 dark:border-gray-700">
-          <CommunicationPanel @send-message="onSendMessage" />
+          <CommunicationPanel
+            :session-id="currentSessionId"
+            :messages="messages"
+            :available-agents="selectedAgents"
+            @send-message="onSendMessage"
+          />
         </div>
       </div>
 

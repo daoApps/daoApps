@@ -1,102 +1,105 @@
 <script setup lang="ts">
 import { ref, computed, nextTick, onMounted } from 'vue';
 import type { Message } from '../../data/mockCollaboration';
-import { mockMessages, presetAgents } from '../../data/mockCollaboration';
+import type { MCPMessage, MCPAgentInfo } from '../../services/mcp/types';
+import { presetAgents } from '../../data/mockCollaboration';
 
 const emit = defineEmits<{
-  (e: 'sendMessage', message: Message): void;
+  (e: 'sendMessage', message: {
+    fromAgentId: string;
+    fromAgentName: string;
+    toAgentId?: string;
+    toAgentName?: string;
+    content: string;
+  }): void;
 }>();
 
-const messages = ref<Message[]>([...mockMessages]);
+interface Props {
+  sessionId?: string;
+  messages?: MCPMessage[];
+  availableAgents?: MCPAgentInfo[];
+}
+
+const props = defineProps<Props>();
+
+// Use incoming messages from props (from MCP)
+const externalMessages = computed(() => props.messages || []);
+const localMessages = ref<Message[]>([]);
+const messages = computed(() => {
+  // Convert MCP messages to local Message type
+  const converted: Message[] = externalMessages.value.map(m => ({
+    id: m.id,
+    fromAgentId: m.from_agent_id,
+    fromAgentName: m.from_agent_name,
+    toAgentId: m.to_agent_id,
+    toAgentName: m.to_agent_name,
+    type: m.type as Message['type'],
+    content: m.content,
+    timestamp: new Date(m.timestamp).getTime(),
+    sessionId: props.sessionId || '',
+  }));
+  return [...converted, ...localMessages.value];
+});
+
 const newMessage = ref('');
 const selectedAgentId = ref<string>('');
-const wsStatus = ref<'connected' | 'disconnected' | 'connecting'>('connected');
+const wsStatus = ref<'connected' | 'disconnected' | 'connecting'>('connecting');
 const messageFilter = ref<'all' | 'request' | 'response' | 'notification' | 'warning' | 'conflict'>('all');
 const messagesContainer = ref<HTMLElement | null>(null);
 
-// Simulate WebSocket connection
-onMounted(() => {
-  simulateConnection();
-  // Auto-scroll to bottom
-  scrollToBottom();
-
-  // Simulate incoming messages periodically
-  setInterval(() => {
-    if (Math.random() > 0.7) {
-      simulateIncomingMessage();
-    }
-  }, 8000);
+// Get available agents from props or fallback to preset
+const availableAgents = computed(() => {
+  if (props.availableAgents && props.availableAgents.length > 0) {
+    return props.availableAgents;
+  }
+  return presetAgents;
 });
 
-const simulateConnection = () => {
-  wsStatus.value = 'connecting';
-  setTimeout(() => {
-    wsStatus.value = 'connected';
-  }, 1000);
+const getAgentAvatarMCP = (agentId: string) => {
+  const agent = availableAgents.value.find((a) => a.id === agentId);
+  return agent ? agent.avatar : '❓';
 };
 
-const simulateIncomingMessage = () => {
-  const agents = presetAgents.filter((a) => a.status === 'online' || a.status === 'busy');
-  const fromAgent = agents[Math.floor(Math.random() * agents.length)];
-  const toAgent = agents[Math.floor(Math.random() * agents.length)];
+const getAgentNameMCP = (agentId: string) => {
+  const agent = availableAgents.value.find((a) => a.id === agentId);
+  return agent ? agent.name : '未知';
+};
 
-  if (fromAgent && toAgent && fromAgent.id !== toAgent.id) {
-    const types: Array<Message['type']> = ['request', 'response', 'notification', 'warning', 'conflict'];
-    const type = types[Math.floor(Math.random() * types.length)];
-
-    const sampleContents: Record<string, string[]> = {
-      request: [
-        '请协助完成当前任务的下一阶段工作',
-        '需要你提供最新的数据分析结果',
-        '请审核我提交的方案并给出反馈',
-        '能否帮忙优化一下代码性能？'
-      ],
-      response: [
-        '已完成任务分配，正在处理中',
-        '数据已整理完成，请查看附件',
-        '审核通过，可以进入下一阶段',
-        '优化建议已发送，请查收'
-      ],
-      notification: [
-        '系统通知：新任务已创建',
-        '提醒：任务截止时间临近',
-        '更新：项目进度已同步至最新状态'
-      ],
-      warning: [
-        '警告：检测到潜在的资源冲突',
-        '注意：某个任务可能存在延迟风险',
-        '提示：建议重新评估任务优先级'
-      ]
-    };
-
-    const contents = sampleContents[type] || sampleContents.notification;
-    const content = contents[Math.floor(Math.random() * contents.length)];
-
-    const newMsg: Message = {
-      id: `msg-${Date.now()}`,
-      fromAgentId: fromAgent.id,
-      fromAgentName: fromAgent.name,
-      toAgentId: toAgent.id,
-      toAgentName: toAgent.name,
-      type,
-      content,
-      timestamp: Date.now(),
-      sessionId: 'session-1'
-    };
-
-    messages.value.push(newMsg);
-    nextTick(() => scrollToBottom());
+const scrollToBottom = () => {
+  if (messagesContainer.value) {
+    messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight;
   }
 };
 
-const filteredMessages = computed(() => {
-  if (messageFilter.value === 'all') return messages.value;
-  return messages.value.filter((m) => m.type === messageFilter.value);
+// Auto-scroll when messages change
+watch(messages, () => {
+  nextTick(() => scrollToBottom());
+}, { deep: true });
+
+onMounted(() => {
+  if (props.sessionId) {
+    wsStatus.value = 'connected';
+  } else {
+    wsStatus.value = 'disconnected';
+  }
+  scrollToBottom();
 });
 
-const getAgentAvatar = (agentId: string) => {
-  const agent = presetAgents.find((a) => a.id === agentId);
-  return agent ? agent.avatar : '❓';
+const sendMessage = () => {
+  if (!newMessage.value.trim()) return;
+
+  const currentUserName = '用户';
+  const currentUserId = 'user';
+
+  emit('sendMessage', {
+    fromAgentId: currentUserId,
+    fromAgentName: currentUserName,
+    toAgentId: selectedAgentId.value || undefined,
+    toAgentName: selectedAgentId.value ? getAgentNameMCP(selectedAgentId.value) : undefined,
+    content: newMessage.value.trim(),
+  });
+
+  newMessage.value = '';
 };
 
 const formatTime = (timestamp: number) => {
@@ -304,18 +307,18 @@ const groupedMessages = computed(() => {
           >
             <!-- Header -->
             <div class="flex items-start justify-between mb-2">
-              <div class="flex items-center gap-2">
-                <span class="text-lg">{{ getAgentAvatar(msg.fromAgentId) }}</span>
-                <div>
-                  <span class="font-semibold text-sm">{{ msg.fromAgentName }}</span>
-                  <span v-if="msg.toAgentName" class="text-xs ml-1.5">
-                    →
-                    <span class="font-medium"
-                      >{{ getAgentAvatar(msg.toAgentId!) }} {{ msg.toAgentName }}</span
+            <div class="flex items-center gap-2">
+              <span class="text-lg">{{ getAgentAvatarMCP(msg.fromAgentId) }}</span>
+              <div>
+                <span class="font-semibold text-sm">{{ msg.fromAgentName }}</span>
+                <span v-if="msg.toAgentName" class="text-xs ml-1.5">
+                  →
+                  <span class="font-medium"
+                    >{{ getAgentAvatarMCP(msg.toAgentId!) }} {{ msg.toAgentName }}</span
                     >
-                  </span>
-                </div>
+                </span>
               </div>
+            </div>
               <div class="flex items-center gap-2">
                 <span class="px-2 py-0.5 text-xs font-medium rounded bg-black/10 dark:bg-white/10">
                   {{ messageTypeConfig[msg.type].icon }} {{ messageTypeConfig[msg.type].label }}
@@ -375,8 +378,8 @@ const groupedMessages = computed(() => {
           class="w-full px-3 py-1.5 text-xs border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option value="">发送给所有智能体</option>
-          <option v-for="agent in presetAgents" :key="agent.id" :value="agent.id">
-            {{ agent.avatar }} {{ agent.name }}
+          <option v-for="agent in availableAgents" :key="agent.id" :value="agent.id">
+            {{ getAgentAvatarMCP(agent.id) }} {{ agent.name }}
           </option>
         </select>
       </div>

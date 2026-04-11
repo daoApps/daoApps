@@ -1,13 +1,17 @@
-export enum TaskStatus {
-  PENDING = 'pending',
-  RUNNING = 'running',
-  COMPLETED = 'completed',
-  FAILED = 'failed',
-  CANCELLED = 'cancelled'
-}
+export type TaskStatus = 'pending' | 'running' | 'completed' | 'failed' | 'cancelled';
+
+export const TaskStatusValues = {
+  PENDING: 'pending' as TaskStatus,
+  RUNNING: 'running' as TaskStatus,
+  COMPLETED: 'completed' as TaskStatus,
+  FAILED: 'failed' as TaskStatus,
+  CANCELLED: 'cancelled' as TaskStatus
+};
 
 export interface CreateResearchRequest {
-  query: string;
+  topic: string;
+  domain?: string;
+  details?: string;
   depth?: number;
   max_sources?: number;
   enable_breadth_first?: boolean;

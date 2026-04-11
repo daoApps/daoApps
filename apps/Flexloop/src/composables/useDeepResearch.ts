@@ -1,14 +1,13 @@
 import { ref, onUnmounted } from 'vue';
 import DOMPurify from 'dompurify';
 import { DeepResearchClient } from '../services/deepresearch/client';
-import {
+import { TaskStatusValues } from '../services/deepresearch/types';
+import type {
   CreateResearchRequest,
   ProgressEvent,
-  ResearchStatusResponse,
-  TaskStatus,
-  VersionInfo
+  ResearchStatusResponse
 } from '../services/deepresearch/types';
-import { ApiError, NetworkError, ServerError } from '../errors';
+import { ApiError, NetworkError, ServerError } from '../services/errors';
 
 export interface DeepResearchOptions {
   query: string;
@@ -29,7 +28,7 @@ export interface DeepResearchResult {
 
 const MAX_QUERY_LENGTH = 1000;
 const DEFAULT_TIMEOUT = 30000;
-const DEFAULT_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
+const DEFAULT_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/v1';
 
 function getBaseURL(): string {
   return DEFAULT_BASE_URL;
@@ -198,9 +197,8 @@ export function useDeepResearch() {
     const maxSources = options.maxResults ?? 10;
 
     const request: CreateResearchRequest = {
-      query: sanitized,
+      topic: sanitized,
       depth,
-      max_sources: maxSources
     };
 
     log('info', 'Creating DeepResearch task', {
@@ -230,7 +228,7 @@ export function useDeepResearch() {
               const duration = Date.now() - startTime;
               result.duration = duration;
 
-              if (status.status === TaskStatus.COMPLETED) {
+              if (status.status === TaskStatusValues.COMPLETED) {
                 result.success = true;
                 result.data = status.result;
                 result.duration = duration;
@@ -243,7 +241,7 @@ export function useDeepResearch() {
                   duration,
                   outputLength: status.result?.length || 0
                 });
-              } else if (status.status === TaskStatus.FAILED) {
+              } else if (status.status === TaskStatusValues.FAILED) {
                 result.success = false;
                 result.error = status.error || '研究任务执行失败';
                 error.value = result.error;
@@ -252,7 +250,7 @@ export function useDeepResearch() {
                   taskId: response.task_id,
                   error: result.error
                 });
-              } else if (status.status === TaskStatus.CANCELLED) {
+              } else if (status.status === TaskStatusValues.CANCELLED) {
                 result.success = false;
                 result.error = '研究任务已取消';
                 error.value = result.error;

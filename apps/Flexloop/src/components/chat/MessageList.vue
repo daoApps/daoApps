@@ -180,13 +180,13 @@ const getStatusIcon = (status?: string) => {
                   index === messages.length - 1 &&
                   (!message.messageType || message.messageType === 'text')
                 "
-                class="prose prose-sm dark:prose-invert max-w-none markdown-content"
+                class="prose prose-sm max-w-none markdown-content"
                 v-html="renderMarkdown(displayedText || message.content)"
               ></div>
               <!-- 正常渲染 Markdown -->
               <div
                 v-else-if="!message.messageType || message.messageType === 'text'"
-                class="prose prose-sm dark:prose-invert max-w-none markdown-content"
+                class="prose prose-sm max-w-none markdown-content"
                 v-html="renderMarkdown(message.content)"
               ></div>
               <!-- 流式指示器 -->
@@ -217,6 +217,14 @@ const getStatusIcon = (status?: string) => {
 </template>
 
 <style scoped>
+.markdown-content :deep(*) {
+  color: #111827 !important;
+}
+
+.dark .markdown-content :deep(*) {
+  color: #f3f4f6 !important;
+}
+
 .markdown-content :deep(p) {
   margin-bottom: 0.5rem;
 }
@@ -271,11 +279,11 @@ const getStatusIcon = (status?: string) => {
 
 .markdown-content :deep(strong) {
   font-weight: 600;
-  color: #111827;
+  color: #111827 !important;
 }
 
 .dark .markdown-content :deep(strong) {
-  color: #f3f4f6;
+  color: #f3f4f6 !important;
 }
 
 .markdown-content :deep(a) {

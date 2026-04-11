@@ -632,3 +632,171 @@ LOG_LEVEL=debug python main.py
 // 启用调试
 localStorage.setItem('DEBUG_DEEPRESEARCH', 'true')
 ```
+
+## MCP 多智能体协作平台
+
+### 概述
+
+MCP（Multi-Agent Collaboration Platform）是 DeepResearch 提供的多智能体协作后端服务，允许你选择多个不同专长的智能体协作完成复杂任务。每个智能体有不同的角色和专长，分工协作完成任务。
+
+### 架构
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│               Flexloop 前端协作工作台                       │
+│  AgentWorkspace → TaskDistributor → CommunicationPanel      │
+└──────────────────────────────┬──────────────────────────────┘
+                               │ HTTP + SSE
+                               ▼
+┌─────────────────────────────────────────────────────────────┐
+│           DeepResearch MCP 后端服务                        │
+│  - agent_registry: 智能体注册和发现                       │
+│  - message_bus: 智能体间消息总线                          │
+│  - collaboration_orchestrator: 动态构建工作流              │
+│  - result_aggregator: 聚合多个智能体输出                  │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### 预置智能体
+
+DeepResearch MCP 预置了 8 个智能体：
+
+| ID | 名称 | 角色 | 协作模式 |
+|----|------|------|----------|
+| agent-planner | 任务规划师 | leader (负责人) |
+| agent-writer | 内容创作专家 | collaborator |
+| agent-coder | 编程工程师 | collaborator |
+| agent-researcher | 数据研究员 | collaborator |
+| agent-designer | UI/UX 设计师 | collaborator |
+| agent-analyst | 业务分析师 | reviewer (审阅) |
+| agent-translator | 翻译专家 | collaborator |
+| agent-consultant | 战略顾问 | leader (负责人) |
+
+### 环境变量配置
+
+在 Flexloop 前端 `.env.development` 或 `.env.production` 中添加：
+
+```env
+# DeepResearch MCP API 地址
+VITE_DEEPRESEARCH_API_URL=http://localhost:8000/api/v1
+VITE_DEEPRESEARCH_API_KEY=your-api-key-if-enabled
+```
+
+### MCP API 端点
+
+#### 1. 获取智能体列表
+```
+GET /api/v1/mcp/agents
+```
+
+#### 2. 创建协作会话
+```
+POST /api/v1/mcp/collaboration
+Content-Type: application/json
+
+{
+  "title": "产品发布会完整策划方案",
+  "agent_ids": ["agent-planner", "agent-writer", "agent-designer", "agent-analyst"],
+  "tasks": [...], // 可选，预定义任务
+  "mode": "serial" // serial | parallel | round_robin
+}
+```
+
+#### 3. 获取协作状态
+```
+GET /api/v1/mcp/collaboration/{session_id}
+```
+
+#### 4. 流式进度推送
+```
+GET /api/v1/mcp/collaboration/{session_id}/stream
+```
+SSE 事件推送，包含进度更新、新消息、任务更新。
+
+#### 5. 发送消息
+```
+POST /api/v1/mcp/collaboration/{session_id}/message
+Content-Type: application/json
+
+{
+  "from_agent_id": "user",
+  "from_agent_name": "用户",
+  "to_agent_id": "agent-planner",
+  "content": "请调整一下时间安排..."
+}
+```
+
+#### 6. 取消协作
+```
+DELETE /api/v1/mcp/collaboration/{session_id}
+```
+
+### 前端使用示例
+
+```vue
+<script setup lang="ts">
+import { useMultiAgentCollaboration } from '../composables/useMultiAgentCollaboration';
+
+const {
+  agents,
+  currentSessionId,
+  sessionStatus,
+  progress,
+  tasks,
+  messages,
+  result,
+  error,
+  isLoading,
+  loadAgents,
+  createCollaboration,
+  cancel,
+  reset,
+} = useMultiAgentCollaboration({
+  baseURL: import.meta.env.VITE_DEEPRESEARCH_API_URL || 'http://localhost:8000/api/v1',
+  apiKey: import.meta.env.VITE_DEEPRESEARCH_API_KEY,
+});
+
+// 加载可用智能体
+onMounted(async () => {
+  await loadAgents();
+});
+
+// 创建协作
+const start = async () => {
+  const sessionId = await createCollaboration({
+    title: '我的协作任务',
+    agent_ids: selectedAgents.map(a => a.id),
+  });
+};
+</script>
+```
+
+### 协作模式
+
+| 模式 | 说明 |
+|------|------|
+| serial | 串行流水线，智能体依次执行，输出传给下一个 |
+| parallel | 并行探索，所有智能体同时工作 |
+| round_robin | 轮询讨论，智能体依次讨论逐步完善结果 |
+
+### 故障排查 MCP
+
+**Q: 无法加载智能体列表**
+A: 
+1. 检查 DeepResearch 服务是否启动
+2. 检查 `VITE_DEEPRESEARCH_API_URL` 配置是否正确
+3. 检查网络连通性和 CORS 设置
+
+---
+
+**Q: 协作启动后没有进度更新**
+A:
+1. 检查浏览器控制台是否有错误
+2. 确认 SSE 连接是否建立
+3. 检查 DeepResearch 服务日志
+
+---
+
+**Q: 如何添加自定义智能体**
+A: 在 DeepResearch 服务端 `config/mcp.toml` 中添加新智能体配置，重启服务即可。
+

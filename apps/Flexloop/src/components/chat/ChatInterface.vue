@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue';
 import { useChatStore } from '@/stores/useChatStore';
-import { getMockResponse } from '@/data/mockChat';
 import { useLanguageDetection } from '@/composables/useLanguageDetection';
+import { useDeepResearch } from '@/composables/useDeepResearch';
 import ChatSidebar from './ChatSidebar.vue';
 import MessageList from './MessageList.vue';
 import MessageInput from './MessageInput.vue';
 import QuickCommands from './QuickCommands.vue';
 
 const chatStore = useChatStore();
+const { isAvailable, error: deepResearchError, progress, currentStep, research } = useDeepResearch();
 const inputText = ref('');
 const showQuickCommands = ref(true);
 const showSidebar = ref(true);
@@ -80,42 +81,52 @@ const handleSendMessage = async () => {
   chatStore.setStreaming(true, aiMessageId);
 
   try {
-    // 获取 Mock 响应（传入上下文以支持多轮对话）
-    const context = chatStore.recentContext;
-    const responseContent = getMockResponse(content, context);
+    // 检查 DeepResearch 是否可用
+    if (!isAvailable.value) {
+      const errorMsg = deepResearchError.value || 'DeepResearch API 服务不可用';
+      chatStore.updateMessage(aiMessageId, `⚠️ ${errorMsg}\n\n请确保后端服务已启动在 http://localhost:8000`);
+      return;
+    }
 
-    // 模拟流式输出
-    await simulateStreaming(responseContent, aiMessageId);
+    // 调用 DeepResearch 后端，进度通过 progress 和 currentStep 响应式更新
+    let lastProgress = 0;
+    const updateProgress = () => {
+      if (progress.value > lastProgress) {
+        lastProgress = progress.value;
+        // 更新进度到消息内容（显示当前步骤）
+        const progressText = `**${currentStep.value}** ${progress.value.toFixed(0)}%\n\n`;
+        chatStore.updateMessage(aiMessageId, progressText);
+      }
+    };
+
+    // 进度更新定时器
+    const progressInterval = setInterval(updateProgress, 500);
+
+    try {
+      // 调用 DeepResearch 后端
+      const result = await research({
+        query: content
+      });
+
+      clearInterval(progressInterval);
+
+      if (result.success && result.data) {
+        // 深度研究完成，输出最终结果
+        chatStore.updateMessage(aiMessageId, result.data);
+      } else {
+        // 研究失败，显示错误
+        chatStore.updateMessage(aiMessageId, `❌ 深度研究失败: ${result.error || '未知错误'}`);
+      }
+    } finally {
+      clearInterval(progressInterval);
+      chatStore.setStreaming(false);
+    }
   } catch (error) {
     console.error('发送消息失败:', error);
-    chatStore.updateMessage(aiMessageId, '抱歉，处理您的请求时出现了错误。请稍后重试。');
-  } finally {
+    const errorMsg = error instanceof Error ? error.message : String(error);
+    chatStore.updateMessage(aiMessageId, `抱歉，处理您的请求时出现了错误: ${errorMsg}`);
     chatStore.setStreaming(false);
   }
-};
-
-const simulateStreaming = (fullText: string, messageId: string): Promise<void> => {
-  return new Promise((resolve) => {
-    let currentIndex = 0;
-    const intervalMs = 30;
-    const charsPerInterval = [1, 2, 3];
-
-    const interval = setInterval(() => {
-      if (currentIndex < fullText.length) {
-        const randomIndex = Math.floor(Math.random() * charsPerInterval.length);
-        const charsToAdd = Math.min(
-          charsPerInterval[randomIndex] ?? 1,
-          fullText.length - currentIndex
-        );
-        const newText = fullText.slice(0, currentIndex + charsToAdd);
-        chatStore.updateMessage(messageId, newText);
-        currentIndex += charsToAdd;
-      } else {
-        clearInterval(interval);
-        resolve();
-      }
-    }, intervalMs);
-  });
 };
 
 const handleSelectQuickCommand = (prompt: string) => {
