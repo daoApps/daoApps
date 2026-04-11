@@ -441,7 +441,7 @@ const handleBuyNow = () => {
         <p>{{ product.description }}</p>
         <div class="grid grid-cols-2 gap-x-6 gap-y-2 mt-6">
           <div
-            v-for="(value, key in product.specs"
+            v-for="(value, key) in product.specs"
             :key="key"
             class="flex py-1"
           >
@@ -461,10 +461,10 @@ const handleBuyNow = () => {
       </div>
 
       <div v-if="activeTab === 'reviews'" class="p-0">
-        <ReviewSystem v-else :product-id="product.id" :reviews="reviews" />
         <div v-if="reviews.length === 0" class="py-12 text-center">
           <p class="text-gray-500 dark:text-gray-400">暂无评价</p>
         </div>
+        <ReviewSystem v-if="reviews.length > 0" :product-id="product.id" :reviews="reviews" />
       </div>
     </div>
 
@@ -475,7 +475,7 @@ const handleBuyNow = () => {
           v-for="p in relatedProducts"
           :key="p.id"
           class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow group cursor-pointer"
-          @click="router.push(`/marketplace/product/${p.id}"
+          @click="router.push(`/marketplace/product/${p.id}`)"
         >
           <div class="aspect-square bg-gray-100 dark:bg-gray-700">
             <img :src="p.images[0]" alt="" class="w-full h-full object-cover" />

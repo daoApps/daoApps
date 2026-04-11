@@ -1,0 +1,27 @@
+[Unit]
+Description=DAO Apps Static Site
+After=network.target
+Documentation=https://github.com/daocollective/daoApps
+
+[Service]
+Type=simple
+User=daoapps
+Group=daoapps
+WorkingDirectory=/var/www/daoapps/current
+Environment=NODE_ENV=production
+Environment=PORT=3000
+Environment=HOST=0.0.0.0
+ExecStart=/usr/bin/npx serve . -l 3000
+Restart=always
+RestartSec=10
+TimeoutStartSec=60
+StandardOutput=journal+console
+StandardError=journal+console
+SyslogIdentifier=daoapps
+LimitNOFILE=65535
+PrivateTmp=true
+ProtectSystem=full
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target
