@@ -85,23 +85,6 @@ onMounted(() => {
   scrollToBottom();
 });
 
-const sendMessage = () => {
-  if (!newMessage.value.trim()) return;
-
-  const currentUserName = '用户';
-  const currentUserId = 'user';
-
-  emit('sendMessage', {
-    fromAgentId: currentUserId,
-    fromAgentName: currentUserName,
-    toAgentId: selectedAgentId.value || undefined,
-    toAgentName: selectedAgentId.value ? getAgentNameMCP(selectedAgentId.value) : undefined,
-    content: newMessage.value.trim(),
-  });
-
-  newMessage.value = '';
-};
-
 const formatTime = (timestamp: number) => {
   const date = new Date(timestamp);
   return date.toLocaleTimeString('zh-CN', {
@@ -201,13 +184,7 @@ const sendMessage = () => {
   }, 2000);
 };
 
-const scrollToBottom = () => {
-  if (messagesContainer.value) {
-    messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight;
-  }
-};
-
-const clearMessages = () => {
+  const clearMessages = () => {
   if (confirm('确定要清空所有消息记录吗？')) {
     messages.value = [];
   }

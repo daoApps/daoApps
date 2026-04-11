@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
 import type { Agent } from '../../data/mockCollaboration';
+import type { MCPAgentInfo } from '../../services/mcp/types';
 
 const props = defineProps<{
-  agent: Agent | null;
+  agent: Agent | MCPAgentInfo | null;
 }>();
 
 const emit = defineEmits<{
@@ -214,9 +215,9 @@ watch(
     if (newAgent) {
       config.value = {
         ...defaultConfig,
-        responseStyle: newAgent.responseStyle,
-        outputDetail: newAgent.outputDetail,
-        enableTools: [...newAgent.tools]
+        responseStyle: 'responseStyle' in newAgent ? newAgent.responseStyle : defaultConfig.responseStyle,
+        outputDetail: 'outputDetail' in newAgent ? newAgent.outputDetail : defaultConfig.outputDetail,
+        enableTools: 'tools' in newAgent ? [...newAgent.tools] : []
       };
 
       // Set agent-specific defaults
@@ -456,20 +457,23 @@ try {
         </h3>
 
         <div class="space-y-2">
-          <label
-            v-for="tool in agent.tools"
-            :key="tool"
-            class="flex items-center gap-2 p-2 rounded hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer"
-          >
-            <input
-              v-model="config.enableTools"
-              type="checkbox"
-              :value="tool"
-              class="rounded text-blue-500"
-              @change="updateConfig"
-            />
-            <span class="text-sm text-gray-700 dark:text-gray-300 capitalize">{{ tool }}</span>
-          </label>
+          <template v-if="agent && 'tools' in agent">
+            <label
+              v-for="tool in agent.tools"
+              :key="tool"
+              class="flex items-center gap-2 p-2 rounded hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer"
+            >
+              <input
+                v-model="config.enableTools"
+                type="checkbox"
+                :value="tool"
+                class="rounded text-blue-500"
+                @change="updateConfig"
+              />
+              <span class="text-sm text-gray-700 dark:text-gray-300 capitalize">{{ tool }}</span>
+            </label>
+          </template>
+          <p v-else class="text-xs text-gray-500 dark:text-gray-400">该智能体没有可配置的工具</p>
         </div>
       </section>
 

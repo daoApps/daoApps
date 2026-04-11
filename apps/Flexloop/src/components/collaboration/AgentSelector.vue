@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import type { Agent } from '../../data/mockCollaboration';
+import type { MCPAgentInfo } from '../../services/mcp/types';
 import { presetAgents } from '../../data/mockCollaboration';
 import AgentStatusCard from './AgentStatusCard.vue';
 
@@ -16,31 +17,35 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-  (e: 'update:selected', agents: Agent[]): void;
-  (e: 'configure', agent: Agent): void;
+  (e: 'update:selected', agents: MCPAgentInfo[]): void;
+  (e: 'configure', agent: MCPAgentInfo): void;
 }>();
 
 const searchQuery = ref('');
-const selectedAgents = ref<Agent[]>([]);
-const draggedAgent = ref<Agent | null>(null);
+const selectedAgents = ref<MCPAgentInfo[]>([]);
+const draggedAgent = ref<MCPAgentInfo | null>(null);
 const showDetails = ref(true);
 
+const agentsToDisplay = computed(() => {
+  return presetAgents as unknown as MCPAgentInfo[];
+});
+
 const filteredAgents = computed(() => {
-  if (!searchQuery.value.trim()) return presetAgents;
+  if (!searchQuery.value.trim()) return agentsToDisplay.value;
 
   const query = searchQuery.value.toLowerCase();
-  return presetAgents.filter(
+  return agentsToDisplay.value.filter(
     (agent) =>
       agent.name.toLowerCase().includes(query) ||
       agent.role.toLowerCase().includes(query) ||
       agent.specialty.some((s) => s.toLowerCase().includes(query)) ||
-      agent.skills.some((s) => s.toLowerCase().includes(query))
+      agent.skills?.some((s) => s.toLowerCase().includes(query))
   );
 });
 
 const selectedCount = computed(() => selectedAgents.value.length);
 
-const toggleAgentSelection = (agent: Agent) => {
+const toggleAgentSelection = (agent: MCPAgentInfo) => {
   if (props.mode === 'single') {
     selectedAgents.value = [agent];
     emit('update:selected', selectedAgents.value);
@@ -61,8 +66,8 @@ const isSelected = (agentId: string) => {
 };
 
 const selectAllOnline = () => {
-  const onlineAgents = presetAgents.filter((a) => a.status === 'online' || a.status === 'idle');
-  selectedAgents.value = onlineAgents;
+  const allAgents = agentsToDisplay.value.filter(a => ('enabled' in a) ? a.enabled : true);
+  selectedAgents.value = allAgents;
   emit('update:selected', [...selectedAgents.value]);
 };
 
@@ -72,7 +77,7 @@ const clearSelection = () => {
 };
 
 // Drag and Drop handlers
-const onDragStart = (event: DragEvent, agent: Agent) => {
+const onDragStart = (event: DragEvent, agent: MCPAgentInfo) => {
   draggedAgent.value = agent;
   if (event.dataTransfer) {
     event.dataTransfer.effectAllowed = 'move';
@@ -85,7 +90,7 @@ const onDragStart = (event: DragEvent, agent: Agent) => {
 const onDragEnd = (event: DragEvent) => {
   draggedAgent.value = null;
   const target = event.target as HTMLElement;
-  target.classList.remove('opacity-50');
+  if (target) target.classList.remove('opacity-50');
 };
 
 const onDragOver = (event: DragEvent) => {
@@ -95,7 +100,7 @@ const onDragOver = (event: DragEvent) => {
   }
 };
 
-const onDrop = (event: DragEvent, targetAgent: Agent) => {
+const onDrop = (event: DragEvent, targetAgent: MCPAgentInfo) => {
   event.preventDefault();
   if (!draggedAgent.value || draggedAgent.value.id === targetAgent.id) return;
 
@@ -114,7 +119,7 @@ const onDrop = (event: DragEvent, targetAgent: Agent) => {
 
 // Initialize with preselected agents
 if (props.preselected.length > 0) {
-  selectedAgents.value = presetAgents.filter((a) => props.preselected.includes(a.id));
+  selectedAgents.value = agentsToDisplay.value.filter((a) => props.preselected.includes(a.id));
 }
 </script>
 

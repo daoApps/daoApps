@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import type { Task, Agent } from '../../data/mockCollaboration';
-import type { MCPTask } from '../../services/mcp/types';
+import type { MCPTask, MCPAgentInfo } from '../../services/mcp/types';
 import { sampleTasks, presetAgents } from '../../data/mockCollaboration';
 
 const props = defineProps<{
-  agents?: Agent[];
+  agents?: (Agent | MCPAgentInfo)[];
   tasks?: MCPTask[];
 }>();
 
@@ -80,13 +80,23 @@ const filteredTasks = computed(() => {
 const getAgentName = (agentId?: string) => {
   if (!agentId) return '未分配';
   const agent = presetAgents.find((a) => a.id === agentId);
-  return agent ? agent.name : '未知智能体';
+  if (agent) return agent.name;
+  if (props.agents) {
+    const found = props.agents.find((a) => a.id === agentId);
+    if (found) return found.name;
+  }
+  return '未知智能体';
 };
 
 const getAgentAvatar = (agentId?: string) => {
   if (!agentId) return '❓';
   const agent = presetAgents.find((a) => a.id === agentId);
-  return agent ? agent.avatar : '❓';
+  if (agent) return agent.avatar;
+  if (props.agents) {
+    const found = props.agents.find((a) => a.id === agentId);
+    if (found) return found.avatar;
+  }
+  return '❓';
 };
 
 const priorityConfig = computed((): Record<string, { color: string; label: string }> => ({

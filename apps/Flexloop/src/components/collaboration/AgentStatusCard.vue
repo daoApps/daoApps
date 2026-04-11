@@ -1,17 +1,32 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { Agent } from '../../data/mockCollaboration';
+import type { MCPAgentInfo } from '../../services/mcp/types';
 
 const props = defineProps<{
-  agent: Agent;
+  agent: Agent | MCPAgentInfo;
   isSelected?: boolean;
   showDetails?: boolean;
 }>();
 
 const emit = defineEmits<{
-  (e: 'select', agent: Agent): void;
-  (e: 'configure', agent: Agent): void;
+  (e: 'select', agent: Agent | MCPAgentInfo): void;
+  (e: 'configure', agent: Agent | MCPAgentInfo): void;
 }>();
+
+const agentStatus = computed(() => {
+  if ('status' in props.agent) {
+    return props.agent.status;
+  }
+  return (props.agent as MCPAgentInfo).enabled ? 'online' : 'offline';
+});
+
+const collaborationMode = computed(() => {
+  if ('collaboration_mode' in props.agent) {
+    return props.agent.collaboration_mode;
+  }
+  return 'collaborator';
+});
 
 const statusConfig = computed(() => {
   const configs: Record<string, { color: string; bg: string; label: string }> = {
@@ -27,7 +42,7 @@ const statusConfig = computed(() => {
     },
     error: { color: 'text-red-600', bg: 'bg-red-200 dark:bg-red-900/40', label: '错误' }
   };
-  return configs[props.agent.status] || configs.offline;
+  return configs[agentStatus.value] || configs.offline;
 });
 
 const modeConfig = computed(() => {
@@ -36,8 +51,36 @@ const modeConfig = computed(() => {
     collaborator: { icon: '🤝', label: '协作者' },
     reviewer: { icon: '🔍', label: '审核者' }
   };
-  return configs[props.agent.collaborationMode] || configs.collaborator;
+  return configs[collaborationMode.value] || configs.collaborator;
 });
+
+const getAgentLevel = (): number => {
+  if ('level' in props.agent) {
+    return props.agent.level;
+  }
+  return (props.agent as Agent).level || 5;
+};
+
+const getAgentAccuracy = (): number => {
+  if ('accuracy' in props.agent) {
+    return (props.agent as Agent).accuracy;
+  }
+  return 95;
+};
+
+const getCompletedTasks = (): number => {
+  if ('completedTasks' in props.agent) {
+    return (props.agent as Agent).completedTasks;
+  }
+  return 0;
+};
+
+const getAvgTime = (): number => {
+  if ('avgTime' in props.agent) {
+    return (props.agent as Agent).avgTime;
+  }
+  return 15;
+};
 
 const formatTime = (timestamp: number) => {
   const now = Date.now();
@@ -99,12 +142,12 @@ const lastActiveTime = computed(() => {
       <div class="grid grid-cols-2 gap-2">
         <div class="text-center p-2 rounded bg-gray-50 dark:bg-gray-700/50">
           <div class="text-xs text-gray-500 dark:text-gray-400">能力等级</div>
-          <div class="text-lg font-bold text-blue-600 dark:text-blue-400">{{ props.agent.level }}</div>
+          <div class="text-lg font-bold text-blue-600 dark:text-blue-400">{{ getAgentLevel() }}</div>
         </div>
         <div class="text-center p-2 rounded bg-gray-50 dark:bg-gray-700/50">
           <div class="text-xs text-gray-500 dark:text-gray-400">准确率</div>
           <div class="text-lg font-bold text-green-600 dark:text-green-400">
-            {{ props.agent.accuracy }}%
+            {{ getAgentAccuracy() }}%
           </div>
         </div>
       </div>
@@ -142,7 +185,7 @@ const lastActiveTime = computed(() => {
       </div>
 
       <!-- Current Task Progress -->
-      <div v-if="props.agent.status === 'working' || props.agent.status === 'busy'">
+      <div v-if="agentStatus.value === 'working' || agentStatus.value === 'busy'">
         <div class="flex items-center justify-between text-xs mb-1">
           <span class="text-gray-600 dark:text-gray-400">当前任务</span>
           <span class="font-medium text-blue-600 dark:text-blue-400"
@@ -162,12 +205,12 @@ const lastActiveTime = computed(() => {
         <div class="flex items-center justify-between text-xs">
           <span class="text-gray-500 dark:text-gray-400">已完成任务</span>
           <span class="font-medium text-gray-900 dark:text-white"
-            >{{ props.agent.completedTasks }} 个</span
+            >{{ getCompletedTasks() }} 个</span
           >
         </div>
         <div class="flex items-center justify-between text-xs">
           <span class="text-gray-500 dark:text-gray-400">平均耗时</span>
-          <span class="font-medium text-gray-900 dark:text-white">{{ props.agent.avgTime }} 分钟</span>
+          <span class="font-medium text-gray-900 dark:text-white">{{ getAvgTime() }} 分钟</span>
         </div>
         <div class="flex items-center justify-between text-xs">
           <span class="text-gray-500 dark:text-gray-400">最后活跃</span>
